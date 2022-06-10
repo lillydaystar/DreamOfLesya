@@ -10,13 +10,14 @@ class GameEngine implements Runnable {
 
     GameEngine() {
         this.window = new GameWindow();
+        createGameThread();
     }
 
     @Override
     public void run() {
         while (this.gameThread != null) {
             update();
-            paint();
+            repaint();
         }
     }
 
@@ -26,10 +27,10 @@ class GameEngine implements Runnable {
     }
 
     private void update() {
-
+        this.window.update();
     }
 
-    private void paint() {
-
+    private void repaint() {
+        this.window.repaint();
     }
 }

@@ -1,32 +1,42 @@
 package graphics;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameWindow extends JFrame {
 
     final int scale = 3;
 
-    private final int tileSize = 50;
-    private final int rowsOnScreen = 12;
-    private final int columnsOnScreen = 16;
-    private final int screenWidth = tileSize * columnsOnScreen;
-    private final int screenHeight = tileSize * rowsOnScreen;
+    private static final int tileSize = 50;
+    private static final int rowsOnScreen = 12;
+    private static final int columnsOnScreen = 16;
+    static final int screenWidth = tileSize * columnsOnScreen;
+    static final int screenHeight = tileSize * rowsOnScreen;
 
-    private JPanel panel;
+    private GamePanel panel;
 
     public GameWindow() {
         super("Game");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
 
-        this.panel = new JPanel();
-        this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.panel.setBackground(Color.black);
-
+        this.panel = new GamePanel();
         this.add(this.panel);
         this.pack();
         this.setVisible(true);
+    }
+
+    public void update() {
+        this.panel.update();
+    }
+
+   /* @Override
+    public void update(Graphics g) {
+
+    }*/
+
+    @Override
+    public void repaint() {
+        this.panel.repaint();
     }
 
     /*private static Point getCenterLocation(final int width, final int height) {
