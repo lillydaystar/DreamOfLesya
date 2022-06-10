@@ -12,10 +12,10 @@ public class GameWindow extends JFrame {
     final int scale = 3;
 
     private final int blockActualSize = 24;
-    private final int blockSize = 3 * blockActualSize;
-    private final int rowsOnScreen = 12;
-    private final int columnsOnScreen = 18;
-    private final int mapCols = 90;
+    protected final int blockSize = 3 * blockActualSize;
+    protected final int rowsOnScreen = 12;
+    protected final int columnsOnScreen = 18;
+    protected final int mapCols = 90;
     private final int screenWidth = blockSize * columnsOnScreen;
     private final int screenHeight = blockSize * rowsOnScreen;
     private GamePanel panel;
@@ -25,7 +25,7 @@ public class GameWindow extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
 
-        this.panel = new GamePanel();
+        this.panel = new GamePanel(this);
         this.panel.setDoubleBuffered(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         try {
@@ -48,6 +48,12 @@ public class GameWindow extends JFrame {
 
 class GamePanel extends JPanel{
     private BufferedImage background;
+    private final DrawMap dm;
+
+    GamePanel(GameWindow window){
+        super();
+        this.dm = new DrawMap(window);
+    }
 
     public void setBackgroundImage(BufferedImage img){
         this.background = img;
@@ -58,6 +64,7 @@ class GamePanel extends JPanel{
         super.paintComponents(gr);
         Graphics2D g2 = (Graphics2D) gr;
         g2.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        dm.paintMap(g2);
         g2.dispose();
     }
 }
