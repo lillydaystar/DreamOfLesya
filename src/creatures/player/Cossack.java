@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class Cossack {
 
-    public int xCord = 8 * GameWindow.blockSize;
-    public int yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
+    private int xCord = 8 * GameWindow.blockSize;
+    private int yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
 
-    public int xMap = xCord;
+    private int xMap = xCord;
 
     private int xVel = 3, yVel = 2;
 

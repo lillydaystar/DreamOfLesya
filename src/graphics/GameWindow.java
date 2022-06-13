@@ -16,7 +16,8 @@ public class GameWindow extends JFrame {
     static final int columnsOnScreen = 18;
     static final int mapCols = 90;
     static final int screenWidth = blockSize * columnsOnScreen;
-    static final int screenHeight = blockSize * rowsOnScreen;
+    public static final int screenHeight = blockSize * rowsOnScreen;
+    public static final int worldWidth = blockSize * mapCols;
 
     private final GamePanel panel;
 

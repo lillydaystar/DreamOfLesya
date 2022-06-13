@@ -8,12 +8,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class DrawMap {
-    GameWindow window;
+
     Block[] blocks;
     String[][] map;
 
-    public DrawMap(GameWindow window){
-        this.window = window;
+    public DrawMap() {
         this.blocks = new Block[5];
         try {
             blocks[0] = new Block();
@@ -23,11 +22,11 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[window.mapCols][GameWindow.rowsOnScreen];
+        this.map = new String[GameWindow.mapCols][GameWindow.rowsOnScreen];
         configMap();
     }
 
-    public void configMap(){
+    private void configMap(){
         FileReader fr;
         try {
             fr = new FileReader("worlds/map1.txt");
@@ -55,7 +54,7 @@ public class DrawMap {
 
     }
 
-    public void paintMap(Graphics2D g) {
+    void paintMap(Graphics2D g) {
         int col = 0;
         int row = 0;
         int x = 0;
