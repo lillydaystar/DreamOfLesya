@@ -4,7 +4,7 @@ import graphics.GameWindow;
 
 class GameEngine implements Runnable {
 
-    private static final int CLOCK_RATE = 1000;
+    private static final int CLOCK_RATE = 50;
 
     private GameWindow window;
 

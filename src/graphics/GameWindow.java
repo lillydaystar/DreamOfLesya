@@ -6,7 +6,7 @@ public class GameWindow extends JFrame {
 
 //    final int scale = 3;
 
-    private static final int tileSize = 50;
+    public static final int tileSize = 50;
     private static final int rowsOnScreen = 12;
     private static final int columnsOnScreen = 16;
     static final int screenWidth = tileSize * columnsOnScreen;
@@ -22,6 +22,7 @@ public class GameWindow extends JFrame {
         this.panel = new GamePanel();
         this.add(this.panel);
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
