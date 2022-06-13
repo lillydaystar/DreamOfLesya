@@ -20,8 +20,7 @@ public class Cossack {
         return null;
     }
 
-    public void add(Graphics2D graphics2D) {
-        correctPosition();
+    public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.white);
         graphics2D.fillRect(xCord, yCord, GameWindow.blockSize, GameWindow.blockSize);
     }
@@ -58,7 +57,7 @@ public class Cossack {
         this.downCommand = true;
     }
 
-    private void correctPosition() {
+    public void update() {
         if (this.downCommand) {
             this.yCord += this.yVel;
         }
