@@ -6,11 +6,11 @@ public class GameWindow extends JFrame {
 
 //    final int scale = 3;
 
-    public static final int tileSize = 50;
-    private static final int rowsOnScreen = 12;
-    private static final int columnsOnScreen = 16;
-    static final int screenWidth = tileSize * columnsOnScreen;
-    static final int screenHeight = tileSize * rowsOnScreen;
+    public static final int blockSize = 50;
+    static final int rowsOnScreen = 12;
+    static final int columnsOnScreen = 16;
+    static final int screenWidth = blockSize * columnsOnScreen;
+    static final int screenHeight = blockSize * rowsOnScreen;
 
     private GamePanel panel;
 

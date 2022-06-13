@@ -8,7 +8,7 @@ public class Cossack {
 
     private int xCord, yCord;
 
-    private int xVel = 2, yVel = 3;
+    private int xVel = 6, yVel = 9;
 
     private boolean leftCommand, rightCommand, upCommand, downCommand;
 
@@ -22,9 +22,8 @@ public class Cossack {
 
     public void add(Graphics2D graphics2D) {
         correctPosition();
-//        System.out.printf("%d %d", xCord, yCord);
         graphics2D.setColor(Color.white);
-        graphics2D.fillRect(xCord, yCord, GameWindow.tileSize, GameWindow.tileSize);
+        graphics2D.fillRect(xCord, yCord, GameWindow.blockSize, GameWindow.blockSize);
     }
 
     public void rightReleased() {

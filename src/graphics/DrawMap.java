@@ -23,7 +23,7 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[window.mapCols][window.rowsOnScreen];
+        this.map = new String[window.columnsOnScreen][window.rowsOnScreen];
         configMap();
     }
 
@@ -39,7 +39,7 @@ public class DrawMap {
             while(rows < window.rowsOnScreen){
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(;cols<window.mapCols; cols++){
+                for(;cols<window.columnsOnScreen; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -61,7 +61,7 @@ public class DrawMap {
         int x = 0;
         int y = 0;
 
-        while (col < window.mapCols && row < window.rowsOnScreen){
+        while (col < window.columnsOnScreen && row < window.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
             if(block.equals("A")){
@@ -75,7 +75,7 @@ public class DrawMap {
             }
             x+=window.blockSize;
             col++;
-            if(col == window.mapCols){
+            if(col == window.columnsOnScreen){
                 col = 0;
                 row++;
                 x = 0;
