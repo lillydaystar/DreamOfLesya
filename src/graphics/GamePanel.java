@@ -16,7 +16,7 @@ class GamePanel extends JPanel {
 
     private DrawMap dm;
     private BufferedImage background;
-    private Cossack cossack;
+    Cossack cossack;
 
     GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));

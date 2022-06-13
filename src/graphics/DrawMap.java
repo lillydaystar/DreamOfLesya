@@ -7,12 +7,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-class DrawMap {
-
+public class DrawMap {
+    GameWindow window;
     Block[] blocks;
     String[][] map;
 
-    DrawMap() {
+    public DrawMap(GameWindow window){
+        this.window = window;
         this.blocks = new Block[5];
         try {
             blocks[0] = new Block();
@@ -22,11 +23,11 @@ class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[GameWindow.mapCols][GameWindow.rowsOnScreen];
+        this.map = new String[window.mapCols][GameWindow.rowsOnScreen];
         configMap();
     }
 
-    private void configMap(){
+    public void configMap(){
         FileReader fr;
         try {
             fr = new FileReader("worlds/map1.txt");
@@ -38,7 +39,7 @@ class DrawMap {
             while(rows < GameWindow.rowsOnScreen){
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(;cols<GameWindow.mapCols; cols++){
+                for(; cols < GameWindow.mapCols; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -54,7 +55,7 @@ class DrawMap {
 
     }
 
-    void paintMap(Graphics2D g) {
+    public void paintMap(Graphics2D g) {
         int col = 0;
         int row = 0;
         int x = 0;
@@ -63,21 +64,19 @@ class DrawMap {
         while (col < GameWindow.mapCols && row < GameWindow.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
-            if (block.equals("A")) {
+            if(block.equals("A")){
                 number = 0;
             }
-            else if (block.equals("T")) {
+            else if(block.equals("T")){
                 number = 1;
             }
-            if (number != -1) {
+            if(number != -1) {
                 g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
-            x += GameWindow.blockSize;
             col++;
             if(col == GameWindow.mapCols){
                 col = 0;
                 row++;
-                x = 0;
                 y += GameWindow.blockSize;
             }
         }
