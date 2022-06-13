@@ -4,6 +4,8 @@ import graphics.GameWindow;
 
 class GameEngine implements Runnable {
 
+    private static final int CLOCK_RATE = 1000;
+
     private GameWindow window;
 
     private Thread gameThread;
@@ -18,6 +20,11 @@ class GameEngine implements Runnable {
         while (this.gameThread != null) {
             update();
             repaint();
+            try {
+                Thread.sleep(CLOCK_RATE);
+            } catch (InterruptedException e) {
+                System.out.println("ERROR: Interrupted thread");
+            }
         }
     }
 

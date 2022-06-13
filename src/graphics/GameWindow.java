@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class GameWindow extends JFrame {
 
-    final int scale = 3;
+//    final int scale = 3;
 
     private static final int tileSize = 50;
     private static final int rowsOnScreen = 12;

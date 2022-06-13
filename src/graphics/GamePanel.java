@@ -3,6 +3,10 @@ package graphics;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+ * This class draws the main game panel, where the map will be displayed
+ * and all the characters will be painted.
+ */
 class GamePanel extends JPanel {
 
     GamePanel() {
