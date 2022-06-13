@@ -6,28 +6,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 /*
  * This class draws the main game panel, where the map will be displayed
  * and all the characters will be painted.
  */
 class GamePanel extends JPanel {
-
+    DrawMap dm;
+    private BufferedImage background;
     private Cossack cossack;
 
-    GamePanel() {
+    GamePanel(GameWindow window) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
+        this.dm = window.dm;
         this.cossack = new Cossack();
     }
 
-    public void paintComponent(Graphics graphics) {
-//        System.out.println("here paint");
-        super.paintComponent(graphics);
-        Graphics2D graphics2D = (Graphics2D)graphics;
+    public void setBackgroundImage(BufferedImage img){
+        this.background = img;
+    }
+
+    @Override
+    public void paint(Graphics graphics){
+        //System.out.println("here paint");
+        super.paintComponents(graphics);
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        dm.paintMap(graphics2D);
         cossack.add(graphics2D);
         graphics2D.dispose();
     }

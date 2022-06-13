@@ -23,7 +23,7 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[window.columnsOnScreen][window.rowsOnScreen];
+        this.map = new String[window.mapCols][GameWindow.rowsOnScreen];
         configMap();
     }
 
@@ -36,10 +36,10 @@ public class DrawMap {
             int cols = 0;
             int rows = 0;
 
-            while(rows < window.rowsOnScreen){
+            while(rows < GameWindow.rowsOnScreen){
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(;cols<window.columnsOnScreen; cols++){
+                for(;cols<window.mapCols; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -61,7 +61,7 @@ public class DrawMap {
         int x = 0;
         int y = 0;
 
-        while (col < window.columnsOnScreen && row < window.rowsOnScreen){
+        while (col < window.mapCols && row < GameWindow.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
             if(block.equals("A")){
@@ -71,15 +71,15 @@ public class DrawMap {
                 number = 1;
             }
             if(number != -1) {
-                g.drawImage(blocks[number].image, x, y, window.blockSize, window.blockSize, null);
+                g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
-            x+=window.blockSize;
+            x+= GameWindow.blockSize;
             col++;
-            if(col == window.columnsOnScreen){
+            if(col == window.mapCols){
                 col = 0;
                 row++;
                 x = 0;
-                y += window.blockSize;
+                y += GameWindow.blockSize;
             }
         }
 
