@@ -8,7 +8,7 @@ public class Cossack {
 
     private int xCord, yCord;
 
-    private int xVel = 6, yVel = 9;
+    private int xVel = 3, yVel = 2;
 
     private boolean leftCommand, rightCommand, upCommand, downCommand;
 
