@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
  * and all the characters will be painted.
  */
 class GamePanel extends JPanel {
+
     DrawMap dm;
     private BufferedImage background;
     Cossack cossack;
@@ -38,12 +39,12 @@ class GamePanel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         dm.paintMap(graphics2D);
-        cossack.add(graphics2D);
+        cossack.draw(graphics2D);
         graphics2D.dispose();
     }
 
     void update() {
-
+        cossack.update();
     }
 
     private class KeyCommander implements KeyListener {

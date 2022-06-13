@@ -6,7 +6,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-
 public class GameWindow extends JFrame {
 
     static final int scale = 2;
