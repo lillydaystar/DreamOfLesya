@@ -7,13 +7,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class DrawMap {
-    GameWindow window;
+class DrawMap {
+
     Block[] blocks;
     String[][] map;
 
-    public DrawMap(GameWindow window){
-        this.window = window;
+    DrawMap() {
         this.blocks = new Block[5];
         try {
             blocks[0] = new Block();
@@ -23,11 +22,11 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[window.mapCols][GameWindow.rowsOnScreen];
+        this.map = new String[GameWindow.mapCols][GameWindow.rowsOnScreen];
         configMap();
     }
 
-    public void configMap(){
+    private void configMap(){
         FileReader fr;
         try {
             fr = new FileReader("worlds/map1.txt");
@@ -39,7 +38,7 @@ public class DrawMap {
             while(rows < GameWindow.rowsOnScreen){
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(;cols<window.mapCols; cols++){
+                for(;cols<GameWindow.mapCols; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -55,27 +54,27 @@ public class DrawMap {
 
     }
 
-    public void paintMap(Graphics2D g) {
+    void paintMap(Graphics2D g) {
         int col = 0;
         int row = 0;
         int x = 0;
         int y = 0;
 
-        while (col < window.mapCols && row < GameWindow.rowsOnScreen){
+        while (col < GameWindow.mapCols && row < GameWindow.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
-            if(block.equals("A")){
+            if (block.equals("A")) {
                 number = 0;
             }
-            else if(block.equals("T")){
+            else if (block.equals("T")) {
                 number = 1;
             }
-            if(number != -1) {
+            if (number != -1) {
                 g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
-            x+= GameWindow.blockSize;
+            x += GameWindow.blockSize;
             col++;
-            if(col == window.mapCols){
+            if(col == GameWindow.mapCols){
                 col = 0;
                 row++;
                 x = 0;

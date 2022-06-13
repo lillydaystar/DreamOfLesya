@@ -14,27 +14,26 @@ import java.awt.image.BufferedImage;
  */
 class GamePanel extends JPanel {
 
-    DrawMap dm;
+    private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
 
-    GamePanel(GameWindow window) {
+    GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
-        this.dm = window.dm;
+        this.dm = new DrawMap();
         this.cossack = new Cossack();
     }
 
-    public void setBackgroundImage(BufferedImage img){
+    void setBackgroundImage(BufferedImage img){
         this.background = img;
     }
 
     @Override
     public void paint(Graphics graphics){
-        //System.out.println("here paint");
         super.paintComponents(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);

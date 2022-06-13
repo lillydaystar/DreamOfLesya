@@ -57,6 +57,14 @@ public class Cossack {
         this.downCommand = true;
     }
 
+    public int getX() {
+        return this.xCord;
+    }
+
+    public int getY() {
+        return this.yCord;
+    }
+
     public void update() {
         if (this.downCommand) {
             this.yCord += this.yVel;
