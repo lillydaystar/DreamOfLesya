@@ -9,16 +9,16 @@ import java.io.IOException;
 
 public class GameWindow extends JFrame {
 
-//    final int scale = 3;
-
+    static final int scale = 2;
 
     static final int blockActualSize = 24;
-    public static final int blockSize = 2 * blockActualSize;
+    public static final int blockSize = scale * blockActualSize;
     static final int rowsOnScreen = 12;
     static final int columnsOnScreen = 18;
-    final int mapCols = 90;
+    static final int mapCols = 90;
+    public static final int worldWidth = blockSize * mapCols;
     static final int screenWidth = blockSize * columnsOnScreen;
-    static final int screenHeight = blockSize * rowsOnScreen;
+    public static final int screenHeight = blockSize * rowsOnScreen;
     DrawMap dm = new DrawMap(this);
     public GamePanel panel;
 

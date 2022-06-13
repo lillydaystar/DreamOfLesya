@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 class GamePanel extends JPanel {
     DrawMap dm;
     private BufferedImage background;
-    private Cossack cossack;
+    Cossack cossack;
 
     GamePanel(GameWindow window) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));

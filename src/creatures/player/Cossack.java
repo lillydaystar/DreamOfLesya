@@ -6,7 +6,10 @@ import java.awt.*;
 
 public class Cossack {
 
-    private int xCord, yCord;
+    public int xCord = 8 * GameWindow.blockSize;
+    public int yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
+
+    public int xMap = xCord;
 
     private int xVel = 3, yVel = 2;
 
@@ -60,16 +63,30 @@ public class Cossack {
 
     private void correctPosition() {
         if (this.downCommand) {
-            this.yCord += this.yVel;
+            if(yCord <= GameWindow.screenHeight - GameWindow.blockSize) {
+                this.yCord += this.yVel;
+            }
         }
         if (this.leftCommand) {
-            this.xCord -= this.xVel;
+            if(xMap >= 0) {
+                if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
+                    this.xCord -= this.xVel;
+                }
+                this.xMap -= this.xVel;
+            }
         }
         if (this.upCommand) {
-            this.yCord -= this.yVel;
+            if(yCord >= 0) {
+                this.yCord -= this.yVel;
+            }
         }
         if (this.rightCommand) {
-            this.xCord += this.xVel;
+            if(xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
+                if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
+                    this.xCord += this.xVel;
+                }
+                this.xMap += this.xVel;
+            }
         }
     }
 }

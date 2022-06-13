@@ -23,7 +23,7 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[window.mapCols][GameWindow.rowsOnScreen];
+        this.map = new String[GameWindow.mapCols][GameWindow.rowsOnScreen];
         configMap();
     }
 
@@ -39,7 +39,7 @@ public class DrawMap {
             while(rows < GameWindow.rowsOnScreen){
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(;cols<window.mapCols; cols++){
+                for(; cols< GameWindow.mapCols; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -51,8 +51,6 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void paintMap(Graphics2D g) {
@@ -61,9 +59,10 @@ public class DrawMap {
         int x = 0;
         int y = 0;
 
-        while (col < window.mapCols && row < GameWindow.rowsOnScreen){
+        while (col <= GameWindow.mapCols && row < GameWindow.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
+            x = col * GameWindow.blockSize - this.window.panel.cossack.xMap + this.window.panel.cossack.xCord;
             if(block.equals("A")){
                 number = 0;
             }
@@ -73,12 +72,10 @@ public class DrawMap {
             if(number != -1) {
                 g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
-            x+= GameWindow.blockSize;
             col++;
-            if(col == window.mapCols){
+            if(col == GameWindow.mapCols){
                 col = 0;
                 row++;
-                x = 0;
                 y += GameWindow.blockSize;
             }
         }
