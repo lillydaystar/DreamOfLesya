@@ -82,8 +82,5 @@ public class DrawMap {
                 y += GameWindow.blockSize;
             }
         }
-
-
-
     }
 }
