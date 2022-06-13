@@ -68,6 +68,10 @@ public class Cossack {
         return this.yCord;
     }
 
+    public int getWorldX(){
+        return this.xMap;
+    }
+
     public void update() {
         if (this.downCommand) {
             if(yCord <= GameWindow.screenHeight - GameWindow.blockSize) {
@@ -90,7 +94,8 @@ public class Cossack {
         if (this.rightCommand) {
             if(xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
                 if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
-                    this.xCord += this.xVel;
+                    this.xCord += this.xVel;  //якщо козак доходить до краю карти, він мусить дойти до кутка
+                                             //В інших випадках козак знаходиться тільки в центрі екрану
                 }
                 this.xMap += this.xVel;
             }

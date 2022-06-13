@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -25,6 +26,7 @@ class GamePanel extends JPanel {
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
         this.dm = new DrawMap();
+        dm.setMapFile(new File("worlds/map1.txt"));
         this.cossack = new Cossack();
     }
 
@@ -37,6 +39,8 @@ class GamePanel extends JPanel {
         super.paintComponents(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
+        dm.setCossackX(this.cossack.getX());
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
