@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.security.Key;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -67,13 +68,16 @@ class GamePanel extends JPanel {
                 cossack.leftPressed();
             }
 
-            if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
+            if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
+                cossack.jump();
+            }
+           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
                 cossack.downPressed();
             }
 
             if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
                 cossack.upPressed();
-            }
+            }*/
         }
 
         @Override
@@ -88,13 +92,13 @@ class GamePanel extends JPanel {
                 cossack.leftReleased();
             }
 
-            if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
+           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
                 cossack.downReleased();
             }
 
             if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
                 cossack.upReleased();
-            }
+            }*/
         }
     }
 }
