@@ -15,7 +15,12 @@ import java.io.IOException;
  * This class draws the main game panel, where the map will be displayed
  * and all the characters will be painted.
  */
-class GamePanel extends JPanel {
+public class GamePanel extends JPanel {
+
+    public static final int mapCols = 90;
+    public static final int mapRows = 0;
+    public static final int worldWidth = GameWindow.blockSize * mapCols;
+    public static final int worldHeight = GameWindow.blockSize * mapRows;
 
     private DrawMap dm;
     private BufferedImage background;

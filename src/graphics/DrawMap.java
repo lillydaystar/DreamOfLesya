@@ -25,7 +25,7 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.map = new String[GameWindow.mapCols][GameWindow.rowsOnScreen];
+        this.map = new String[GamePanel.mapCols][GameWindow.rowsOnScreen];
     }
 
     /**
@@ -49,7 +49,7 @@ public class DrawMap {
             while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(; cols < GameWindow.mapCols; cols++){
+                for(; cols < GamePanel.mapCols; cols++){
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -77,7 +77,7 @@ public class DrawMap {
         int x;
         int y = 0;
 
-        while (col < GameWindow.mapCols && row < GameWindow.rowsOnScreen){
+        while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen){
             String block = map[col][row];
             int number = -1;
             x = col * GameWindow.blockSize - cossackWorldX + cossackX; //координата кожного блоку визначається за його позицією на загальній карті.
@@ -95,7 +95,7 @@ public class DrawMap {
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
             col++;
-            if(col == GameWindow.mapCols){
+            if(col == GamePanel.mapCols){
                 col = 0;
                 row++;
                 y += GameWindow.blockSize;

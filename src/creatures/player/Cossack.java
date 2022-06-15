@@ -1,6 +1,6 @@
 package creatures.player;
 
-import graphics.GameWindow;
+import graphics.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,30 +11,40 @@ import java.io.IOException;
 
 public class Cossack {
 
-    private int xCord = 8 * GameWindow.blockSize;
-    private int yCord = GameWindow.screenHeight - 3*GameWindow.blockSize;
+    private int xCord;
+    private int yCord;
 
-    private int xMap = xCord;
+    private int xMap;
+    private int yMap;
 
     private int xVel, yVel;
     private boolean flight;
 
     private boolean leftCommand, rightCommand;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
     private int counter;
+
     private static final int STATE_RATE = 20;
     private static final int JUMP_SPEED = -20;
     private static final int HORIZONTAL_SPEED = 3;
+    private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
+    private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
+    private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
+    private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
     private static final int GRAVITY = 1;
+
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
     static {
         loadImage();
     }
 
     public Cossack() {
+        this.xCord = INITIAL_PLAYER_ABSCISSE;
+        this.yCord = INITIAL_PLAYER_ORDINATE;
         this.xVel = this.yVel = 0;
         this.xVel = 3;
+        this.xMap = xCord;
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -52,7 +62,7 @@ public class Cossack {
             else
                 image = Cossack.right_snd;
         }
-        graphics2D.drawImage(image, getScreenX(), getScreenY(),
+        graphics2D.drawImage(image, xCord, yCord,
                 GameWindow.blockSize, 2*GameWindow.blockSize, null);
     }
 
@@ -97,7 +107,12 @@ public class Cossack {
     }
 
     private int getScreenX() {
-        return this.xCord;
+        if (this.xMap >= SENTINEL_PLAYER_LEFT && this.xMap <= SENTINEL_PLAYER_RIGHT)
+            return INITIAL_PLAYER_ABSCISSE;
+        else if (this.xMap < SENTINEL_PLAYER_LEFT)
+            return this.xMap;
+        else
+            return GameWindow.screenWidth - GamePanel.worldWidth + this.xMap;
     }
 
     private int getScreenY() {
@@ -121,20 +136,15 @@ public class Cossack {
         //В інших випадках козак знаходиться тільки в центрі екрану
         if (this.leftCommand) {
             if(xMap >= 0) {
-                if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
-                    this.xCord -= this.xVel;
-                }
                 this.xMap -= this.xVel;
             }
         }
         if (this.rightCommand) {
-            if (xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
-                if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
-                    this.xCord += this.xVel;
-                }
+            if (xMap <= GamePanel.worldWidth - GameWindow.blockSize) {
                 this.xMap += this.xVel;
             }
         }
+        this.xCord = getScreenX();
     }
 
     private static void loadImage() {
