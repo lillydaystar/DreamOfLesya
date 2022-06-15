@@ -22,11 +22,10 @@ public class GameWindow extends JFrame {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.panel = new GamePanel(1);
+        this.panel = new GamePanel();
         this.add(this.panel);
         this.panel.setDoubleBuffered(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
-
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);

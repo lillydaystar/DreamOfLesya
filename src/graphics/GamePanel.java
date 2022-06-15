@@ -20,15 +20,26 @@ class GamePanel extends JPanel {
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
+    private int level;
 
-    GamePanel(int level) {
+    GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         this.setDoubleBuffered(true);
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
+        this.level = 1;
         this.dm = new DrawMap();
         loadWorld(level);
         this.cossack = new Cossack();
+    }
+
+    private void nextLevel() {
+        this.cossack = null;
+        this.background = null;;
+        this.dm = new DrawMap();
+        loadWorld(level++);
+        this.cossack = new Cossack();
+
     }
 
     private void loadWorld(int level) {
