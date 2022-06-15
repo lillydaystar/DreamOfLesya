@@ -2,12 +2,14 @@ package graphics;
 
 import creatures.player.Cossack;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -19,19 +21,27 @@ class GamePanel extends JPanel {
     private BufferedImage background;
     private Cossack cossack;
 
-    GamePanel() {
+    GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-        this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
         this.dm = new DrawMap();
-        dm.setMapFile(new File("worlds/map1.txt"));
+        loadWorld(level);
         this.cossack = new Cossack();
     }
 
-    void setBackgroundImage(BufferedImage img){
-        this.background = img;
+    private void loadWorld(int level) {
+        switch (level) {
+            case 1: {
+                try {
+                    this.background = ImageIO.read(new File("images/back.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                this.dm.setMapFile(new File("worlds/map1.txt"));
+            }
+        }
     }
 
     @Override

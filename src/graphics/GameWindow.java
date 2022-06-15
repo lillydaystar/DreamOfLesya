@@ -1,10 +1,7 @@
 package graphics;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class GameWindow extends JFrame {
 
@@ -25,15 +22,10 @@ public class GameWindow extends JFrame {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.panel = new GamePanel();
+        this.panel = new GamePanel(1);
         this.add(this.panel);
         this.panel.setDoubleBuffered(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        try {
-            this.panel.setBackgroundImage(ImageIO.read(new File("images/back.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         this.pack();
         this.setLocationRelativeTo(null);

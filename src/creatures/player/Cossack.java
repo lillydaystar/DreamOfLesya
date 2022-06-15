@@ -16,37 +16,44 @@ public class Cossack {
 
     private int xMap = xCord;
 
-    private int xVel = 3, yVel = 0;
+    private int xVel, yVel;
     private boolean flight;
 
     private boolean leftCommand, rightCommand;
-    private BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
     private int counter;
     private static final int STATE_RATE = 20;
     private static final int JUMP_SPEED = -20;
+    private static final int HORIZONTAL_SPEED = 3;
     private static final int GRAVITY = 1;
 
-    public Cossack() {
+    static {
         loadImage();
+    }
+
+    public Cossack() {
+        this.xVel = this.yVel = 0;
+        this.xVel = 3;
     }
 
     public void draw(Graphics2D graphics2D) {
         BufferedImage image;
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
-            image = this.on_place;
+            image = Cossack.on_place;
         } else if (leftCommand) {
             if (this.counter < STATE_RATE / 2)
-                image = this.left_fst;
+                image = Cossack.left_fst;
             else
-                image = this.left_snd;
+                image = Cossack.left_snd;
         } else {
             if (this.counter < STATE_RATE / 2)
-                image = this.right_fst;
+                image = Cossack.right_fst;
             else
-                image = this.right_snd;
+                image = Cossack.right_snd;
         }
-        graphics2D.drawImage(image, xCord, yCord, GameWindow.blockSize, 2*GameWindow.blockSize, null);
+        graphics2D.drawImage(image, getScreenX(), getScreenY(),
+                GameWindow.blockSize, 2*GameWindow.blockSize, null);
     }
 
     public void rightPressed() {
@@ -89,6 +96,14 @@ public class Cossack {
         return this.xMap;
     }
 
+    private int getScreenX() {
+        return this.xCord;
+    }
+
+    private int getScreenY() {
+        return this.yCord;
+    }
+
     public void update() {
         if (this.yCord >= GameWindow.screenHeight) {
             stayOnSurface();
@@ -102,6 +117,8 @@ public class Cossack {
         if (this.counter >= STATE_RATE)
             this.counter -= STATE_RATE;
 
+        //якщо козак доходить до краю карти, він мусить дойти до кутка
+        //В інших випадках козак знаходиться тільки в центрі екрану
         if (this.leftCommand) {
             if(xMap >= 0) {
                 if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
@@ -113,21 +130,20 @@ public class Cossack {
         if (this.rightCommand) {
             if (xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
                 if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
-                    this.xCord += this.xVel;  //якщо козак доходить до краю карти, він мусить дойти до кутка
-                    //В інших випадках козак знаходиться тільки в центрі екрану
+                    this.xCord += this.xVel;
                 }
                 this.xMap += this.xVel;
             }
         }
     }
 
-    private void loadImage() {
+    private static void loadImage() {
         try {
-            this.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
-            this.left_snd = ImageIO.read(new File("heroes/CossackL_2.png"));
-            this.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
-            this.right_snd = ImageIO.read(new File("heroes/CossackR_2.png"));
-            this.on_place = ImageIO.read(new File("heroes/CossackS.png"));
+            Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
+            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL_2.png"));
+            Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
+            Cossack.right_snd = ImageIO.read(new File("heroes/CossackR_2.png"));
+            Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
