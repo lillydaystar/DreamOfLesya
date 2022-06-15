@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.security.Key;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -18,7 +17,7 @@ class GamePanel extends JPanel {
 
     private DrawMap dm;
     private BufferedImage background;
-    Cossack cossack;
+    private Cossack cossack;
 
     GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
@@ -40,8 +39,6 @@ class GamePanel extends JPanel {
         super.paintComponents(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
-        dm.setCossackX(this.cossack.getX());
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
@@ -49,6 +46,8 @@ class GamePanel extends JPanel {
 
     void update() {
         cossack.update();
+        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
+        dm.setCossackX(this.cossack.getX());
     }
 
     private class KeyCommander implements KeyListener {
@@ -71,13 +70,6 @@ class GamePanel extends JPanel {
             if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jump();
             }
-           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
-                cossack.downPressed();
-            }
-
-            if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
-                cossack.upPressed();
-            }*/
         }
 
         @Override
@@ -91,14 +83,6 @@ class GamePanel extends JPanel {
             if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
                 cossack.leftReleased();
             }
-
-           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
-                cossack.downReleased();
-            }
-
-            if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
-                cossack.upReleased();
-            }*/
         }
     }
 }

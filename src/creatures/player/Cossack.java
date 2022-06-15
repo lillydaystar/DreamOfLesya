@@ -12,27 +12,27 @@ import java.io.IOException;
 public class Cossack {
 
     private int xCord = 8 * GameWindow.blockSize;
-    private int yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
+    private int yCord = GameWindow.screenHeight - 3*GameWindow.blockSize;
 
     private int xMap = xCord;
 
     private int xVel = 3, yVel = 0;
     private boolean flight;
 
-    private boolean leftCommand, rightCommand/*, upCommand, downCommand*/;
+    private boolean leftCommand, rightCommand;
     private BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
     private int counter;
     private static final int STATE_RATE = 20;
     private static final int JUMP_SPEED = -20;
-    private static final int GRAVITY = 2;
+    private static final int GRAVITY = 1;
 
     public Cossack() {
         loadImage();
     }
 
     public void draw(Graphics2D graphics2D) {
-        BufferedImage image = null;
+        BufferedImage image;
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = this.on_place;
         } else if (leftCommand) {
@@ -46,9 +46,7 @@ public class Cossack {
             else
                 image = this.right_snd;
         }
-        graphics2D.drawImage(image, xCord, yCord, GameWindow.blockSize, GameWindow.blockSize, null);
-        /*graphics2D.setColor(Color.white);
-        graphics2D.fillRect(xCord, yCord, GameWindow.blockSize, GameWindow.blockSize);*/
+        graphics2D.drawImage(image, xCord, yCord, GameWindow.blockSize, 2*GameWindow.blockSize, null);
     }
 
     public void rightPressed() {
@@ -68,25 +66,11 @@ public class Cossack {
     }
 
     public void jump() {
-        this.yVel = JUMP_SPEED;
-        this.flight = true;
+        if (!this.flight) {
+            this.yVel = JUMP_SPEED;
+            this.flight = true;
+        }
     }
-
-    /*public void upPressed() {
-        this.upCommand = true;
-    }
-
-    public void downPressed() {
-        this.downCommand = true;
-    }
-
-    public void upReleased() {
-        this.upCommand = false;
-    }
-
-    public void downReleased() {
-        this.downCommand = false;
-    }*/
 
     public int getX() {
         return this.xCord;
@@ -106,6 +90,18 @@ public class Cossack {
     }
 
     public void update() {
+        if (this.yCord >= GameWindow.screenHeight) {
+            stayOnSurface();
+            this.yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
+        }
+        this.yCord += this.yVel;
+        if (this.flight) {
+            this.yVel += GRAVITY;
+        }
+        this.counter++;
+        if (this.counter >= STATE_RATE)
+            this.counter -= STATE_RATE;
+
         if (this.leftCommand) {
             if(xMap >= 0) {
                 if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
@@ -115,7 +111,7 @@ public class Cossack {
             }
         }
         if (this.rightCommand) {
-            if(xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
+            if (xMap <= GameWindow.worldWidth - GameWindow.blockSize) {
                 if (xMap <= 8 * GameWindow.blockSize || xMap >= GameWindow.worldWidth - 10 * GameWindow.blockSize) {
                     this.xCord += this.xVel;  //якщо козак доходить до краю карти, він мусить дойти до кутка
                     //В інших випадках козак знаходиться тільки в центрі екрану
@@ -123,27 +119,6 @@ public class Cossack {
                 this.xMap += this.xVel;
             }
         }
-        /*if (this.downCommand) {
-            if(yCord <= GameWindow.screenHeight - GameWindow.blockSize) {
-                this.yCord += this.yVel;
-            }
-        }
-        if (this.upCommand) {
-            if(yCord >= 0) {
-                this.yCord -= this.yVel;
-            }
-        }*/
-        if (this.yCord >= GameWindow.screenHeight) {
-            stayOnSurface();
-            this.yCord = GameWindow.screenHeight - GameWindow.blockSize;
-        }
-        this.yCord += this.yVel;
-        if (this.flight) {
-            this.yVel += GRAVITY;
-        }
-        this.counter++;
-        if (this.counter >= STATE_RATE)
-            this.counter -= STATE_RATE;
     }
 
     private void loadImage() {

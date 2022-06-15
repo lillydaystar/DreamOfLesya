@@ -46,7 +46,7 @@ public class DrawMap {
             int cols = 0;
             int rows = 0;
 
-            while(rows < GameWindow.rowsOnScreen){
+            while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
                 for(; cols < GameWindow.mapCols; cols++){
@@ -61,8 +61,6 @@ public class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void setCossackWorldX(int x){
