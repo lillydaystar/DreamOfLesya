@@ -24,7 +24,7 @@ public class Cossack {
 
     private int counter;
 
-    private static final int STATE_RATE = 20;
+    private static final int STATE_RATE = 15;
     private static final int JUMP_SPEED = -20;
     private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
@@ -52,18 +52,19 @@ public class Cossack {
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = Cossack.on_place;
         } else if (leftCommand) {
-            if (this.counter < STATE_RATE / 2)
+            if (this.counter < STATE_RATE)
                 image = Cossack.left_fst;
             else
                 image = Cossack.left_snd;
         } else {
-            if (this.counter < STATE_RATE / 2)
+            if (this.counter >= STATE_RATE)
                 image = Cossack.right_fst;
             else
                 image = Cossack.right_snd;
         }
         graphics2D.drawImage(image, xCord, yCord,
                 GameWindow.blockSize, 2*GameWindow.blockSize, null);
+//        System.out.printf("speed (%d, %d) coordinates (%d, %d), on map %d\n", xVel, yVel, xCord, yCord, xMap);
     }
 
     public void rightPressed() {
@@ -124,26 +125,27 @@ public class Cossack {
             stayOnSurface();
             this.yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
         }
-        this.yCord += this.yVel;
         if (this.flight) {
+            this.yCord += this.yVel;
             this.yVel += GRAVITY;
         }
         this.counter++;
-        if (this.counter >= STATE_RATE)
-            this.counter -= STATE_RATE;
+        if (this.counter == 2*STATE_RATE)
+            this.counter = 0;
 
         //якщо козак доходить до краю карти, він мусить дойти до кутка
         //В інших випадках козак знаходиться тільки в центрі екрану
-        if (this.leftCommand) {
-            if(xMap >= 0) {
-                this.xMap -= this.xVel;
-            }
+        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand))
+            this.xVel = 0;
+        else if (this.leftCommand && xMap >= 0) {
+            this.xVel = -HORIZONTAL_SPEED;
         }
-        if (this.rightCommand) {
-            if (xMap <= GamePanel.worldWidth - GameWindow.blockSize) {
-                this.xMap += this.xVel;
-            }
+        else if (this.rightCommand && xMap <= GamePanel.worldWidth - GameWindow.blockSize) {
+            this.xVel = HORIZONTAL_SPEED;
+        } else {
+            this.xVel = 0;
         }
+        this.xMap += this.xVel;
         this.xCord = getScreenX();
     }
 

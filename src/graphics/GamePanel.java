@@ -61,7 +61,7 @@ public class GamePanel extends JPanel {
     }
 
     @Override
-    public void paint(Graphics graphics){
+    public void paint(Graphics graphics) {
         super.paintComponents(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
