@@ -18,20 +18,21 @@ public class Cossack {
     private int yMap;
 
     private int xVel, yVel;
-    private boolean flight;
 
-    private boolean leftCommand, rightCommand;
+    private boolean leftCommand, rightCommand, jumpCommand;
 
     private int counter;
 
     private static final int STATE_RATE = 15;
-    private static final int JUMP_SPEED = -20;
+    private static final int JUMP_SPEED = -21;
     private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
-    private static final int GRAVITY = 1;
+    private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
+    private static final int FIGURE_WIDTH = GameWindow.blockSize;
+    private static final int GRAVITY = 2;
 
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
@@ -68,25 +69,44 @@ public class Cossack {
     }
 
     public void rightPressed() {
-        this.rightCommand = true;
+        if (!this.rightCommand) {
+            this.rightCommand = true;
+            System.out.println("right press");
+        }
     }
 
     public void leftPressed() {
-        this.leftCommand = true;
+        if (!this.leftCommand) {
+            this.leftCommand = true;
+            System.out.println("left press");
+        }
     }
 
     public void rightReleased() {
-        this.rightCommand = false;
+        if (this.rightCommand) {
+            this.rightCommand = false;
+            System.out.println("right release");
+        }
     }
 
     public void leftReleased() {
-        this.leftCommand = false;
+        if (this.leftCommand) {
+            this.leftCommand = false;
+            System.out.println("left release");
+        }
     }
 
     public void jump() {
-        if (!this.flight) {
-            this.yVel = JUMP_SPEED;
-            this.flight = true;
+        if (!this.jumpCommand) {
+            this.jumpCommand = true;
+            System.out.println("jump press");
+        }
+    }
+
+    public void jumpRelease() {
+        if (this.jumpCommand) {
+            this.jumpCommand = false;
+            System.out.println("jump release");
         }
     }
 
@@ -99,7 +119,6 @@ public class Cossack {
     }
 
     public void stayOnSurface() {
-        this.flight = false;
         this.yVel = 0;
     }
 
@@ -121,14 +140,14 @@ public class Cossack {
     }
 
     public void update() {
-        if (this.yCord >= GameWindow.screenHeight) {
+        if (this.yCord >= GameWindow.screenHeight - FIGURE_HEIGHT) {
             stayOnSurface();
-            this.yCord = GameWindow.screenHeight - 2*GameWindow.blockSize;
+            this.yCord = GameWindow.screenHeight - FIGURE_HEIGHT;
         }
-        if (this.flight) {
-            this.yCord += this.yVel;
+        if (!onGround())
             this.yVel += GRAVITY;
-        }
+        else if (this.jumpCommand)
+            this.yVel = JUMP_SPEED;
         this.counter++;
         if (this.counter == 2*STATE_RATE)
             this.counter = 0;
@@ -146,6 +165,7 @@ public class Cossack {
             this.xVel = 0;
         }
         this.xMap += this.xVel;
+        this.yCord += this.yVel;
         this.xCord = getScreenX();
     }
 
@@ -161,5 +181,9 @@ public class Cossack {
                     "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    private boolean onGround() {
+        return this.yVel == 0;
     }
 }

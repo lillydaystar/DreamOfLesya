@@ -1,5 +1,6 @@
 package graphics;
 
+import creatures.enemies.Creature;
 import creatures.player.Cossack;
 
 import javax.imageio.ImageIO;
@@ -10,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -26,16 +29,18 @@ public class GamePanel extends JPanel {
     private BufferedImage background;
     private Cossack cossack;
     private int level;
+    private List<Creature> creatures;
 
     GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-        this.setDoubleBuffered(true);
+//        this.setDoubleBuffered(true);
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
         this.level = 1;
         this.dm = new DrawMap();
         loadWorld(level);
         this.cossack = new Cossack();
+        creatures = new LinkedList<>();
     }
 
     private void nextLevel() {
@@ -48,21 +53,21 @@ public class GamePanel extends JPanel {
     }
 
     private void loadWorld(int level) {
-        switch (level) {
-            case 1: {
-                try {
+        try {
+            switch (level) {
+                case 1: {
                     this.background = ImageIO.read(new File("images/back.png"));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    this.dm.setMapFile(new File("worlds/map1.txt"));
                 }
-                this.dm.setMapFile(new File("worlds/map1.txt"));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void paint(Graphics graphics) {
-        super.paintComponents(graphics);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         dm.paintMap(graphics2D);
@@ -85,15 +90,15 @@ public class GamePanel extends JPanel {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT/* || key == KeyEvent.VK_L*/) {
                 cossack.rightPressed();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT/* || key == KeyEvent.VK_H*/) {
                 cossack.leftPressed();
             }
 
-            if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
+            if (key == KeyEvent.VK_SPACE/* || key == KeyEvent.VK_J*/) {
                 cossack.jump();
             }
         }
@@ -102,12 +107,16 @@ public class GamePanel extends JPanel {
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT/* || key == KeyEvent.VK_L*/) {
                 cossack.rightReleased();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT/* || key == KeyEvent.VK_H*/) {
                 cossack.leftReleased();
+            }
+
+            if (key == KeyEvent.VK_SPACE/* || key == KeyEvent.VK_J*/) {
+                cossack.jumpRelease();
             }
         }
     }

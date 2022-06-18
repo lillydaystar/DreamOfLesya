@@ -82,15 +82,15 @@ public class DrawMap {
             int number = -1;
             x = col * GameWindow.blockSize - cossackWorldX + cossackX; //координата кожного блоку визначається за його позицією на загальній карті.
                                                                       //Коли рухається персонаж - рухається і карта, а за нею змінюються порядок зчитування карти
-            if(block.equals("A")){
+            if(block.equals("A")) {
                 number = 0;
             }
-            else if(block.equals("T")){
+            else if(block.equals("T")) {
                 number = 1;
             }
             if(number != -1) {
                 if((col * GameWindow.blockSize - GameWindow.blockSize < cossackWorldX + cossackX + 2 * GameWindow.blockSize||
-                        col * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&  //промальовування карти обмежене розміром вікна
+                        col * GameWindow.blockSize - GameWindow.blockSize < GameWindow.columnsOnScreen * GameWindow.blockSize) &&  //промальовування карти обмежене розміром вікна
                         col * GameWindow.blockSize + GameWindow.blockSize > cossackWorldX - cossackX)     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             }
