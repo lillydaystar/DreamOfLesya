@@ -1,5 +1,7 @@
 package graphics;
 
+import creatures.enemies.Creature;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -32,12 +34,12 @@ public class DrawMap {
      * Цей метод був створений для того, щоб можна було змінювати карту при переході на наступний рівень
      * @param file - текстовий файл з картою світу
      */
-    public void setMapFile(File file){
+    public void setMapFile(File file) {
         this.mapFile = file;
         configMap();
     }
 
-    private void configMap(){
+    private void configMap() {
         FileReader fr;
         try {
             fr = new FileReader(mapFile);
@@ -49,7 +51,7 @@ public class DrawMap {
             while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(; cols < GamePanel.mapCols; cols++){
+                for(; cols < GamePanel.mapCols; cols++) {
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols];
@@ -63,11 +65,11 @@ public class DrawMap {
         }
     }
 
-    public void setCossackWorldX(int x){
+    public void setCossackWorldX(int x) {
         this.cossackWorldX = x;
     }
 
-    public void setCossackX(int x){
+    public void setCossackX(int x) {
         this.cossackX = x;
     }
 
@@ -77,7 +79,7 @@ public class DrawMap {
         int x;
         int y = 0;
 
-        while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen){
+        while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen) {
             String block = map[col][row];
             int number = -1;
             x = col * GameWindow.blockSize - cossackWorldX + cossackX; //координата кожного блоку визначається за його позицією на загальній карті.
@@ -88,8 +90,11 @@ public class DrawMap {
             else if(block.equals("T")) {
                 number = 1;
             }
+            else if (block.equals("M")) {
+
+            }
             if(number != -1) {
-                if((col * GameWindow.blockSize - GameWindow.blockSize < cossackWorldX + cossackX + 2 * GameWindow.blockSize||
+                if((col * GameWindow.blockSize - GameWindow.blockSize < cossackWorldX + cossackX + 2 * GameWindow.blockSize ||
                         col * GameWindow.blockSize - GameWindow.blockSize < GameWindow.columnsOnScreen * GameWindow.blockSize) &&  //промальовування карти обмежене розміром вікна
                         col * GameWindow.blockSize + GameWindow.blockSize > cossackWorldX - cossackX)     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
@@ -101,5 +106,9 @@ public class DrawMap {
                 y += GameWindow.blockSize;
             }
         }
+    }
+
+    private void addCreature(Creature creature) {
+
     }
 }

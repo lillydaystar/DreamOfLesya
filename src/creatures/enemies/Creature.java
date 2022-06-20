@@ -10,10 +10,16 @@ public abstract class Creature {
     private int abscissa;
     private int ordinate;
 
+    public Creature(int x, int y) {
+        this.abscissa = x;
+        this.ordinate = y;
+    }
+
     abstract int getDrawRate();
 
     public void update() {
-
+        this.abscissa += velocityX;
+        this.ordinate += velocityY;
     }
 
     public void draw(Graphics2D graph) {

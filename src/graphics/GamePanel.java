@@ -33,14 +33,14 @@ public class GamePanel extends JPanel {
 
     GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-//        this.setDoubleBuffered(true);
-        this.addKeyListener(new KeyCommander());
-        this.setFocusable(true);
         this.level = 1;
         this.dm = new DrawMap();
         loadWorld(level);
         this.cossack = new Cossack();
         creatures = new LinkedList<>();
+        this.addKeyListener(new KeyCommander());
+        this.revalidate();
+        this.repaint();
     }
 
     private void nextLevel() {
@@ -67,12 +67,13 @@ public class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
+        this.revalidate();
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
+        this.revalidate();
     }
 
     void update() {
@@ -90,15 +91,15 @@ public class GamePanel extends JPanel {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT/* || key == KeyEvent.VK_L*/) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
                 cossack.rightPressed();
             }
 
-            if (key == KeyEvent.VK_LEFT/* || key == KeyEvent.VK_H*/) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
                 cossack.leftPressed();
             }
 
-            if (key == KeyEvent.VK_SPACE/* || key == KeyEvent.VK_J*/) {
+            if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jump();
             }
         }
@@ -107,15 +108,15 @@ public class GamePanel extends JPanel {
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT/* || key == KeyEvent.VK_L*/) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
                 cossack.rightReleased();
             }
 
-            if (key == KeyEvent.VK_LEFT/* || key == KeyEvent.VK_H*/) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
                 cossack.leftReleased();
             }
 
-            if (key == KeyEvent.VK_SPACE/* || key == KeyEvent.VK_J*/) {
+            if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jumpRelease();
             }
         }
