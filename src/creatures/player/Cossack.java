@@ -18,13 +18,21 @@ public class Cossack {
     private int yMap;
 
     private int xVel, yVel;
+//||||||| merged common ancestors
+//    private int xVel = 3, yVel = 0;
+//    private boolean flight;
+//=======
+//    private int xVel = 3, yVel = 0;
+//    public boolean flight;
+//>>>>>>> master
 
     private boolean leftCommand, rightCommand, jumpCommand;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
 
     private int counter;
-
-    private static final int STATE_RATE = 15;
+    private static final int STATE_RATE = 20;
     private static final int JUMP_SPEED = -27;
+    private static final int GRAVITY = 2;
     private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
@@ -32,9 +40,7 @@ public class Cossack {
     private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
     private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
     private static final int FIGURE_WIDTH = GameWindow.blockSize;
-    private static final int GRAVITY = 2;
-
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
+    public boolean collision = false;
 
     static {
         loadImage();
@@ -121,6 +127,18 @@ public class Cossack {
     public void stayOnSurface() {
         this.yVel = 0;
     }
+    
+    public void setY(int y) {
+        this.yCord = y;
+    }
+
+    public void setVelocityY(int yVel){
+        this.yVel = yVel;
+    }
+
+    public int getVelocityY() {
+        return yVel;
+    }
 
     public int getWorldX(){
         return this.xMap;
@@ -172,9 +190,9 @@ public class Cossack {
     private static void loadImage() {
         try {
             Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
-            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL_2.png"));
+            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
             Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
-            Cossack.right_snd = ImageIO.read(new File("heroes/CossackR_2.png"));
+            Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
             Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",

@@ -3,14 +3,11 @@ package graphics;
 import creatures.enemies.Creature;
 import creatures.player.Cossack;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,11 +32,11 @@ public class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
         this.dm = new DrawMap();
-        loadWorld(level);
         this.cossack = new Cossack();
         creatures = new LinkedList<>();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
+        dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
     }
 
     /*private void nextLevel() {
@@ -51,18 +48,18 @@ public class GamePanel extends JPanel {
 
     }*/
 
-    private void loadWorld(int level) {
-        try {
-            switch (level) {
-                case 1: {
-                    this.background = ImageIO.read(new File("images/back.png"));
-                    this.dm.setMapFile(new File("worlds/map1.txt"));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void loadWorld(int level) {
+//        try {
+//            switch (level) {
+//                case 1: {
+//                    this.background = ImageIO.read(new File("images/back.png"));
+//                    this.dm.setMapFile(new File("worlds/map1.txt"));
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -77,8 +74,6 @@ public class GamePanel extends JPanel {
 
     void update() {
         cossack.update();
-        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
-        dm.setCossackX(this.cossack.getX());
     }
 
     private class KeyCommander implements KeyListener {
@@ -90,11 +85,11 @@ public class GamePanel extends JPanel {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
                 cossack.rightPressed();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 cossack.leftPressed();
             }
 
@@ -107,11 +102,11 @@ public class GamePanel extends JPanel {
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
                 cossack.rightReleased();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 cossack.leftReleased();
             }
 
