@@ -33,7 +33,7 @@ public class Cossack {
     }
 
     public void draw(Graphics2D graphics2D) {
-        BufferedImage image = null;
+        BufferedImage image;
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = this.on_place;
         } else if (leftCommand) {
@@ -48,8 +48,6 @@ public class Cossack {
                 image = this.right_snd;
         }
         graphics2D.drawImage(image, xCord, yCord, GameWindow.blockSize, 2*GameWindow.blockSize, null);
-        /*graphics2D.setColor(Color.white);
-        graphics2D.fillRect(xCord, yCord, GameWindow.blockSize, GameWindow.blockSize);*/
     }
 
     public void rightPressed() {
@@ -69,25 +67,11 @@ public class Cossack {
     }
 
     public void jump() {
-        this.yVel = JUMP_SPEED;
-        this.flight = true;
+        if (!this.flight) {
+            this.yVel = JUMP_SPEED;
+            this.flight = true;
+        }
     }
-
-    /*public void upPressed() {
-        this.upCommand = true;
-    }
-
-    public void downPressed() {
-        this.downCommand = true;
-    }
-
-    public void upReleased() {
-        this.upCommand = false;
-    }
-
-    public void downReleased() {
-        this.downCommand = false;
-    }*/
 
     public int getX() {
         return this.xCord;

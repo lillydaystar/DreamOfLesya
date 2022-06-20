@@ -17,7 +17,7 @@ class GamePanel extends JPanel {
 
     private final DrawMap dm;
     private BufferedImage background;
-    Cossack cossack;
+    private Cossack cossack;
 
     GamePanel() {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
@@ -46,6 +46,8 @@ class GamePanel extends JPanel {
 
     void update() {
         cossack.update();
+        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
+        dm.setCossackX(this.cossack.getX());
     }
 
     private class KeyCommander implements KeyListener {
@@ -68,13 +70,6 @@ class GamePanel extends JPanel {
             if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jump();
             }
-           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
-                cossack.downPressed();
-            }
-
-            if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
-                cossack.upPressed();
-            }*/
         }
 
         @Override
@@ -88,14 +83,6 @@ class GamePanel extends JPanel {
             if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 cossack.leftReleased();
             }
-
-           /* if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_K) {
-                cossack.downReleased();
-            }
-
-            if (key == KeyEvent.VK_UP || key == KeyEvent.VK_J) {
-                cossack.upReleased();
-            }*/
         }
     }
 }

@@ -44,18 +44,8 @@ public class GameWindow extends JFrame {
         this.panel.update();
     }
 
-   /* @Override
-    public void update(Graphics g) {
-
-    }*/
-
     @Override
     public void repaint() {
         this.panel.repaint();
     }
-
-    /*private static Point getCenterLocation(final int width, final int height) {
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        return new Point((screen.width - width)/2, (screen.height - height)/2);
-    }*/
 }
