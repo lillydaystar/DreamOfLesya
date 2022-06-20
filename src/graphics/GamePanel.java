@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.security.Key;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -16,7 +15,7 @@ import java.security.Key;
  */
 class GamePanel extends JPanel {
 
-    private DrawMap dm;
+    private final DrawMap dm;
     private BufferedImage background;
     Cossack cossack;
 
@@ -27,8 +26,8 @@ class GamePanel extends JPanel {
         this.addKeyListener(new KeyCommander());
         this.setFocusable(true);
         this.dm = new DrawMap();
-        dm.setMapFile(new File("worlds/map1.txt"));
         this.cossack = new Cossack();
+        dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
     }
 
     void setBackgroundImage(BufferedImage img){
@@ -40,8 +39,6 @@ class GamePanel extends JPanel {
         super.paintComponents(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        dm.setCossackWorldX(this.cossack.getWorldX()); //для промальовування карти задається координата козака
-        dm.setCossackX(this.cossack.getX());
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
@@ -60,11 +57,11 @@ class GamePanel extends JPanel {
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
                 cossack.rightPressed();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 cossack.leftPressed();
             }
 
@@ -84,11 +81,11 @@ class GamePanel extends JPanel {
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_L) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
                 cossack.rightReleased();
             }
 
-            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_H) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 cossack.leftReleased();
             }
 
