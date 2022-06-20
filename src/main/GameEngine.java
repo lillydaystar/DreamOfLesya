@@ -36,7 +36,7 @@ class GameEngine implements Runnable {
                 count++;
             }
             if (timer >= NANOSECOND_IN_SECOND) {
-                System.out.printf("%d FPS\n", count);
+//                System.out.printf("%d FPS\n", count);
                 count = 0;
                 timer = 0;
             }

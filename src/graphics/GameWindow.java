@@ -7,7 +7,7 @@ public class GameWindow extends JFrame {
 
 //    final int scale = 3;
 
-    private static final int blockActualSize = 24;
+    private static final int blockActualSize = 25;
     public static final int blockSize = 2 * blockActualSize;
     static final int rowsOnScreen = 12;
     static final int columnsOnScreen = 17;

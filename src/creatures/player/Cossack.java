@@ -18,13 +18,6 @@ public class Cossack {
     private int yMap;
 
     private int xVel, yVel;
-//||||||| merged common ancestors
-//    private int xVel = 3, yVel = 0;
-//    private boolean flight;
-//=======
-//    private int xVel = 3, yVel = 0;
-//    public boolean flight;
-//>>>>>>> master
 
     private boolean leftCommand, rightCommand, jumpCommand;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
@@ -47,11 +40,12 @@ public class Cossack {
     }
 
     public Cossack() {
-        this.xCord = INITIAL_PLAYER_ABSCISSE;
-        this.yCord = INITIAL_PLAYER_ORDINATE;
+        this.xMap = INITIAL_PLAYER_ABSCISSE;
+        this.yMap = INITIAL_PLAYER_ORDINATE;
+        System.out.printf("%d %d", INITIAL_PLAYER_ABSCISSE, INITIAL_PLAYER_ORDINATE);
         this.xVel = this.yVel = 0;
-        this.xVel = 3;
-        this.xMap = xCord;
+        this.xCord = xMap;
+        this.yCord = yMap;
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -69,7 +63,7 @@ public class Cossack {
             else
                 image = Cossack.right_snd;
         }
-        graphics2D.drawImage(image, xCord, yCord,
+        graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 GameWindow.blockSize, 2*GameWindow.blockSize, null);
 //        System.out.printf("speed (%d, %d) coordinates (%d, %d), on map %d\n", xVel, yVel, xCord, yCord, xMap);
     }
@@ -77,42 +71,42 @@ public class Cossack {
     public void rightPressed() {
         if (!this.rightCommand) {
             this.rightCommand = true;
-            System.out.println("right press");
+//            System.out.println("right press");
         }
     }
 
     public void leftPressed() {
         if (!this.leftCommand) {
             this.leftCommand = true;
-            System.out.println("left press");
+//            System.out.println("left press");
         }
     }
 
     public void rightReleased() {
         if (this.rightCommand) {
             this.rightCommand = false;
-            System.out.println("right release");
+//            System.out.println("right release");
         }
     }
 
     public void leftReleased() {
         if (this.leftCommand) {
             this.leftCommand = false;
-            System.out.println("left release");
+//            System.out.println("left release");
         }
     }
 
     public void jump() {
         if (!this.jumpCommand) {
             this.jumpCommand = true;
-            System.out.println("jump press");
+//            System.out.println("jump press");
         }
     }
 
     public void jumpRelease() {
         if (this.jumpCommand) {
             this.jumpCommand = false;
-            System.out.println("jump release");
+//            System.out.println("jump release");
         }
     }
 
@@ -123,16 +117,12 @@ public class Cossack {
     public int getY() {
         return this.yCord;
     }
-
-    public void stayOnSurface() {
-        this.yVel = 0;
-    }
     
     public void setY(int y) {
         this.yCord = y;
     }
 
-    public void setVelocityY(int yVel){
+    public void setVelocityY(int yVel) {
         this.yVel = yVel;
     }
 
@@ -140,8 +130,12 @@ public class Cossack {
         return yVel;
     }
 
-    public int getWorldX(){
+    public int getWorldX() {
         return this.xMap;
+    }
+
+    public int getWorldY() {
+        return this.yMap;
     }
 
     private int getScreenX() {
@@ -154,13 +148,13 @@ public class Cossack {
     }
 
     private int getScreenY() {
-        return this.yCord;
+        return this.yMap;
     }
 
     public void update() {
-        if (this.yCord >= GameWindow.screenHeight - FIGURE_HEIGHT) {
-            stayOnSurface();
-            this.yCord = GameWindow.screenHeight - FIGURE_HEIGHT;
+        if (this.yMap >= GameWindow.screenHeight - FIGURE_HEIGHT) {
+            this.yVel = 0;
+            this.yMap = GameWindow.screenHeight - FIGURE_HEIGHT;
         }
         if (!onGround())
             this.yVel += GRAVITY;
@@ -183,8 +177,9 @@ public class Cossack {
             this.xVel = 0;
         }
         this.xMap += this.xVel;
-        this.yCord += this.yVel;
+        this.yMap += this.yVel;
         this.xCord = getScreenX();
+        this.yCord = getScreenY();
     }
 
     private static void loadImage() {
@@ -201,7 +196,19 @@ public class Cossack {
         }
     }
 
-    private boolean onGround() {
+    public boolean onGround() {
         return this.yVel == 0;
+    }
+
+    public boolean isRightCommand() {
+        return this.rightCommand;
+    }
+
+    public boolean isLeftCommand() {
+        return this.leftCommand;
+    }
+
+    public boolean isJumpCommand() {
+        return this.jumpCommand;
     }
 }

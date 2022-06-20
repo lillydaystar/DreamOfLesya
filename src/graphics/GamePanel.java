@@ -3,11 +3,14 @@ package graphics;
 import creatures.enemies.Creature;
 import creatures.player.Cossack;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class GamePanel extends JPanel {
         this.dm = new DrawMap();
         this.cossack = new Cossack();
         creatures = new LinkedList<>();
+        setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
@@ -63,17 +67,25 @@ public class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics graphics) {
-        this.revalidate();
+//        this.revalidate();
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
-        this.revalidate();
+//        this.revalidate();
     }
 
     void update() {
         cossack.update();
+    }
+
+    private void setBackgroundImage() {
+        try {
+            this.background = ImageIO.read(new File("images/back.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class KeyCommander implements KeyListener {
