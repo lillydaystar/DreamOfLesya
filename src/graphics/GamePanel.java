@@ -28,29 +28,28 @@ public class GamePanel extends JPanel {
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
-    private int level;
+    /*private int level;*/
     private List<Creature> creatures;
 
-    GamePanel() {
+    GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-        this.level = 1;
+        /*this.level = level;*/
         this.dm = new DrawMap();
         loadWorld(level);
         this.cossack = new Cossack();
         creatures = new LinkedList<>();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
-        this.repaint();
     }
 
-    private void nextLevel() {
+    /*private void nextLevel() {
         this.cossack = null;
         this.background = null;;
         this.dm = new DrawMap();
         loadWorld(level++);
         this.cossack = new Cossack();
 
-    }
+    }*/
 
     private void loadWorld(int level) {
         try {

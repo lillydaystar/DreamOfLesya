@@ -21,6 +21,7 @@ public class GameWindow extends JFrame {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
+//        drawMainMenu();
         drawGame();
         this.pack();
         this.setLocationRelativeTo(null);
@@ -29,13 +30,13 @@ public class GameWindow extends JFrame {
 
     private void drawMainMenu() {
         this.control = new FirstPanel();
-        this.panel.setFocusable(true);
-        this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.add(this.panel);
+        this.control.setFocusable(true);
+        this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.add(this.control);
     }
 
     private void drawGame() {
-        this.panel = new GamePanel();
+        this.panel = new GamePanel(1);
         this.panel.setFocusable(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);

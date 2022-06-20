@@ -24,7 +24,7 @@ public class Cossack {
     private int counter;
 
     private static final int STATE_RATE = 15;
-    private static final int JUMP_SPEED = -21;
+    private static final int JUMP_SPEED = -27;
     private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
