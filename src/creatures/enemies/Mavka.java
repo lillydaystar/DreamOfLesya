@@ -13,7 +13,6 @@ public class Mavka extends Creature {
         super(x, y);
     }
 
-    @Override
     public int getDrawRate() {
         return DRAW_RATE;
     }
@@ -26,5 +25,15 @@ public class Mavka extends Creature {
     @Override
     public void draw(Graphics2D graph) {
 
+    }
+
+    @Override
+    public int getFigureWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getFigureHeight() {
+        return 0;
     }
 }

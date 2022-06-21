@@ -43,28 +43,6 @@ public class GamePanel extends JPanel {
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
     }
 
-    /*private void nextLevel() {
-        this.cossack = null;
-        this.background = null;;
-        this.dm = new DrawMap();
-        loadWorld(level++);
-        this.cossack = new Cossack();
-
-    }*/
-
-//    private void loadWorld(int level) {
-//        try {
-//            switch (level) {
-//                case 1: {
-//                    this.background = ImageIO.read(new File("images/back.png"));
-//                    this.dm.setMapFile(new File("worlds/map1.txt"));
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @Override
     public void paintComponent(Graphics graphics) {
 //        this.revalidate();
@@ -73,7 +51,7 @@ public class GamePanel extends JPanel {
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
-//        this.revalidate();
+        this.revalidate();
     }
 
     void update() {

@@ -1,5 +1,6 @@
 package creatures.player;
 
+import creatures.enemies.Creature;
 import graphics.*;
 
 import javax.imageio.ImageIO;
@@ -9,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Cossack {
+public class Cossack extends Creature {
 
     private int xCord;
     private int yCord;
@@ -42,7 +43,6 @@ public class Cossack {
     public Cossack() {
         this.xMap = INITIAL_PLAYER_ABSCISSE;
         this.yMap = INITIAL_PLAYER_ORDINATE;
-        System.out.printf("%d %d", INITIAL_PLAYER_ABSCISSE, INITIAL_PLAYER_ORDINATE);
         this.xVel = this.yVel = 0;
         this.xCord = xMap;
         this.yCord = yMap;
@@ -65,48 +65,51 @@ public class Cossack {
         }
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 GameWindow.blockSize, 2*GameWindow.blockSize, null);
-//        System.out.printf("speed (%d, %d) coordinates (%d, %d), on map %d\n", xVel, yVel, xCord, yCord, xMap);
+    }
+
+    @Override
+    public int getFigureWidth() {
+        return FIGURE_WIDTH;
+    }
+
+    @Override
+    public int getFigureHeight() {
+        return FIGURE_HEIGHT;
     }
 
     public void rightPressed() {
         if (!this.rightCommand) {
             this.rightCommand = true;
-//            System.out.println("right press");
         }
     }
 
     public void leftPressed() {
         if (!this.leftCommand) {
             this.leftCommand = true;
-//            System.out.println("left press");
         }
     }
 
     public void rightReleased() {
         if (this.rightCommand) {
             this.rightCommand = false;
-//            System.out.println("right release");
         }
     }
 
     public void leftReleased() {
         if (this.leftCommand) {
             this.leftCommand = false;
-//            System.out.println("left release");
         }
     }
 
     public void jump() {
         if (!this.jumpCommand) {
             this.jumpCommand = true;
-//            System.out.println("jump press");
         }
     }
 
     public void jumpRelease() {
         if (this.jumpCommand) {
             this.jumpCommand = false;
-//            System.out.println("jump release");
         }
     }
 

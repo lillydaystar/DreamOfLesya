@@ -93,6 +93,7 @@ public class DrawMap {
                     if(cols >= str.length)
                         throw new IllegalArgumentException("Неправильний формат карти");
                     map[cols][rows] = str[cols].charAt(0);
+                    configureBlockType(cols, rows);
                 }
                 cols = 0;
                 rows++;
@@ -117,15 +118,17 @@ public class DrawMap {
         while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen){
             char block = map[col][row];
             int number = marks.indexOf(block);
-            x = col * GameWindow.blockSize - this.cossack.getWorldX() + cossack.getX(); //координата кожного блоку визначається за його позицією на загальній карті.
+            x = col * GameWindow.blockSize - this.cossack.getWorldX() + cossack.getX();
+            //координата кожного блоку визначається за його позицією на загальній карті.
             //Коли рухається персонаж - рухається і карта, а за нею змінюються порядок зчитування карти
             if(number != -1 && number != 5) {
                 if((col * GameWindow.blockSize - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize||
                         col * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&  //промальовування карти обмежене розміром вікна
                         col * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX())     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
-            }else if(number == 5){
-                g.drawImage(blocks[number].image, x, y-GameWindow.blockSize*4, GameWindow.blockSize*6, GameWindow.blockSize*5, null);
+            } else if(number == 5) {
+                g.drawImage(blocks[number].image, x, y-GameWindow.blockSize*4,
+                        GameWindow.blockSize*6, GameWindow.blockSize*5, null);
             }
             col++;
             if(col == GamePanel.mapCols) {
@@ -137,21 +140,20 @@ public class DrawMap {
         checkCollision();
     }
 
-
     private Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
 
     private void checkCollision() {
         if(cossack.getWorldX() < GameWindow.screenWidth - GameWindow.blockSize &&
                 cossack.getWorldX() >= 0 && cossack.getY() >= 0) {
             int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
-            int rectRightX = this.cossack.getWorldX() + GameWindow.blockSize - collisionArea.x;
+            int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() + collisionArea.width;
             int rectTopY = this.cossack.getWorldY() + collisionArea.y;
-            double rectBottomY = this.cossack.getWorldY() + 2*GameWindow.blockSize - 2;
+            int rectBottomY = this.cossack.getWorldY() + this.cossack.getFigureHeight() - 2;
 
             int leftCol = rectLeftX/GameWindow.blockSize;
             int rightCol = rectRightX/GameWindow.blockSize;
             int topRow = rectTopY/GameWindow.blockSize;
-            int bottomRow = (int) Math.round(rectBottomY/GameWindow.blockSize);
+            int bottomRow = rectBottomY/GameWindow.blockSize + 1;
 
             if (this.cossack.isLeftCommand()) {
                 changeCollision(leftCol, bottomRow, topRow);
@@ -202,6 +204,14 @@ public class DrawMap {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.printf("%d %d\n", col, bottomRow);
+        }
+    }
+
+    private void configureBlockType(int cols, int rows) {
+        switch (map[cols][rows]) {
+            case 'A': {
+
+            }
         }
     }
 
