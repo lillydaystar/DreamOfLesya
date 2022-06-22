@@ -21,7 +21,7 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean leftCommand, rightCommand, jumpCommand;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
 
     private int counter;
     private static final int STATE_RATE = 20;
@@ -51,21 +51,42 @@ public class Cossack extends Creature {
 
     public void draw(Graphics2D graphics2D) {
         BufferedImage image;
+        int width, height;
+        height = 2*GameWindow.blockSize;
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = Cossack.on_place;
+            width = GameWindow.blockSize;
+            if(!onGround()){
+                image = Cossack.jump_right;
+                width = 72;
+            }
         } else if (leftCommand) {
-            if (this.counter < STATE_RATE)
-                image = Cossack.left_fst;
-            else
-                image = Cossack.left_snd;
+            if(!onGround()){
+                image = Cossack.jump_left;
+                width = 72;
+            }
+            else {
+                if (this.counter < STATE_RATE)
+                    image = Cossack.left_fst;
+                else
+                    image = Cossack.left_snd;
+                width = GameWindow.blockSize;
+            }
         } else {
-            if (this.counter >= STATE_RATE)
-                image = Cossack.right_fst;
-            else
-                image = Cossack.right_snd;
+            if(!onGround()){
+                image = Cossack.jump_right;
+                width = 72;
+            }
+            else {
+                if (this.counter >= STATE_RATE)
+                    image = Cossack.right_fst;
+                else
+                    image = Cossack.right_snd;
+                width = GameWindow.blockSize;
+            }
         }
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
-                GameWindow.blockSize, 2*GameWindow.blockSize, null);
+                width, height, null);
     }
 
     @Override
@@ -195,6 +216,8 @@ public class Cossack extends Creature {
             Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
             Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
             Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
+            Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
+            Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
