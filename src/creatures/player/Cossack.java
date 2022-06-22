@@ -35,6 +35,7 @@ public class Cossack extends Creature {
     private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
     private static final int FIGURE_WIDTH = GameWindow.blockSize;
     public boolean collision = false;
+    public boolean fall = false;
 
     static {
         loadImage();
@@ -122,7 +123,9 @@ public class Cossack extends Creature {
     }
     
     public void setY(int y) {
+        this.yMap = y;
         this.yCord = y;
+
     }
 
     public void setVelocityY(int yVel) {
@@ -155,11 +158,11 @@ public class Cossack extends Creature {
     }
 
     public void update() {
-        if (this.yMap >= GameWindow.screenHeight - FIGURE_HEIGHT) {
+        if (this.yMap >= GameWindow.screenHeight - 3*GameWindow.blockSize) {
             this.yVel = 0;
-            this.yMap = GameWindow.screenHeight - FIGURE_HEIGHT;
+            this.yMap = GameWindow.screenHeight - 3*GameWindow.blockSize;
         }
-        if (!onGround())
+        if (!onGround() || fall)
             this.yVel += GRAVITY;
         else if (this.jumpCommand)
             this.yVel = JUMP_SPEED;
@@ -169,7 +172,7 @@ public class Cossack extends Creature {
 
         //якщо козак доходить до краю карти, він мусить дойти до кутка
         //В інших випадках козак знаходиться тільки в центрі екрану
-        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand))
+        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand) || collision)
             this.xVel = 0;
         else if (this.leftCommand && xMap >= 0) {
             this.xVel = -HORIZONTAL_SPEED;

@@ -17,6 +17,7 @@ public class DrawMap {
     ArrayList<Character> marks = new ArrayList<>();
     private File mapFile;
     private Cossack cossack;
+    private int level;
 
     public DrawMap() {
         this.map = new char[GamePanel.mapCols][GameWindow.rowsOnScreen];
@@ -35,7 +36,8 @@ public class DrawMap {
         marks.add('+');
         marks.add('P');
         marks.add('H');
-        loadMap(1);
+        level = 3;
+        loadMap(level);
     }
 
     public void loadMap(int level) {
@@ -109,6 +111,10 @@ public class DrawMap {
         this.cossack = cossack;
     }
 
+    public int getLevel(){
+        return this.level;
+    }
+
     void paintMap(Graphics2D g) {
         int col = 0; //порядковий номер стовпця на карті
         int row = 0; //номер рядка
@@ -143,17 +149,16 @@ public class DrawMap {
     private Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
 
     private void checkCollision() {
-        if(cossack.getWorldX() < GameWindow.screenWidth - GameWindow.blockSize &&
-                cossack.getWorldX() >= 0 && cossack.getY() >= 0) {
             int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
-            int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() + collisionArea.width;
+            int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - collisionArea.x;
             int rectTopY = this.cossack.getWorldY() + collisionArea.y;
-            int rectBottomY = this.cossack.getWorldY() + this.cossack.getFigureHeight() - 2;
+            double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
 
-            int leftCol = rectLeftX/GameWindow.blockSize;
+
+        int leftCol = rectLeftX/GameWindow.blockSize;
             int rightCol = rectRightX/GameWindow.blockSize;
             int topRow = rectTopY/GameWindow.blockSize;
-            int bottomRow = rectBottomY/GameWindow.blockSize + 1;
+            int bottomRow = (int)Math.round(rectBottomY/GameWindow.blockSize);
 
             if (this.cossack.isLeftCommand()) {
                 changeCollision(leftCol, bottomRow, topRow);
@@ -161,15 +166,17 @@ public class DrawMap {
             else if (this.cossack.isRightCommand()) {
                 changeCollision(rightCol, bottomRow, topRow);
             }
-            if(cossack.onGround()) {
+            if(!cossack.onGround()) {
                 char block1, block2;
                 if(cossack.getVelocityY() < 0) {
                     block1 = map[rightCol][topRow];
                     block2 = map[leftCol][topRow];
                     if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
                     } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
                     }
                 }
                 if(cossack.getVelocityY() > 0) {
@@ -178,14 +185,15 @@ public class DrawMap {
                     if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
                     }
                     else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
                     }
                 }
             }
-        }
     }
 
     private void changeCollision(int col, int bottomRow, int topRow) {
@@ -199,8 +207,10 @@ public class DrawMap {
                 this.cossack.collision = blocks[marks.indexOf(block2)].collision;
             else this.cossack.collision = false;
             block3 = map[col][bottomRow];
-            if(block3 == '0' || !blocks[marks.indexOf(block3)].collision) {
-                cossack.jump();
+            if(block3 == '0' || !blocks[marks.indexOf(block3)].collision && !cossack.isJumpCommand()) {
+                System.out.println("Fall");
+                //this.cossack.setVelocityY(1);
+                this.cossack.fall = true;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.printf("%d %d\n", col, bottomRow);
