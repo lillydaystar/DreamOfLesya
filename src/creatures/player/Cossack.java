@@ -38,6 +38,8 @@ public class Cossack extends Creature {
     public boolean fall = false;
     public int coins = 0;
 
+    private Health health;
+
     static {
         loadImage();
     }
@@ -88,6 +90,7 @@ public class Cossack extends Creature {
         }
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 width, height, null);
+        health.drawHP(graphics2D);
     }
 
     @Override
@@ -240,5 +243,9 @@ public class Cossack extends Creature {
 
     public boolean isJumpCommand() {
         return this.jumpCommand;
+    }
+
+    public void setHealth(int level) {
+        this.health = new Health(level);
     }
 }

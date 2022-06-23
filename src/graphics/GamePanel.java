@@ -2,6 +2,7 @@ package graphics;
 
 import creatures.enemies.Creature;
 import creatures.player.Cossack;
+import creatures.player.Health;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -36,6 +37,7 @@ public class GamePanel extends JPanel {
         /*this.level = level;*/
         this.dm = new DrawMap(level);
         this.cossack = new Cossack();
+        this.cossack.setHealth(level);
         creatures = new LinkedList<>();
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
@@ -48,6 +50,8 @@ public class GamePanel extends JPanel {
 //        this.revalidate();
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        graphics2D.setColor(Color.darkGray);
+        graphics2D.fillRect(0,0, GameWindow.screenWidth, (int)(1.5*GameWindow.blockSize));
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();

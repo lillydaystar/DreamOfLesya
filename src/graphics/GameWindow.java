@@ -11,8 +11,8 @@ public class GameWindow extends JFrame implements Runnable {
 
     private static final int blockActualSize = 24;
     public static final int blockSize = 2 * blockActualSize;
-    static final int rowsOnScreen = 12;
-    static final int columnsOnScreen = 17;
+    static final int rowsOnScreen = 13;
+    static final int columnsOnScreen = 18;
     public static final int screenWidth = blockSize * columnsOnScreen;
     public static final int screenHeight = blockSize * rowsOnScreen;
 
