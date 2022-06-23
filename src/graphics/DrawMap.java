@@ -19,7 +19,7 @@ public class DrawMap {
     private Cossack cossack;
     private int level;
 
-    public DrawMap() {
+    public DrawMap(int level) {
         this.map = new char[GamePanel.mapCols][GameWindow.rowsOnScreen];
         this.blocks = new Block[6];
         blocks[0] = new Block();
@@ -28,27 +28,30 @@ public class DrawMap {
         blocks[1].collision = true;
         blocks[2] = new Block();
         blocks[2].collision = true;
+        blocks[2].breakable = true;
         blocks[3] = new Block();
+        blocks[4] = new Block();
         blocks[5] = new Block();
         marks.add('A');
         marks.add('T');
         marks.add('Q');
+        marks.add('B');
         marks.add('+');
-        marks.add('P');
         marks.add('H');
-        level = 3;
-        loadMap(level);
+        this.level = level;
+        loadMap();
     }
 
-    public void loadMap(int level) {
+    public void loadMap() {
         try {
-            blocks[3].image = ImageIO.read(new File("images/sunflower.png"));
+            blocks[4].image = ImageIO.read(new File("images/sunflower.png"));
             switch (level){
                 case 1:
                     this.mapFile = new File("worlds/map1.txt");
                     blocks[0].image = ImageIO.read(new File("images/Grass.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/TreeV.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/TreeQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/TreeB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 2:
@@ -56,6 +59,7 @@ public class DrawMap {
                     blocks[0].image = ImageIO.read(new File("images/Plank.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/BookShelf.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/BookQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/BookB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 3:
@@ -63,6 +67,7 @@ public class DrawMap {
                     blocks[0].image = ImageIO.read(new File("images/Field.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/Hay.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/HayQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/BookB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 4:
@@ -125,7 +130,7 @@ public class DrawMap {
             char block = map[col][row];
             int number = marks.indexOf(block);
             x = col * GameWindow.blockSize - this.cossack.getWorldX() + cossack.getX();
-            //координата кожного блоку визначається за його позицією на загальній карті.
+            //Координата кожного блоку визначається за його позицією на загальній карті.
             //Коли рухається персонаж - рухається і карта, а за нею змінюються порядок зчитування карти
             if(number != -1 && number != 5) {
                 if((col * GameWindow.blockSize - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize||
@@ -174,9 +179,13 @@ public class DrawMap {
                     if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
+                        if(checkBlock(rightCol, topRow))
+                            System.out.println("bonus");
                     } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
+                        if(checkBlock(leftCol, topRow))
+                            System.out.println("bonus");
                     }
                 }
                 if(cossack.getVelocityY() > 0) {
@@ -196,20 +205,27 @@ public class DrawMap {
             }
     }
 
+    private boolean checkBlock(int col, int row) {
+        if(blocks[marks.indexOf(map[col][row])].breakable){
+            map[col][row] = 'B';
+            /*method for bonus*/
+        }
+        return !blocks[marks.indexOf(map[col][row])].breakable;
+    }
+
     private void changeCollision(int col, int bottomRow, int topRow) {
         try {
             char block1, block2, block3;
             block1 = map[col][bottomRow-1];
             block2 = map[col][topRow];
-            if (block1 != '0')
+            if (block1 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block1)].collision;
             else if (block2 != '0')
                 this.cossack.collision = blocks[marks.indexOf(block2)].collision;
             else this.cossack.collision = false;
             block3 = map[col][bottomRow];
             if(block3 == '0' || !blocks[marks.indexOf(block3)].collision && !cossack.isJumpCommand()) {
-                System.out.println("Fall");
-                //this.cossack.setVelocityY(1);
+
                 this.cossack.fall = true;
             }
         } catch (ArrayIndexOutOfBoundsException e) {

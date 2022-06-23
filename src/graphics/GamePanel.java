@@ -34,7 +34,7 @@ public class GamePanel extends JPanel {
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
-        this.dm = new DrawMap();
+        this.dm = new DrawMap(level);
         this.cossack = new Cossack();
         creatures = new LinkedList<>();
         setBackgroundImage();
