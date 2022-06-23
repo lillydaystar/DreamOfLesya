@@ -36,6 +36,7 @@ public class Cossack extends Creature {
     private static final int FIGURE_WIDTH = GameWindow.blockSize;
     public boolean collision = false;
     public boolean fall = false;
+    public int coins = 0;
 
     static {
         loadImage();

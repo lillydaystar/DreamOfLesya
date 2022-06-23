@@ -30,6 +30,7 @@ public class DrawMap {
         blocks[2].collision = true;
         blocks[2].breakable = true;
         blocks[3] = new Block();
+        blocks[3].collision = true;
         blocks[4] = new Block();
         blocks[5] = new Block();
         marks.add('A');
@@ -151,7 +152,7 @@ public class DrawMap {
         checkCollision();
     }
 
-    private Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
+    private final Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
 
     private void checkCollision() {
             int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
@@ -180,21 +181,24 @@ public class DrawMap {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
                         if(checkBlock(rightCol, topRow))
-                            System.out.println("bonus");
+                            checkForCoin(rightCol, bottomRow);
                     } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
                         if(checkBlock(leftCol, topRow))
-                            System.out.println("bonus");
+                            checkForCoin(rightCol,bottomRow);
                     }
                 }
                 if(cossack.getVelocityY() > 0) {
                     block1 = map[rightCol][bottomRow];
                     block2 = map[leftCol][bottomRow];
+                    checkForCoin(rightCol,bottomRow);
+                    checkForCoin(leftCol,bottomRow);
                     if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
                         this.cossack.fall = false;
+
                     }
                     else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         cossack.setVelocityY(0);
@@ -203,6 +207,14 @@ public class DrawMap {
                     }
                 }
             }
+    }
+
+    private void checkForCoin(int col, int row) {
+        if (map[col][row] == '+') {
+            cossack.coins++;
+            map[col][row] = '0';
+            System.out.println("Coins: " + cossack.coins);
+        }
     }
 
     private boolean checkBlock(int col, int row) {
@@ -220,8 +232,12 @@ public class DrawMap {
             block2 = map[col][topRow];
             if (block1 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block1)].collision;
-            else if (block2 != '0')
+                checkForCoin(col, bottomRow-1);
+            }
+            else if (block2 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block2)].collision;
+                checkForCoin(col, topRow);
+            }
             else this.cossack.collision = false;
             block3 = map[col][bottomRow];
             if(block3 == '0' || !blocks[marks.indexOf(block3)].collision && !cossack.isJumpCommand()) {
