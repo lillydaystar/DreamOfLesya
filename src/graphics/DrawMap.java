@@ -181,11 +181,11 @@ public class DrawMap {
 
             if (this.cossack.isLeftCommand()) {
                 changeCollision(leftCol, bottomRow, topRow);
-                fall(leftCol+1, leftCol, bottomRow);
+                fall(leftCol+1, leftCol, bottomRow, 'l');
             }
             else if (this.cossack.isRightCommand()) {
                 changeCollision(rightCol, bottomRow, topRow);
-                fall(rightCol-1, rightCol, bottomRow);
+                fall(rightCol-1, rightCol, bottomRow, 'r');
             }
             if(!cossack.onGround()) {
                 char block1, block2;
@@ -266,15 +266,25 @@ public class DrawMap {
         }
     }
 
-    private void fall(int prevCol, int col, int bottomRow){
+    private void fall(int prevCol, int col, int bottomRow, char lORr){
         char block = map[col][bottomRow];
         char prevBlock = map[prevCol][bottomRow];
         if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
         }
-        else if(block == 'W'){
-            cossack.getDamage();
+        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2){
+            int rectX;
+            if(lORr == 'l'){
+                rectX = this.cossack.getWorldX() + GameWindow.blockSize/4;
+            }
+            else{
+                rectX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - GameWindow.blockSize/4;
+            }
+            int realCol = rectX/GameWindow.blockSize;
+            if(map[realCol][bottomRow] == 'W'){
+                cossack.getDamage();
+            }
         }
     }
 
