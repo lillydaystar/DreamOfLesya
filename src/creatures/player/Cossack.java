@@ -61,14 +61,14 @@ public class Cossack extends Creature {
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = Cossack.on_place;
             width = GameWindow.blockSize;
-            if(!onGround()){
+            if(!onGround() || fall){
                 image = Cossack.jump_right;
-                width = 72;
+                width = 7*GameWindow.blockSize/4;
             }
         } else if (leftCommand) {
-            if(!onGround()){
+            if(!onGround() || fall){
                 image = Cossack.jump_left;
-                width = 72;
+                width = 7*GameWindow.blockSize/4;
             }
             else {
                 if (this.counter < STATE_RATE)
@@ -78,9 +78,9 @@ public class Cossack extends Creature {
                 width = GameWindow.blockSize;
             }
         } else {
-            if(!onGround()){
+            if(!onGround() || fall){
                 image = Cossack.jump_right;
-                width = 72;
+                width = 7*GameWindow.blockSize/4;
             }
             else {
                 if (this.counter >= STATE_RATE)

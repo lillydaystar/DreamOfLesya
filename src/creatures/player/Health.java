@@ -1,6 +1,5 @@
 package creatures.player;
 
-import graphics.Block;
 import graphics.GameWindow;
 
 import javax.imageio.ImageIO;
