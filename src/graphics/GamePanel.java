@@ -41,6 +41,13 @@ public class GamePanel extends JPanel {
         this.revalidate();
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
         this.dm.setCossacksParams();
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("images/upheavtt.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -49,7 +56,14 @@ public class GamePanel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         graphics2D.setColor(Color.darkGray);
-        graphics2D.fillRect(0,0, GameWindow.screenWidth, (int)(1.5*GameWindow.blockSize));
+        graphics2D.fillRect(0,0, GameWindow.screenWidth, 3*GameWindow.blockSize/2);
+        graphics2D.setPaint(Color.white);
+        graphics2D.setFont(new Font("Upheaval TT (BRK)", Font.BOLD, 50));
+        String s = "Coins: " + cossack.coins;
+        FontMetrics fm = graphics2D.getFontMetrics();
+        int x = GameWindow.screenWidth - fm.stringWidth(s) - 5;
+        int y = fm.getHeight();
+        graphics2D.drawString(s, x, y);
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         graphics2D.dispose();
