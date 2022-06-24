@@ -32,7 +32,7 @@ public class GamePanel extends JPanel {
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
-        this.dm = new DrawMap(level);
+        this.dm = new DrawMap(level, this);
         this.cossack = new Cossack();
         this.cossack.setHealth(level);
         creatures = new LinkedList<>();
@@ -97,6 +97,14 @@ public class GamePanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changeLevel(int level) {
+        this.cossack.setDefaultCoordinates();
+        this.dm = new DrawMap(level, this);
+        setBackgroundImage();
+        dm.setCossack(this.cossack);
+        this.dm.setCossacksParams();
     }
 
     private class KeyCommander implements KeyListener {

@@ -47,11 +47,7 @@ public class Cossack extends Creature {
     }
 
     public Cossack() {
-        this.xMap = INITIAL_PLAYER_ABSCISSE;
-        this.yMap = INITIAL_PLAYER_ORDINATE;
-        this.xVel = this.yVel = 0;
-        this.xCord = xMap;
-        this.yCord = yMap;
+        setDefaultCoordinates();
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -254,5 +250,13 @@ public class Cossack extends Creature {
     public void setWorldWidth(int worldWidth) {
         this.WORLD_WIDTH = worldWidth;
         this.SENTINEL_PLAYER_RIGHT = worldWidth - 9*GameWindow.blockSize;
+    }
+
+    public void setDefaultCoordinates() {
+        this.xMap = INITIAL_PLAYER_ABSCISSE;
+        this.yMap = INITIAL_PLAYER_ORDINATE;
+        this.xVel = this.yVel = 0;
+        this.xCord = xMap;
+        this.yCord = yMap;
     }
 }

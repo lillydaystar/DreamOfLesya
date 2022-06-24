@@ -18,8 +18,10 @@ public class DrawMap {
     private File mapFile;
     private Cossack cossack;
     private int level;
+    private GamePanel panel;
 
-    public DrawMap(int level) {
+    public DrawMap(int level, GamePanel panel) {
+        this.panel = panel;
         this.blocks = new Block[6];
         blocks[0] = new Block();
         blocks[0].collision = true;
@@ -228,6 +230,7 @@ public class DrawMap {
         if(blocks[marks.indexOf(map[col][row])].breakable){
             map[col][row] = 'B';
             /*method for bonus*/
+            System.out.println("BONUS!!!");
         }
         return !blocks[marks.indexOf(map[col][row])].breakable;
     }
@@ -237,7 +240,10 @@ public class DrawMap {
             char block1, block2;
             block1 = map[col][bottomRow-1];
             block2 = map[col][topRow];
-            if (block1 != '0') {
+            if(block1 == 'H' || block2 == 'H'){
+                panel.changeLevel(++this.level);
+            }
+            else if (block1 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block1)].collision;
                 checkForCoin(col, bottomRow-1);
             }
