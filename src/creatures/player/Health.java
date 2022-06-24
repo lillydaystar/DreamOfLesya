@@ -14,6 +14,7 @@ public class Health {
     private int[] hpStatus;
     private int level;
     private boolean halfHPMode = false;
+    public boolean dead = false;
 
     public Health(int level){
         this.level = level;
@@ -50,7 +51,7 @@ public class Health {
                 break;
         }
         if(i == -1) {
-            /*cossack.die();*/
+            dead = true;
             return;
         }
         try {
@@ -58,6 +59,8 @@ public class Health {
                 if (hpStatus[i] == 2) {
                     hpStatus[i] = 0;
                     hpImages[i] = ImageIO.read(new File("images/emptyHP.png"));
+                    if(i == 0)
+                        dead = true;
                 }
                 else if (hpStatus[i] == 1) {
                     hpStatus[i] = 2;
@@ -66,6 +69,8 @@ public class Health {
             } else if (hpStatus[i] == 1) {
                 hpStatus[i] = 0;
                 hpImages[i] = ImageIO.read(new File("images/emptyHP.png"));
+                if(i == 0)
+                    dead = true;
             }
         }catch (IOException e){
             e.printStackTrace();

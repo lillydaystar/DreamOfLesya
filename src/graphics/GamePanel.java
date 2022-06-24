@@ -79,7 +79,7 @@ public class GamePanel extends JPanel {
             int l = dm.getLevel();
             switch (l){
                 case 1:
-                    this.background = ImageIO.read(new File("images/back.png"));
+                    this.background = ImageIO.read(new File("images/background1.png"));
                     break;
                 case 2:
                     this.background = ImageIO.read(new File("images/background2.jpg"));
@@ -88,10 +88,10 @@ public class GamePanel extends JPanel {
                     this.background = ImageIO.read(new File("images/background3.jpg"));
                     break;
                 case 4:
-                    this.background = ImageIO.read(new File("images/background4.jpg"));
+                    this.background = ImageIO.read(new File("images/background4.png"));
                     break;
                 case 5:
-                    this.background = ImageIO.read(new File("images/background5.jpg"));
+                    this.background = ImageIO.read(new File("images/background5.png"));
                     break;
             }
         } catch (IOException e) {

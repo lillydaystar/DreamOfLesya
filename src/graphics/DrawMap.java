@@ -22,7 +22,7 @@ public class DrawMap {
 
     public DrawMap(int level, GamePanel panel) {
         this.panel = panel;
-        this.blocks = new Block[6];
+        this.blocks = new Block[10];
         blocks[0] = new Block();
         blocks[0].collision = true;
         blocks[1] = new Block();
@@ -34,12 +34,15 @@ public class DrawMap {
         blocks[3].collision = true;
         blocks[4] = new Block();
         blocks[5] = new Block();
+        blocks[6] = new Block();
+        blocks[6].collision = true;
         marks.add('A');
         marks.add('T');
         marks.add('Q');
         marks.add('B');
         marks.add('+');
         marks.add('H');
+        marks.add('W');
         this.level = level;
         loadMap();
     }
@@ -69,11 +72,17 @@ public class DrawMap {
                     blocks[0].image = ImageIO.read(new File("images/Field.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/Hay.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/HayQ.png"));
-                    blocks[3].image = ImageIO.read(new File("images/BookB.png"));
+                    blocks[3].image = ImageIO.read(new File("images/HayB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 4:
                     this.mapFile = new File("worlds/map4.txt");
+                    blocks[0].image = ImageIO.read(new File("images/Mud.jpg"));
+                    blocks[1].image = ImageIO.read(new File("images/SeaWeed.png"));
+                    blocks[2].image = ImageIO.read(new File("images/SeaWeedQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/SeaWeedB.png"));
+                    blocks[5].image = ImageIO.read(new File("images/house1.png"));
+                    blocks[6].image = ImageIO.read(new File("images/Water.jpg"));
                     break;
                 case 5:
                     this.map = new char[GameWindow.columnsOnScreen][GameWindow.rowsOnScreen];
@@ -263,6 +272,9 @@ public class DrawMap {
         if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
+        }
+        else if(block == 'W'){
+            cossack.getDamage();
         }
     }
 

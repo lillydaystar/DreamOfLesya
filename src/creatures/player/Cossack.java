@@ -21,9 +21,10 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean leftCommand, rightCommand, jumpCommand;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
 
     private int counter;
+    private boolean alive = true;
     private int WORLD_WIDTH;
     private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
@@ -54,7 +55,11 @@ public class Cossack extends Creature {
         BufferedImage image;
         int width, height;
         height = 2*GameWindow.blockSize;
-        if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
+        if(!alive){
+            image = Cossack.dead;
+            width = GameWindow.blockSize;
+        }
+        else if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
             image = Cossack.on_place;
             width = GameWindow.blockSize;
             if(!onGround() || fall){
@@ -220,6 +225,7 @@ public class Cossack extends Creature {
             Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
             Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
             Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
+            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -258,5 +264,14 @@ public class Cossack extends Creature {
         this.xVel = this.yVel = 0;
         this.xCord = xMap;
         this.yCord = yMap;
+    }
+
+    public void getDamage() {
+        health.getDamage();
+        if(health.dead){
+            alive = false;
+            return;
+        }
+        setDefaultCoordinates();
     }
 }
