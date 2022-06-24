@@ -20,7 +20,6 @@ public class DrawMap {
     private int level;
 
     public DrawMap(int level) {
-        this.map = new char[GamePanel.mapCols][GameWindow.rowsOnScreen];
         this.blocks = new Block[6];
         blocks[0] = new Block();
         blocks[0].collision = true;
@@ -94,12 +93,15 @@ public class DrawMap {
             int cols = 0;
             int rows = 0;
 
+            String firstLine = br.readLine();
+            String[] split = firstLine.split("");
+            this.map = new char[split.length][GameWindow.rowsOnScreen];
+            rows++;
+
             while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(; cols < GamePanel.mapCols; cols++) {
-                    if(cols >= str.length)
-                        throw new IllegalArgumentException("Неправильний формат карти");
+                for(; cols < map.length; cols++) {
                     map[cols][rows] = str[cols].charAt(0);
                     configureBlockType(cols, rows);
                 }
@@ -127,7 +129,7 @@ public class DrawMap {
         int x;
         int y = 0;
 
-        while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen){
+        while (col < map.length && row < GameWindow.rowsOnScreen){
             char block = map[col][row];
             int number = marks.indexOf(block);
             x = col * GameWindow.blockSize - this.cossack.getWorldX() + cossack.getX();
@@ -143,7 +145,7 @@ public class DrawMap {
                         GameWindow.blockSize*6, GameWindow.blockSize*5, null);
             }
             col++;
-            if(col == GamePanel.mapCols) {
+            if(col == map.length) {
                 col = 0;
                 row++;
                 y += GameWindow.blockSize;
@@ -177,7 +179,11 @@ public class DrawMap {
                 if(cossack.getVelocityY() < 0) {
                     block1 = map[rightCol][topRow];
                     block2 = map[leftCol][topRow];
-                    if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
+                    if(cossack.getY() <= GameWindow.blockSize){
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                    }
+                    else if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
                         if(checkBlock(rightCol, topRow))
@@ -259,5 +265,9 @@ public class DrawMap {
 
     private void addCreature(Creature creature) {
 
+    }
+
+    public void setCossacksParams() {
+        cossack.setWorldWidth(map.length*GameWindow.blockSize);
     }
 }

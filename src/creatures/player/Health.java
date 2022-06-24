@@ -44,7 +44,7 @@ public class Health {
         }
     }
 
-    public void getDamaged(){
+    public void getDamage(){
         int i;
         for(i=healthPoints-1; i>=0; i--){
             if(hpStatus[i] > 0)

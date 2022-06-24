@@ -21,10 +21,7 @@ import java.util.List;
  */
 public class GamePanel extends JPanel {
 
-    public static final int mapCols = 90;
-    public static final int mapRows = 0;
-    public static final int worldWidth = GameWindow.blockSize * mapCols;
-    public static final int worldHeight = GameWindow.blockSize * mapRows;
+
 
     private DrawMap dm;
     private BufferedImage background;
@@ -43,6 +40,7 @@ public class GamePanel extends JPanel {
         this.addKeyListener(new KeyCommander());
         this.revalidate();
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
+        this.dm.setCossacksParams();
     }
 
     @Override

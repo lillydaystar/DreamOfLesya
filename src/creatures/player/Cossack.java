@@ -24,12 +24,14 @@ public class Cossack extends Creature {
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
 
     private int counter;
+    private int WORLD_WIDTH;
+    private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
     private static final int JUMP_SPEED = -27;
     private static final int GRAVITY = 2;
     private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
-    private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
+    private int SENTINEL_PLAYER_RIGHT = WORLD_WIDTH - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
     private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
@@ -175,7 +177,7 @@ public class Cossack extends Creature {
         else if (this.xMap < SENTINEL_PLAYER_LEFT)
             return this.xMap;
         else
-            return GameWindow.screenWidth - GamePanel.worldWidth + this.xMap;
+            return GameWindow.screenWidth - WORLD_WIDTH + this.xMap;
     }
 
     private int getScreenY() {
@@ -202,7 +204,7 @@ public class Cossack extends Creature {
         else if (this.leftCommand && xMap >= 0) {
             this.xVel = -HORIZONTAL_SPEED;
         }
-        else if (this.rightCommand && xMap <= GamePanel.worldWidth - GameWindow.blockSize) {
+        else if (this.rightCommand && xMap <= WORLD_WIDTH - GameWindow.blockSize) {
             this.xVel = HORIZONTAL_SPEED;
         } else {
             this.xVel = 0;
@@ -247,5 +249,10 @@ public class Cossack extends Creature {
 
     public void setHealth(int level) {
         this.health = new Health(level);
+    }
+
+    public void setWorldWidth(int worldWidth) {
+        this.WORLD_WIDTH = worldWidth;
+        this.SENTINEL_PLAYER_RIGHT = worldWidth - 9*GameWindow.blockSize;
     }
 }
