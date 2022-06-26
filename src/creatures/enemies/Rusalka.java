@@ -9,28 +9,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Mavka extends HorizontalEnemy {
+public class Rusalka extends WalkingEnemy {
 
     private static final int DRAW_RATE = 10;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static final int HORIZONTAL_SPEED = 2;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd;
 
     static {
         loadImage();
     }
 
-    public Mavka(int x, int y) {
+    public Rusalka(int x, int y) {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
-    }
-
-    public int getDrawRate() {
-        return DRAW_RATE;
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
-        return HORIZONTAL_SPEED;
     }
 
     @Override
@@ -47,25 +38,35 @@ public class Mavka extends HorizontalEnemy {
     protected BufferedImage getImage() {
         if (this.velocityX < 0) {
             if (this.draw_counter < getDrawRate())
-                return Mavka.left_fst;
+                return Rusalka.left_fst;
             else
-                return Mavka.left_snd;
+                return Rusalka.left_snd;
         } else {
             if (this.draw_counter < getDrawRate())
-                return Mavka.right_fst;
+                return Rusalka.right_fst;
             else
-                return Mavka.right_snd;
+                return Rusalka.right_snd;
         }
+    }
+
+    @Override
+    protected int getDrawRate() {
+        return DRAW_RATE;
+    }
+
+    @Override
+    protected int getHorizontalSpeed() {
+        return HORIZONTAL_SPEED;
     }
 
     private static void loadImage() {
         try {
-            Mavka.left_fst = ImageIO.read(new File("heroes/MavkaL_1.png"));
-            Mavka.left_snd = ImageIO.read(new File("heroes/MavkaL_2.png"));
-            Mavka.right_fst = ImageIO.read(new File("heroes/MavkaR_1.png"));
-            Mavka.right_snd = ImageIO.read(new File("heroes/MavkaR_2.png"));
+            Rusalka.left_fst = ImageIO.read(new File("heroes/RusalkaL_1.png"));
+            Rusalka.left_snd = ImageIO.read(new File("heroes/RusalkaL_2.png"));
+            Rusalka.right_fst = ImageIO.read(new File("heroes/RusalkaR_1.png"));
+            Rusalka.right_snd = ImageIO.read(new File("heroes/RusalkaR_2.png"));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error while loading images for mavka",
+            JOptionPane.showMessageDialog(null, "Error while loading images for rusalka",
                     "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

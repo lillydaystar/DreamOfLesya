@@ -1,6 +1,5 @@
-package creatures.player;
+package creatures;
 
-import creatures.enemies.Creature;
 import graphics.*;
 
 import javax.imageio.ImageIO;
@@ -21,13 +20,13 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean leftCommand, rightCommand, jumpCommand;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
+    private BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
 
     private int counter;
     private static final int STATE_RATE = 20;
-    private static final int JUMP_SPEED = -27;
+    private static final int JUMP_SPEED = -25;
     private static final int GRAVITY = 2;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static final int HORIZONTAL_SPEED = 5;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
@@ -37,11 +36,8 @@ public class Cossack extends Creature {
     public boolean collision = false;
     public boolean fall = false;
 
-    static {
-        loadImage();
-    }
-
     public Cossack() {
+        loadImage();
         this.xMap = INITIAL_PLAYER_ABSCISSE;
         this.yMap = INITIAL_PLAYER_ORDINATE;
         this.xVel = this.yVel = 0;
@@ -54,34 +50,34 @@ public class Cossack extends Creature {
         int width, height;
         height = 2*GameWindow.blockSize;
         if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
-            image = Cossack.on_place;
+            image = this.on_place;
             width = GameWindow.blockSize;
             if(!onGround()){
-                image = Cossack.jump_right;
+                image = this.jump_right;
                 width = 72;
             }
         } else if (leftCommand) {
             if(!onGround()){
-                image = Cossack.jump_left;
+                image = this.jump_left;
                 width = 72;
             }
             else {
                 if (this.counter < STATE_RATE)
-                    image = Cossack.left_fst;
+                    image = this.left_fst;
                 else
-                    image = Cossack.left_snd;
+                    image = this.left_snd;
                 width = GameWindow.blockSize;
             }
         } else {
             if(!onGround()){
-                image = Cossack.jump_right;
+                image = this.jump_right;
                 width = 72;
             }
             else {
                 if (this.counter >= STATE_RATE)
-                    image = Cossack.right_fst;
+                    image = this.right_fst;
                 else
-                    image = Cossack.right_snd;
+                    image = this.right_snd;
                 width = GameWindow.blockSize;
             }
         }
@@ -165,7 +161,7 @@ public class Cossack extends Creature {
         return this.yMap;
     }
 
-    private int getScreenX() {
+    public int getScreenX() {
         if (this.xMap >= SENTINEL_PLAYER_LEFT && this.xMap <= SENTINEL_PLAYER_RIGHT)
             return INITIAL_PLAYER_ABSCISSE;
         else if (this.xMap < SENTINEL_PLAYER_LEFT)
@@ -174,7 +170,7 @@ public class Cossack extends Creature {
             return GameWindow.screenWidth - GamePanel.worldWidth + this.xMap;
     }
 
-    private int getScreenY() {
+    public int getScreenY() {
         return this.yMap;
     }
 
@@ -209,15 +205,15 @@ public class Cossack extends Creature {
         this.yCord = getScreenY();
     }
 
-    private static void loadImage() {
+    private void loadImage() {
         try {
-            Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
-            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
-            Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
-            Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
-            Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
-            Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
-            Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
+            this.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
+            this.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
+            this.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
+            this.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
+            this.on_place = ImageIO.read(new File("heroes/CossackS.png"));
+            this.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
+            this.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -239,5 +235,52 @@ public class Cossack extends Creature {
 
     public boolean isJumpCommand() {
         return this.jumpCommand;
+    }
+
+    public BufferedImage getImage() {
+        return null;
+    }
+
+    @Override
+    protected int getDrawRate() {
+        return STATE_RATE;
+    }
+
+    @Override
+    public void leftCollision() {
+        //method from Creature abstract class;
+        //Does nothing because Player's collision is
+        //implemented in different way
+    }
+
+    @Override
+    public void rightCollision() {
+        //method from Creature abstract class;
+        //Does nothing because Player's collision is
+        //implemented in different way
+    }
+
+    @Override
+    public void upCollision() {
+        //method from Creature abstract class;
+        //Does nothing because Player's collision is
+        //implemented in different way
+    }
+
+    @Override
+    public void downCollision() {
+        //method from Creature abstract class;
+        //Does nothing because Player's collision is
+        //implemented in different way
+    }
+
+    @Override
+    protected int getVerticalSpeed() {
+        return 0;
+    }
+
+    @Override
+    protected int getHorizontalSpeed() {
+        return HORIZONTAL_SPEED;
     }
 }

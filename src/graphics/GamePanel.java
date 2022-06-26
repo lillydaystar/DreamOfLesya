@@ -1,7 +1,7 @@
 package graphics;
 
-import creatures.enemies.Creature;
-import creatures.player.Cossack;
+import creatures.Creature;
+import creatures.Cossack;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,8 +11,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -29,14 +27,12 @@ public class GamePanel extends JPanel {
     private BufferedImage background;
     private Cossack cossack;
     /*private int level;*/
-    private List<Creature> creatures;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
         this.dm = new DrawMap();
         this.cossack = new Cossack();
-        creatures = new LinkedList<>();
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
@@ -45,17 +41,26 @@ public class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics graphics) {
-//        this.revalidate();
+        super.paintComponent(graphics);
+        Toolkit.getDefaultToolkit().sync();
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
+        for (Creature creature : this.dm.creatures) {
+            creature.draw(graphics2D, cossack.getWorldX(), cossack.getWorldY(),
+                    cossack.getScreenX(), cossack.getScreenY());
+        }
         graphics2D.dispose();
         this.revalidate();
     }
 
     void update() {
         cossack.update();
+        for (Creature creature : this.dm.creatures) {
+            dm.chackTile(creature);
+            creature.update();
+        }
     }
 
     private void setBackgroundImage() {

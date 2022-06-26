@@ -52,8 +52,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.panel.update();
     }
 
-    @Override
-    public void repaint() {
+    public void redraw() {
         this.panel.repaint();
     }
 
@@ -72,7 +71,7 @@ public class GameWindow extends JFrame implements Runnable {
             lastTime = currentTime;
             if (delta >= 1) {
                 update();
-                repaint();
+                redraw();
                 delta--;
                 count++;
             }
