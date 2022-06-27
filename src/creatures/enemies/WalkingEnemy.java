@@ -15,8 +15,8 @@ abstract class WalkingEnemy extends Creature {
 
     @Override
     public void update() {
-        if (onGround) {
-            velocityY = 2;
+        if (this.onGround) {
+            velocityY = GRAVITY;
             ordinate -= velocityY;
         } else {
             velocityY += GRAVITY;
