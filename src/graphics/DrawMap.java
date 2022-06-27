@@ -27,8 +27,9 @@ public class DrawMap {
     private GamePanel panel;
     private int cols_on_map, rows_on_map;
 
-    public DrawMap() {
-        this.blocks = new Block[6];
+    public DrawMap(int level, GamePanel panel) {
+        this.blocks = new Block[7];
+        this.panel = panel;
         blocks[0] = new Block();
         blocks[0].collision = true;
         blocks[1] = new Block();

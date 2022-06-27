@@ -1,4 +1,4 @@
-package creatures.player;
+package creatures;
 
 import graphics.GameWindow;
 
