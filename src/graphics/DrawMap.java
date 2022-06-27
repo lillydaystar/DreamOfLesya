@@ -24,10 +24,10 @@ public class DrawMap {
     private File mapFile;
     private Cossack cossack;
     private int level;
+    private GamePanel panel;
     private int cols_on_map, rows_on_map;
 
     public DrawMap() {
-        this.map = new char[GamePanel.mapCols][GameWindow.rowsOnScreen];
         this.blocks = new Block[6];
         blocks[0] = new Block();
         blocks[0].collision = true;
@@ -35,28 +35,36 @@ public class DrawMap {
         blocks[1].collision = true;
         blocks[2] = new Block();
         blocks[2].collision = true;
+        blocks[2].breakable = true;
         blocks[3] = new Block();
+        blocks[3].collision = true;
+        blocks[4] = new Block();
         blocks[5] = new Block();
+        blocks[6] = new Block();
+        blocks[6].collision = true;
         marks.add('A');
         marks.add('T');
         marks.add('Q');
+        marks.add('B');
         marks.add('+');
-        marks.add('P');
         marks.add('H');
+        marks.add('W');
         level = 1;
         this.creatures = new LinkedList<>();
-        loadMap(level);
+        this.level = level;
+        loadMap();
     }
 
-    public void loadMap(int level) {
+    public void loadMap() {
         try {
-            blocks[3].image = ImageIO.read(new File("images/sunflower.png"));
+            blocks[4].image = ImageIO.read(new File("images/sunflower.png"));
             switch (level){
                 case 1:
                     this.mapFile = new File("worlds/map1.txt");
                     blocks[0].image = ImageIO.read(new File("images/Grass.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/TreeV.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/TreeQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/TreeB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 2:
@@ -64,6 +72,7 @@ public class DrawMap {
                     blocks[0].image = ImageIO.read(new File("images/Plank.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/BookShelf.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/BookQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/BookB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 3:
@@ -71,10 +80,17 @@ public class DrawMap {
                     blocks[0].image = ImageIO.read(new File("images/Field.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/Hay.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/HayQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/HayB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
                 case 4:
                     this.mapFile = new File("worlds/map4.txt");
+                    blocks[0].image = ImageIO.read(new File("images/Mud.jpg"));
+                    blocks[1].image = ImageIO.read(new File("images/SeaWeed.png"));
+                    blocks[2].image = ImageIO.read(new File("images/SeaWeedQ.png"));
+                    blocks[3].image = ImageIO.read(new File("images/SeaWeedB.png"));
+                    blocks[5].image = ImageIO.read(new File("images/house1.png"));
+                    blocks[6].image = ImageIO.read(new File("images/Water.jpg"));
                     break;
                 case 5:
                     this.map = new char[GameWindow.columnsOnScreen][GameWindow.rowsOnScreen];
@@ -106,9 +122,7 @@ public class DrawMap {
             while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
-                for(; cols < GamePanel.mapCols; cols++) {
-                    if(cols >= str.length)
-                        throw new IllegalArgumentException("Неправильний формат карти (опис блоків)");
+                for(; cols < map.length; cols++) {
                     map[cols][rows] = str[cols].charAt(0);
                 }
                 cols = 0;
@@ -142,27 +156,23 @@ public class DrawMap {
         int x;
         int y = 0;
 
-        while (col < GamePanel.mapCols && row < GameWindow.rowsOnScreen){
+        while (col < map.length && row < GameWindow.rowsOnScreen){
             char block = map[col][row];
             int number = marks.indexOf(block);
             x = col * GameWindow.blockSize - this.cossack.getWorldX() + cossack.getX();
-            //координата кожного блоку визначається за його позицією на загальній карті.
+            //Координата кожного блоку визначається за його позицією на загальній карті.
             //Коли рухається персонаж - рухається і карта, а за нею змінюються порядок зчитування карти
             if(number != -1 && number != 5) {
-                if((col * GameWindow.blockSize - GameWindow.blockSize < this.cossack.getWorldX()
-                        + this.cossack.getX() + 2 * GameWindow.blockSize ||
-                        col * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&
-                        //промальовування карти обмежене розміром вікна
-                        col * GameWindow.blockSize + GameWindow.blockSize >
-                                this.cossack.getWorldX() - this.cossack.getX())
-                    //для пришвидшення обробки інформації
+                if((col * GameWindow.blockSize - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize||
+                        col * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&  //промальовування карти обмежене розміром вікна
+                        col * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX())     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             } else if(number == 5) {
                 g.drawImage(blocks[number].image, x, y-GameWindow.blockSize*4,
                         GameWindow.blockSize*6, GameWindow.blockSize*5, null);
             }
             col++;
-            if(col == GamePanel.mapCols) {
+            if(col == map.length) {
                 col = 0;
                 row++;
                 y += GameWindow.blockSize;
@@ -171,73 +181,126 @@ public class DrawMap {
         checkCollision();
     }
 
-    private Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
+    private final Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
 
     private void checkCollision() {
-        int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
-        int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - collisionArea.x;
-        int rectTopY = this.cossack.getWorldY() + collisionArea.y;
-        double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
+            int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
+            int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - collisionArea.x;
+            int rectTopY = this.cossack.getWorldY() + collisionArea.y;
+            double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
 
-        int leftCol = rectLeftX/GameWindow.blockSize;
-        int rightCol = rectRightX/GameWindow.blockSize;
-        int topRow = rectTopY/GameWindow.blockSize;
-        int bottomRow = (int)Math.round(rectBottomY/GameWindow.blockSize);
 
-        if (this.cossack.isLeftCommand()) {
-            changeCollision(leftCol, bottomRow, topRow);
-        }
-        else if (this.cossack.isRightCommand()) {
-            changeCollision(rightCol, bottomRow, topRow);
-        }
-        if(!cossack.onGround()) {
-            char block1, block2;
-            if(cossack.getVelocityY() < 0) {
-                block1 = map[rightCol][topRow];
-                block2 = map[leftCol][topRow];
-                if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
-                    this.cossack.setVelocityY(0);
-                    this.cossack.fall = true;
-                } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
-                    this.cossack.setVelocityY(0);
-                    this.cossack.fall = true;
+            int leftCol = rectLeftX/GameWindow.blockSize;
+            int rightCol = rectRightX/GameWindow.blockSize;
+            int topRow = rectTopY/GameWindow.blockSize;
+            int bottomRow = (int)Math.round(rectBottomY/GameWindow.blockSize);
+
+            if (this.cossack.isLeftCommand()) {
+                changeCollision(leftCol, bottomRow, topRow);
+                fall(leftCol+1, leftCol, bottomRow, 'l');
+            }
+            else if (this.cossack.isRightCommand()) {
+                changeCollision(rightCol, bottomRow, topRow);
+                fall(rightCol-1, rightCol, bottomRow, 'r');
+            }
+            if(!cossack.onGround()) {
+                char block1, block2;
+                if(cossack.getVelocityY() < 0) {
+                    block1 = map[rightCol][topRow];
+                    block2 = map[leftCol][topRow];
+                    if(cossack.getY() <= GameWindow.blockSize){
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                    }
+                    else if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                        if(checkBlock(rightCol, topRow))
+                            checkForCoin(rightCol, bottomRow);
+                    } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                        if(checkBlock(leftCol, topRow))
+                            checkForCoin(leftCol,bottomRow);
+                    }
+                }
+                if(cossack.getVelocityY() > 0) {
+                    block1 = map[rightCol][bottomRow];
+                    block2 = map[leftCol][bottomRow];
+                    checkForCoin(rightCol,bottomRow);
+                    checkForCoin(leftCol,bottomRow);
+                    if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
+                        cossack.setVelocityY(0);
+                        this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
+
+                    }
+                    else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
+                        cossack.setVelocityY(0);
+                        this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
+                    }
                 }
             }
-            if(cossack.getVelocityY() > 0) {
-                block1 = map[rightCol][bottomRow];
-                block2 = map[leftCol][bottomRow];
-                if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
-                    cossack.setVelocityY(0);
-                    this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
-                    this.cossack.fall = false;
-                }
-                else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
-                    cossack.setVelocityY(0);
-                    this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
-                    this.cossack.fall = false;
-                }
-            }
+    }
+
+    private void checkForCoin(int col, int row) {
+        if (map[col][row] == '+') {
+            cossack.coins++;
+            map[col][row] = '0';
         }
+    }
+
+    private boolean checkBlock(int col, int row) {
+        if(blocks[marks.indexOf(map[col][row])].breakable){
+            map[col][row] = 'B';
+            /*method for bonus*/
+            System.out.println("BONUS!!!");
+        }
+        return !blocks[marks.indexOf(map[col][row])].breakable;
     }
 
     private void changeCollision(int col, int bottomRow, int topRow) {
         try {
-            char block1, block2, block3;
+            char block1, block2;
             block1 = map[col][bottomRow-1];
             block2 = map[col][topRow];
-            if (block1 != '0')
-                this.cossack.collision = blocks[marks.indexOf(block1)].collision;
-            else if (block2 != '0')
-                this.cossack.collision = blocks[marks.indexOf(block2)].collision;
-            else this.cossack.collision = false;
-            block3 = map[col][bottomRow];
-            if(block3 == '0' || !blocks[marks.indexOf(block3)].collision && !cossack.isJumpCommand()) {
-//                System.out.println("Fall");
-                //this.cossack.setVelocityY(1);
-                this.cossack.fall = true;
+            if(block1 == 'H' || block2 == 'H'){
+                panel.changeLevel(++this.level);
             }
+            else if (block1 != '0') {
+                this.cossack.collision = blocks[marks.indexOf(block1)].collision;
+                checkForCoin(col, bottomRow-1);
+            }
+            else if (block2 != '0') {
+                this.cossack.collision = blocks[marks.indexOf(block2)].collision;
+                checkForCoin(col, topRow);
+            }
+            else this.cossack.collision = false;
         } catch (ArrayIndexOutOfBoundsException e) {
-//            System.out.printf("%d %d\n", col, bottomRow);
+            System.out.printf("%d %d\n", col, bottomRow);
+        }
+    }
+
+    private void fall(int prevCol, int col, int bottomRow, char lORr){
+        char block = map[col][bottomRow];
+        char prevBlock = map[prevCol][bottomRow];
+        if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
+            if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
+                this.cossack.fall = true;
+        }
+        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2){
+            int rectX;
+            if(lORr == 'l'){
+                rectX = this.cossack.getWorldX() + GameWindow.blockSize/4;
+            }
+            else{
+                rectX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - GameWindow.blockSize/4;
+            }
+            int realCol = rectX/GameWindow.blockSize;
+            if(map[realCol][bottomRow] == 'W'){
+                cossack.getDamage();
+            }
         }
     }
 
@@ -251,7 +314,6 @@ public class DrawMap {
         int creatureRightCol = creatureRightWorldX/GameWindow.blockSize;
         int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
         int creatureBottomRow = creatureBottomWorldY/GameWindow.blockSize;
-
         char tileNum1, tileNum2;
 
         if (creature.getVelocityY() > 0) {
@@ -309,5 +371,9 @@ public class DrawMap {
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""
                         +characteristics[2]+"\")");
         }
+    }
+
+    public void setCossacksParams() {
+        cossack.setWorldWidth(map.length*GameWindow.blockSize);
     }
 }

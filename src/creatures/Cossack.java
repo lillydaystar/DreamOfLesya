@@ -1,5 +1,6 @@
 package creatures;
 
+import creatures.Creature;
 import graphics.*;
 
 import javax.imageio.ImageIO;
@@ -20,69 +21,79 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean leftCommand, rightCommand, jumpCommand;
-    private BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
 
     private int counter;
+    private boolean alive = true;
+    private int WORLD_WIDTH;
+    private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
-    private static final int JUMP_SPEED = -25;
+    private static final int JUMP_SPEED = -27;
     private static final int GRAVITY = 2;
-    private static final int HORIZONTAL_SPEED = 5;
+    private static final int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
-    private static final int SENTINEL_PLAYER_RIGHT = GamePanel.worldWidth - 9 * GameWindow.blockSize;
+    private int SENTINEL_PLAYER_RIGHT = WORLD_WIDTH - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
     private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
     private static final int FIGURE_WIDTH = GameWindow.blockSize;
     public boolean collision = false;
     public boolean fall = false;
+    public int coins = 0;
+
+    private Health health;
+
+    static {
+        loadImage();
+    }
 
     public Cossack() {
-        loadImage();
-        this.xMap = INITIAL_PLAYER_ABSCISSE;
-        this.yMap = INITIAL_PLAYER_ORDINATE;
-        this.xVel = this.yVel = 0;
-        this.xCord = xMap;
-        this.yCord = yMap;
+        setDefaultCoordinates();
     }
 
     public void draw(Graphics2D graphics2D) {
         BufferedImage image;
         int width, height;
         height = 2*GameWindow.blockSize;
-        if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
-            image = this.on_place;
+        if(!alive){
+            image = Cossack.dead;
             width = GameWindow.blockSize;
-            if(!onGround()){
-                image = this.jump_right;
-                width = 72;
+        }
+        else if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
+            image = Cossack.on_place;
+            width = GameWindow.blockSize;
+            if(!onGround() || fall){
+                image = Cossack.jump_right;
+                width = 7*GameWindow.blockSize/4;
             }
         } else if (leftCommand) {
-            if(!onGround()){
-                image = this.jump_left;
-                width = 72;
+            if(!onGround() || fall){
+                image = Cossack.jump_left;
+                width = 7*GameWindow.blockSize/4;
             }
             else {
                 if (this.counter < STATE_RATE)
-                    image = this.left_fst;
+                    image = Cossack.left_fst;
                 else
-                    image = this.left_snd;
+                    image = Cossack.left_snd;
                 width = GameWindow.blockSize;
             }
         } else {
-            if(!onGround()){
-                image = this.jump_right;
-                width = 72;
+            if(!onGround() || fall){
+                image = Cossack.jump_right;
+                width = 7*GameWindow.blockSize/4;
             }
             else {
                 if (this.counter >= STATE_RATE)
-                    image = this.right_fst;
+                    image = Cossack.right_fst;
                 else
-                    image = this.right_snd;
+                    image = Cossack.right_snd;
                 width = GameWindow.blockSize;
             }
         }
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 width, height, null);
+        health.drawHP(graphics2D);
     }
 
     @Override
@@ -167,7 +178,7 @@ public class Cossack extends Creature {
         else if (this.xMap < SENTINEL_PLAYER_LEFT)
             return this.xMap;
         else
-            return GameWindow.screenWidth - GamePanel.worldWidth + this.xMap;
+            return GameWindow.screenWidth - WORLD_WIDTH + this.xMap;
     }
 
     public int getScreenY() {
@@ -194,7 +205,7 @@ public class Cossack extends Creature {
         else if (this.leftCommand && xMap >= 0) {
             this.xVel = -HORIZONTAL_SPEED;
         }
-        else if (this.rightCommand && xMap <= GamePanel.worldWidth - GameWindow.blockSize) {
+        else if (this.rightCommand && xMap <= WORLD_WIDTH - GameWindow.blockSize) {
             this.xVel = HORIZONTAL_SPEED;
         } else {
             this.xVel = 0;
@@ -205,15 +216,16 @@ public class Cossack extends Creature {
         this.yCord = getScreenY();
     }
 
-    private void loadImage() {
+    private static void loadImage() {
         try {
-            this.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
-            this.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
-            this.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
-            this.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
-            this.on_place = ImageIO.read(new File("heroes/CossackS.png"));
-            this.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
-            this.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
+            Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
+            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
+            Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
+            Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
+            Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
+            Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
+            Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
+            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -235,6 +247,32 @@ public class Cossack extends Creature {
 
     public boolean isJumpCommand() {
         return this.jumpCommand;
+    }
+
+    public void setHealth(int level) {
+        this.health = new Health(level);
+    }
+
+    public void setWorldWidth(int worldWidth) {
+        this.WORLD_WIDTH = worldWidth;
+        this.SENTINEL_PLAYER_RIGHT = worldWidth - 9*GameWindow.blockSize;
+    }
+
+    public void setDefaultCoordinates() {
+        this.xMap = INITIAL_PLAYER_ABSCISSE;
+        this.yMap = INITIAL_PLAYER_ORDINATE;
+        this.xVel = this.yVel = 0;
+        this.xCord = xMap;
+        this.yCord = yMap;
+    }
+
+    public void getDamage() {
+        health.getDamage();
+        if(health.dead){
+            alive = false;
+            return;
+        }
+        setDefaultCoordinates();
     }
 
     public BufferedImage getImage() {

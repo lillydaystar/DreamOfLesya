@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -18,25 +20,33 @@ import java.io.IOException;
  */
 public class GamePanel extends JPanel {
 
-    public static final int mapCols = 90;
-    public static final int mapRows = 0;
-    public static final int worldWidth = GameWindow.blockSize * mapCols;
-    public static final int worldHeight = GameWindow.blockSize * mapRows;
+
 
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
     /*private int level;*/
+    private List<Creature> creatures;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
-        this.dm = new DrawMap();
+        this.dm = new DrawMap(level, this);
         this.cossack = new Cossack();
+        this.cossack.setHealth(level);
+        creatures = new LinkedList<>();
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
+        this.dm.setCossacksParams();
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("images/upheavtt.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -45,6 +55,15 @@ public class GamePanel extends JPanel {
         Toolkit.getDefaultToolkit().sync();
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        graphics2D.setColor(Color.darkGray);
+        graphics2D.fillRect(0,0, GameWindow.screenWidth, 3*GameWindow.blockSize/2);
+        graphics2D.setPaint(Color.white);
+        graphics2D.setFont(new Font("Upheaval TT (BRK)", Font.BOLD, 50));
+        String s = "Coins: " + cossack.coins;
+        FontMetrics fm = graphics2D.getFontMetrics();
+        int x = GameWindow.screenWidth - fm.stringWidth(s) - 5;
+        int y = fm.getHeight();
+        graphics2D.drawString(s, x, y);
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         for (Creature creature : this.dm.creatures) {
@@ -68,7 +87,7 @@ public class GamePanel extends JPanel {
             int l = dm.getLevel();
             switch (l){
                 case 1:
-                    this.background = ImageIO.read(new File("images/back.png"));
+                    this.background = ImageIO.read(new File("images/background1.png"));
                     break;
                 case 2:
                     this.background = ImageIO.read(new File("images/background2.jpg"));
@@ -77,15 +96,23 @@ public class GamePanel extends JPanel {
                     this.background = ImageIO.read(new File("images/background3.jpg"));
                     break;
                 case 4:
-                    this.background = ImageIO.read(new File("images/background4.jpg"));
+                    this.background = ImageIO.read(new File("images/background4.png"));
                     break;
                 case 5:
-                    this.background = ImageIO.read(new File("images/background5.jpg"));
+                    this.background = ImageIO.read(new File("images/background5.png"));
                     break;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changeLevel(int level) {
+        this.cossack.setDefaultCoordinates();
+        this.dm = new DrawMap(level, this);
+        setBackgroundImage();
+        dm.setCossack(this.cossack);
+        this.dm.setCossacksParams();
     }
 
     private class KeyCommander implements KeyListener {

@@ -11,7 +11,7 @@ public class GameWindow extends JFrame implements Runnable {
 
     private static final int blockActualSize = 24;
     public static final int blockSize = 2 * blockActualSize;
-    static final int rowsOnScreen = 12;
+    static final int rowsOnScreen = 13;
     static final int columnsOnScreen = 17;
     public static final int screenWidth = blockSize * columnsOnScreen;
     public static final int screenHeight = blockSize * rowsOnScreen;
@@ -42,7 +42,7 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     private void drawGame() {
-        this.panel = new GamePanel(1);
+        this.panel = new GamePanel(4);
         this.panel.setFocusable(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
