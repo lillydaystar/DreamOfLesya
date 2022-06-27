@@ -42,7 +42,7 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     private void drawGame() {
-        this.panel = new GamePanel(4);
+        this.panel = new GamePanel(1);
         this.panel.setFocusable(true);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);

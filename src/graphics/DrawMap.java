@@ -1,5 +1,7 @@
 package graphics;
 
+import graphics.bonus.Bonus;
+
 import creatures.Creature;
 import creatures.Cossack;
 import creatures.enemies.Lisovyk;
@@ -18,6 +20,7 @@ import java.util.LinkedList;
 public class DrawMap {
 
     Block[] blocks;
+    Bonus[] bonuses = new Bonus[15];
     char[][] map;
     ArrayList<Character> marks = new ArrayList<>();
     LinkedList<Creature> creatures;
@@ -28,15 +31,14 @@ public class DrawMap {
     private int cols_on_map, rows_on_map;
 
     public DrawMap(int level, GamePanel panel) {
-        this.blocks = new Block[7];
         this.panel = panel;
+        this.blocks = new Block[10];
         blocks[0] = new Block();
         blocks[0].collision = true;
         blocks[1] = new Block();
         blocks[1].collision = true;
         blocks[2] = new Block();
         blocks[2].collision = true;
-        blocks[2].breakable = true;
         blocks[3] = new Block();
         blocks[3].collision = true;
         blocks[4] = new Block();
@@ -50,7 +52,6 @@ public class DrawMap {
         marks.add('+');
         marks.add('H');
         marks.add('W');
-        level = 1;
         this.creatures = new LinkedList<>();
         this.level = level;
         loadMap();
@@ -94,8 +95,8 @@ public class DrawMap {
                     blocks[6].image = ImageIO.read(new File("images/Water.jpg"));
                     break;
                 case 5:
-                    this.map = new char[GameWindow.columnsOnScreen][GameWindow.rowsOnScreen];
                     this.mapFile = new File("worlds/map5.txt");
+                    blocks[0].image = ImageIO.read(new File("images/DarkGrass.jpg"));
                     break;
             }
         } catch (IOException e) {
@@ -120,6 +121,7 @@ public class DrawMap {
             int spriteNumber = Integer.valueOf(characteristics[2]);
             this.rows_on_map = Integer.valueOf(characteristics[0]);
             this.cols_on_map = Integer.valueOf(characteristics[1]);
+            this.map = new char[cols_on_map][rows_on_map+1];
             while(rows < GameWindow.rowsOnScreen) {
                 String s = br.readLine();
                 String[] str = s.split("");
@@ -177,6 +179,11 @@ public class DrawMap {
                 col = 0;
                 row++;
                 y += GameWindow.blockSize;
+            }
+        }
+        for (Bonus bonus : bonuses) {
+            if (bonus != null) {
+                drawBonus(g, bonus);
             }
         }
         checkCollision();
@@ -253,12 +260,84 @@ public class DrawMap {
     }
 
     private boolean checkBlock(int col, int row) {
-        if(blocks[marks.indexOf(map[col][row])].breakable){
+        if(map[col][row] == 'Q'){
             map[col][row] = 'B';
             /*method for bonus*/
+            throwBonus(col, row);
             System.out.println("BONUS!!!");
         }
-        return !blocks[marks.indexOf(map[col][row])].breakable;
+        return map[col][row] != 'Q';
+    }
+
+    private void throwBonus(int col, int row) {
+        int bonusNum = randomNumber();
+        Bonus b = new Bonus(bonusNum, this.cossack, col, row);
+        for (int i=0; i<bonuses.length; i++) {
+            if (bonuses[i] == null) {
+                bonuses[i] = b;
+                break;
+            }
+        }
+    }
+
+    private void drawBonus(Graphics2D graphics2D, Bonus bonus){
+        bonus.setWorldX(bonus.getWorldX()+bonus.getxVel());
+        bonus.setWorldY(bonus.getWorldY()+bonus.getyVel());
+
+        if(bonus.isFall()){
+            bonus.setyVel(bonus.getyVel()+2);
+            if(map[bonus.getWorldX()/GameWindow.blockSize + 1][bonus.getWorldY()/GameWindow.blockSize] != '0'
+                    && map[bonus.getWorldX()/GameWindow.blockSize + 1][bonus.getWorldY()/GameWindow.blockSize] != '+'){
+                bonus.setFall(false);
+                bonus.setxVel(0);
+                bonus.setyVel(0);
+                bonus.setWorldY((bonus.getWorldY()/GameWindow.blockSize - 1)*GameWindow.blockSize);
+            }
+        }
+
+        if((bonus.getWorldX() - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize||
+                bonus.getWorldX() * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&
+                bonus.getWorldX() * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX()) {
+            int x = bonus.getWorldX() - this.cossack.getWorldX() + cossack.getX();
+            int y = bonus.getWorldY();
+            graphics2D.drawImage(bonus.getImage(), x, y,
+                    GameWindow.blockSize, GameWindow.blockSize, null);
+        }
+    }
+
+    private int randomNumber() {
+        int random = (int) Math.floor(Math.random() * 100) + 1; // 1..100
+        switch (level){
+            case 1:
+                if(random < 51) return 1;
+                else return 2;
+            case 2:
+                if(random < 46) return 1;
+                else if(random < 76) return 2;
+                else return 3;
+            case 3:
+                if(random < 41) return 1;
+                else if(random < 56) return 2;
+                else if (random < 71) return 3;
+                else if(random < 86) return 4;
+                else return 5;
+            case 4:
+                if(random < 36) return 1;
+                else if(random < 50) return 2;
+                else if (random < 64) return 3;
+                else if(random < 78) return 4;
+                else if (random < 92) return 5;
+                else return 6;
+            case 5:
+                if(random < 21) return 1;
+                else if(random < 37) return 2;
+                else if (random < 53) return 3;
+                else if(random < 69) return 4;
+                else if (random < 85) return 5;
+                else return 6;
+            default:
+                return 1;
+        }
     }
 
     private void changeCollision(int col, int bottomRow, int topRow) {

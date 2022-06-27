@@ -21,12 +21,12 @@ public class Lisovyk extends VerticalEnemy {
 
     public Lisovyk(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, GameWindow.blockSize - 2);
+        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize*2 - 2, GameWindow.blockSize - 2);
     }
 
     @Override
     public int getFigureWidth() {
-        return GameWindow.blockSize;
+        return GameWindow.blockSize*2;
     }
 
     @Override
