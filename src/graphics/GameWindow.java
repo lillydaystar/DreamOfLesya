@@ -25,27 +25,43 @@ public class GameWindow extends JFrame implements Runnable {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
-//        drawMainMenu();
-        drawGame();
+        drawMainMenu();
+//        drawGame();
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.gameThread = new Thread(this);
-        this.gameThread.start();
     }
 
     private void drawMainMenu() {
-        this.control = new FirstPanel();
+        this.control = new FirstPanel(this);
         this.control.setFocusable(true);
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
     }
 
-    private void drawGame() {
+    public void drawGame() {
+        if(control != null) {
+            this.control.setFocusable(false);
+            this.remove(control);
+            control = null;
+        }
         this.panel = new GamePanel(1);
-        this.panel.setFocusable(true);
+
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
+        this.revalidate();
+        this.repaint();
+        this.panel.setFocusable(true);
+        this.panel.requestFocusInWindow();
+        this.gameThread.start();
+    }
+
+    public void drawBestiary(){
+        this.control = new BestiaryPanel();
+        this.control.setFocusable(true);
+        this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.add(this.control);
     }
 
     private void update() {
