@@ -20,7 +20,7 @@ public class Bonus {
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
         /*
         We will have 5 types of bonus, there will be:
-            1. Half-hp mode - борщ у колбі
+            1. add hp - борщ у колбі
             2. speed+  -  магічні черевики
             3. extra-life  -  українське серце
             4. super-power  -  цвіт папороті
@@ -41,7 +41,7 @@ public class Bonus {
                     image = ImageIO.read(new File("images/Extra-life.png"));
                     break;
                 case 5:
-                    image = ImageIO.read(new File("images/HalfHPMode.png"));
+                    image = ImageIO.read(new File("images/AddHP.png"));
                     break;
                 case 6:
                     image = ImageIO.read(new File("images/SuperPower.png"));
@@ -117,8 +117,8 @@ public class Bonus {
         switchType();
     }
 
-    /*Не працює на рівнях 1-2 і 5*/
-    private void halfHP(){
+    /*Не працює на рівнях 1-3*/
+    private void addHP(){
         /*this.cossack.setHalfHPMode();*/
     }
 
@@ -133,7 +133,7 @@ public class Bonus {
     }
 
     /*Не працює на рівнях 1-2*/
-    private void invulnerable(){
+    private void extraLife(){
         if(active){
             /*Не отримує ушкоджень 1 раз*/
         }
@@ -163,7 +163,7 @@ public class Bonus {
     }
 
     private void dropCoin(){
-
+        cossack.coins++;
     }
 
     private void switchType(){
@@ -178,10 +178,10 @@ public class Bonus {
                 jumpHigher();
                 break;
             case 4:
-                invulnerable();
+                extraLife();
                 break;
             case 5:
-                halfHP();
+                addHP();
                 break;
             case 6:
                 superPower();
