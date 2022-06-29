@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
         this.dm.setCossacksParams();
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("images/upheavtt.ttf"));
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("files/upheavtt.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (FontFormatException | IOException e) {

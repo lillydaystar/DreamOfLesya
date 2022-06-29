@@ -33,11 +33,16 @@ public class GameWindow extends JFrame implements Runnable {
         this.setVisible(true);
     }
 
-    private void drawMainMenu() {
+    void drawMainMenu() {
         if(panel != null){
             panel.setFocusable(false);
             this.remove(panel);
             panel = null;
+        }
+        if(control != null){
+            control.setFocusable(false);
+            this.remove(control);
+            control = null;
         }
         this.control = new FirstPanel(this);
         this.control.setFocusable(true);
@@ -66,10 +71,18 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     public void drawBestiary(){
-        this.control = new BestiaryPanel();
-        this.control.setFocusable(true);
+        if(control != null){
+            control.setFocusable(false);
+            this.remove(control);
+            control = null;
+        }
+        this.control = new BestiaryPanel(this);
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
+        this.revalidate();
+        this.repaint();
+        this.control.setFocusable(true);
+        this.control.requestFocusInWindow();
     }
 
     private void update() {
@@ -83,7 +96,6 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     private void stopGame() {
-        //gameThread.interrupt();
         gameThread = null;
         drawMainMenu();
     }
