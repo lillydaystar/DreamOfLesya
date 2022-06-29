@@ -11,8 +11,8 @@ import java.util.LinkedList;
 
 public class Health {
     private int healthPoints = 0;
-    private LinkedList<BufferedImage> hpImages;
-    private LinkedList<Integer> hpStatus;
+    private final LinkedList<BufferedImage> hpImages;
+    private final LinkedList<Integer> hpStatus;
     private int level;
     private boolean halfHPMode = false;
     public boolean dead = false;
@@ -59,8 +59,8 @@ public class Health {
 
     public void addHP(){
         if(hpStatus.contains(2)){
+            int i = hpStatus.indexOf(2);
             if(hpStatus.contains(0)){
-                int i = hpStatus.indexOf(2);
                 int j = hpStatus.indexOf(0);
                 try {
                     hpStatus.set(i,1);
@@ -72,7 +72,6 @@ public class Health {
                 }
             }
             else{
-                int i = hpStatus.indexOf(2);
                 try {
                     hpStatus.set(i,1);
                     hpImages.set(i, ImageIO.read(new File("images/fullHP.png")));

@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Cossack extends Creature {
 
@@ -24,7 +26,7 @@ public class Cossack extends Creature {
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
 
     private int counter;
-    private boolean alive = true;
+    public boolean alive = true;
     private int WORLD_WIDTH;
     private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
@@ -94,6 +96,21 @@ public class Cossack extends Creature {
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 width, height, null);
         health.drawHP(graphics2D);
+        if(!alive) {
+            BufferedImage img = null;
+            try{
+                img = ImageIO.read(new File("images/GameOver.png"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            graphics2D.drawImage(img, (GameWindow.screenWidth-550)/2, (GameWindow.screenHeight-100)/2, 550, 100, null);
+            die();
+        }
+    }
+
+    private void die() {
+        alive = false;
+        /*add music*/
     }
 
     @Override
@@ -269,7 +286,7 @@ public class Cossack extends Creature {
     public void getDamage() {
         health.getDamage();
         if(health.dead){
-            alive = false;
+            die();
             return;
         }
         setDefaultCoordinates();

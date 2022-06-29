@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -27,6 +29,7 @@ public class GamePanel extends JPanel {
     private Cossack cossack;
     /*private int level;*/
     private List<Creature> creatures;
+    public boolean game = true;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
@@ -75,10 +78,24 @@ public class GamePanel extends JPanel {
     }
 
     void update() {
-        cossack.update();
-        for (Creature creature : this.dm.creatures) {
-            dm.chackTile(creature);
-            creature.update();
+        if(!cossack.alive){
+            this.cossack.setSpeed(1);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    game = false;
+                }
+            };
+            java.util.Timer timer = new Timer();
+            timer.schedule(timerTask, 4000);
+
+        }
+        else {
+            cossack.update();
+            for (Creature creature : this.dm.creatures) {
+                dm.chackTile(creature);
+                creature.update();
+            }
         }
     }
 
@@ -151,6 +168,9 @@ public class GamePanel extends JPanel {
 
             if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jumpRelease();
+            }
+            if(key == KeyEvent.VK_ESCAPE){
+                game = false;
             }
         }
     }

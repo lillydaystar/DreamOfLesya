@@ -18,7 +18,6 @@ public class Bonus {
     private int worldX, worldY;
     private int yVel, xVel;
     private boolean fall;
-    private Thread bonusThread;
 
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
         /*
@@ -195,23 +194,18 @@ public class Bonus {
                 dropCoin();
                 break;
             case 2:
-                this.bonusThread = new Thread(this::speedUp);
                 speedUp();
                 break;
             case 3:
-                this.bonusThread = new Thread(this::jumpHigher);
                 jumpHigher();
                 break;
             case 4:
-                this.bonusThread = new Thread(this::extraLife);
                 extraLife();
                 break;
             case 5:
-                this.bonusThread = new Thread(this::addHP);
                 addHP();
                 break;
             case 6:
-                this.bonusThread = new Thread(this::superPower);
                 superPower();
                 break;
         }

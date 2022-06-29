@@ -20,6 +20,7 @@ public class GameWindow extends JFrame implements Runnable {
     private JPanel control;
 
     private Thread gameThread;
+    public boolean gameOver;
 
     public GameWindow() {
         super("Lesya's Dream");
@@ -30,30 +31,37 @@ public class GameWindow extends JFrame implements Runnable {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.gameThread = new Thread(this);
     }
 
     private void drawMainMenu() {
+        if(panel != null){
+            panel.setFocusable(false);
+            this.remove(panel);
+            panel = null;
+        }
         this.control = new FirstPanel(this);
         this.control.setFocusable(true);
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
+        this.revalidate();
+        this.repaint();
     }
 
     public void drawGame() {
+        this.gameOver = false;
         if(control != null) {
             this.control.setFocusable(false);
             this.remove(control);
             control = null;
         }
         this.panel = new GamePanel(1);
-
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();
         this.repaint();
         this.panel.setFocusable(true);
         this.panel.requestFocusInWindow();
+        this.gameThread = new Thread(this);
         this.gameThread.start();
     }
 
@@ -70,6 +78,14 @@ public class GameWindow extends JFrame implements Runnable {
 
     public void redraw() {
         this.panel.repaint();
+        if(!panel.game)
+            gameOver = true;
+    }
+
+    private void stopGame() {
+        //gameThread.interrupt();
+        gameThread = null;
+        drawMainMenu();
     }
 
     @Override
@@ -86,8 +102,13 @@ public class GameWindow extends JFrame implements Runnable {
             timer += currentTime - lastTime;
             lastTime = currentTime;
             if (delta >= 1) {
-                update();
-                redraw();
+                if(!gameOver) {
+                    update();
+                    redraw();
+                }
+                else {
+                    stopGame();
+                }
                 delta--;
                 count++;
             }
@@ -98,4 +119,5 @@ public class GameWindow extends JFrame implements Runnable {
             }
         }
     }
+
 }
