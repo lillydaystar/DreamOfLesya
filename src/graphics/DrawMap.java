@@ -371,8 +371,13 @@ public class DrawMap {
     }
 
     private void fall(int prevCol, int col, int bottomRow, char lORr){
-        char block = map[col][bottomRow];
-        char prevBlock = map[prevCol][bottomRow];
+        char prevBlock, block;
+        if(col < map.length)
+            block = map[col][bottomRow];
+        else block = map[prevCol][bottomRow];
+        if(prevCol >=0 && prevCol < map.length)
+            prevBlock = map[prevCol][bottomRow];
+        else prevBlock = block;
         if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;

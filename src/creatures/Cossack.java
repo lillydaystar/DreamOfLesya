@@ -28,9 +28,9 @@ public class Cossack extends Creature {
     private int WORLD_WIDTH;
     private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
-    private static final int JUMP_SPEED = -27;
+    private static int JUMP_SPEED = -27;
     private static final int GRAVITY = 2;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private int SENTINEL_PLAYER_RIGHT = WORLD_WIDTH - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
@@ -41,7 +41,7 @@ public class Cossack extends Creature {
     public boolean fall = false;
     public int coins = 0;
 
-    private Health health;
+    public Health health;
 
     static {
         loadImage();
@@ -320,5 +320,13 @@ public class Cossack extends Creature {
     @Override
     protected int getHorizontalSpeed() {
         return HORIZONTAL_SPEED;
+    }
+
+    public void setSpeed(int i) {
+        HORIZONTAL_SPEED += i*4;
+    }
+
+    public void setJump(int i) {
+        JUMP_SPEED -= i*8;
     }
 }

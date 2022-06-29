@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bonus {
     private boolean active;
@@ -120,46 +122,66 @@ public class Bonus {
 
     /*Не працює на рівнях 1-3*/
     private void addHP(){
-        /*this.cossack.setHalfHPMode();*/
+       this.cossack.health.addHP();
     }
 
     /*Працює на всіх рівнях*/
     private void speedUp(){
-        /*if(active){
+        if(active){
             this.cossack.setSpeed(1);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 3000);
         }
         else{
             this.cossack.setSpeed(-1);
-        }*/
+        }
     }
 
     /*Не працює на рівнях 1-2*/
     private void extraLife(){
-        if(active){
-            /*Не отримує ушкоджень 1 раз*/
-        }
-        else{
-
-        }
+        cossack.health.addExtraLife();
     }
 
     /*Не працює на рівнях 1-3*/
     private void superPower(){
         if(active){
             /*Бонус, який триває певний час. За цей час козак зможе збивати будь-якого ворога*/
+            //метод для збивання (потрібні пророблені вороги)
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 4500);
         }
         else{
-
+            //метод деактивації бонуса
         }
     }
 
     /*Не працює на рівні 1*/
     private void jumpHigher(){
         if(active){
-
+            this.cossack.setJump(1);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 4000);
         }
         else{
-
+            this.cossack.setJump(-1);
         }
     }
 
