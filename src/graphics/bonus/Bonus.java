@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bonus {
     private boolean active;
@@ -20,7 +22,7 @@ public class Bonus {
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
         /*
         We will have 5 types of bonus, there will be:
-            1. Half-hp mode - борщ у колбі
+            1. add hp - борщ у колбі
             2. speed+  -  магічні черевики
             3. extra-life  -  українське серце
             4. super-power  -  цвіт папороті
@@ -41,7 +43,7 @@ public class Bonus {
                     image = ImageIO.read(new File("images/Extra-life.png"));
                     break;
                 case 5:
-                    image = ImageIO.read(new File("images/HalfHPMode.png"));
+                    image = ImageIO.read(new File("images/AddHP.png"));
                     break;
                 case 6:
                     image = ImageIO.read(new File("images/SuperPower.png"));
@@ -117,53 +119,73 @@ public class Bonus {
         switchType();
     }
 
-    /*Не працює на рівнях 1-2 і 5*/
-    private void halfHP(){
-        /*this.cossack.setHalfHPMode();*/
+    /*Не працює на рівнях 1-3*/
+    private void addHP(){
+       this.cossack.health.addHP();
     }
 
     /*Працює на всіх рівнях*/
     private void speedUp(){
-        /*if(active){
+        if(active){
             this.cossack.setSpeed(1);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 3000);
         }
         else{
             this.cossack.setSpeed(-1);
-        }*/
+        }
     }
 
     /*Не працює на рівнях 1-2*/
-    private void invulnerable(){
-        if(active){
-            /*Не отримує ушкоджень 1 раз*/
-        }
-        else{
-
-        }
+    private void extraLife(){
+        cossack.health.addExtraLife();
     }
 
     /*Не працює на рівнях 1-3*/
     private void superPower(){
         if(active){
             /*Бонус, який триває певний час. За цей час козак зможе збивати будь-якого ворога*/
+            //метод для збивання (потрібні пророблені вороги)
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 4500);
         }
         else{
-
+            //метод деактивації бонуса
         }
     }
 
     /*Не працює на рівні 1*/
     private void jumpHigher(){
         if(active){
-
+            this.cossack.setJump(1);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    inactivateBonus();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(timerTask, 4000);
         }
         else{
-
+            this.cossack.setJump(-1);
         }
     }
 
     private void dropCoin(){
-
+        cossack.coins++;
     }
 
     private void switchType(){
@@ -178,10 +200,10 @@ public class Bonus {
                 jumpHigher();
                 break;
             case 4:
-                invulnerable();
+                extraLife();
                 break;
             case 5:
-                halfHP();
+                addHP();
                 break;
             case 6:
                 superPower();

@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Cossack extends Creature {
 
@@ -24,13 +26,13 @@ public class Cossack extends Creature {
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
 
     private int counter;
-    private boolean alive = true;
+    public boolean alive = true;
     private int WORLD_WIDTH;
     private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
-    private static final int JUMP_SPEED = -27;
+    private static int JUMP_SPEED = -27;
     private static final int GRAVITY = 2;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private int SENTINEL_PLAYER_RIGHT = WORLD_WIDTH - 9 * GameWindow.blockSize;
     private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
@@ -41,7 +43,7 @@ public class Cossack extends Creature {
     public boolean fall = false;
     public int coins = 0;
 
-    private Health health;
+    public Health health;
 
     static {
         loadImage();
@@ -94,6 +96,21 @@ public class Cossack extends Creature {
         graphics2D.drawImage(image, getScreenX(), getScreenY(),
                 width, height, null);
         health.drawHP(graphics2D);
+        if(!alive) {
+            BufferedImage img = null;
+            try{
+                img = ImageIO.read(new File("images/GameOver.png"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            graphics2D.drawImage(img, (GameWindow.screenWidth-550)/2, (GameWindow.screenHeight-100)/2, 550, 100, null);
+            die();
+        }
+    }
+
+    private void die() {
+        alive = false;
+        /*add music*/
     }
 
     @Override
@@ -269,7 +286,7 @@ public class Cossack extends Creature {
     public void getDamage() {
         health.getDamage();
         if(health.dead){
-            alive = false;
+            die();
             return;
         }
         setDefaultCoordinates();
@@ -320,5 +337,13 @@ public class Cossack extends Creature {
     @Override
     protected int getHorizontalSpeed() {
         return HORIZONTAL_SPEED;
+    }
+
+    public void setSpeed(int i) {
+        HORIZONTAL_SPEED += i*4;
+    }
+
+    public void setJump(int i) {
+        JUMP_SPEED -= i*8;
     }
 }

@@ -18,7 +18,7 @@ import java.util.LinkedList;
 public class DrawMap {
 
     Block[] blocks;
-    Bonus[] bonuses = new Bonus[15];
+    LinkedList<Bonus> bonuses = new LinkedList<>();
     char[][] map;
     ArrayList<Character> marks = new ArrayList<>();
     LinkedList<Creature> creatures;
@@ -169,7 +169,7 @@ public class DrawMap {
                         col * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX())     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             } else if(number == 5) {
-                g.drawImage(blocks[number].image, x, y-GameWindow.blockSize*4,
+                g.drawImage(blocks[number].image, x-GameWindow.blockSize*2, y-GameWindow.blockSize*4,
                         GameWindow.blockSize*6, GameWindow.blockSize*5, null);
             }
             col++;
@@ -179,10 +179,9 @@ public class DrawMap {
                 y += GameWindow.blockSize;
             }
         }
-        for (Bonus bonus : bonuses) {
-            if (bonus != null) {
+        if (!bonuses.isEmpty()) {
+            for(Bonus bonus : bonuses)
                 drawBonus(g, bonus);
-            }
         }
         checkCollision();
     }
@@ -221,19 +220,19 @@ public class DrawMap {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
                         if(checkBlock(rightCol, topRow))
-                            checkForCoin(rightCol, bottomRow);
+                            checkForBonus(rightCol, bottomRow);
                     } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         this.cossack.setVelocityY(0);
                         this.cossack.fall = true;
                         if(checkBlock(leftCol, topRow))
-                            checkForCoin(leftCol,bottomRow);
+                            checkForBonus(leftCol,bottomRow);
                     }
                 }
                 if(cossack.getVelocityY() > 0) {
                     block1 = map[rightCol][bottomRow];
                     block2 = map[leftCol][bottomRow];
-                    checkForCoin(rightCol,bottomRow);
-                    checkForCoin(leftCol,bottomRow);
+                    checkForBonus(rightCol,bottomRow);
+                    checkForBonus(leftCol,bottomRow);
                     if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
@@ -249,10 +248,19 @@ public class DrawMap {
             }
     }
 
-    private void checkForCoin(int col, int row) {
+    private void checkForBonus(int col, int row) {
         if (map[col][row] == '+') {
             cossack.coins++;
             map[col][row] = '0';
+        }
+        if(map[col][row] == '0' && !bonuses.isEmpty()){
+            for (Bonus bonus : bonuses) {
+                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
+                        && bonus.getWorldY() / GameWindow.blockSize == row) {
+                    bonus.activateBonus();
+                    bonuses.remove(bonus);
+                }
+            }
         }
     }
 
@@ -269,12 +277,7 @@ public class DrawMap {
     private void throwBonus(int col, int row) {
         int bonusNum = randomNumber();
         Bonus b = new Bonus(bonusNum, this.cossack, col, row);
-        for (int i=0; i<bonuses.length; i++) {
-            if (bonuses[i] == null) {
-                bonuses[i] = b;
-                break;
-            }
-        }
+        bonuses.add(b);
     }
 
     private void drawBonus(Graphics2D graphics2D, Bonus bonus){
@@ -347,21 +350,31 @@ public class DrawMap {
             }
             else if (block1 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block1)].collision;
-                checkForCoin(col, bottomRow-1);
+                if(!this.cossack.collision)
+                    checkForBonus(col, bottomRow-1);
             }
             else if (block2 != '0') {
                 this.cossack.collision = blocks[marks.indexOf(block2)].collision;
-                checkForCoin(col, topRow);
+                if(!this.cossack.collision)
+                    checkForBonus(col, topRow);
             }
-            else this.cossack.collision = false;
+            else{
+                this.cossack.collision = false;
+                checkForBonus(col, bottomRow-1);
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.printf("%d %d\n", col, bottomRow);
         }
     }
 
     private void fall(int prevCol, int col, int bottomRow, char lORr){
-        char block = map[col][bottomRow];
-        char prevBlock = map[prevCol][bottomRow];
+        char prevBlock, block;
+        if(col < map.length)
+            block = map[col][bottomRow];
+        else block = map[prevCol][bottomRow];
+        if(prevCol >=0 && prevCol < map.length)
+            prevBlock = map[prevCol][bottomRow];
+        else prevBlock = block;
         if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
