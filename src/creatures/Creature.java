@@ -1,5 +1,7 @@
 package creatures;
 
+import graphics.GameWindow;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -13,30 +15,43 @@ public abstract class Creature {
 
     protected Rectangle solidArea;
     protected int draw_counter;
+    protected CreatureState state;
 
     Creature() {}
 
     public Creature(int x, int y) {
         this.abscissa = x;
         this.ordinate = y;
+        this.state = CreatureState.Alive;
     }
 
     public abstract void update();
 
     public void draw(Graphics2D graph, int playerAbscissa, int playerOrdinate,
                      int playerScreenX, int playerScreenY) {
-        graph.drawImage(getImage(), getScreenAbscissa(playerAbscissa, playerScreenX),
-                getScreenOrdinate(playerOrdinate, playerScreenY), getFigureWidth(), getFigureHeight(), null);
+        int enemyScreenAbscissa = getScreenAbscissa(playerAbscissa, playerScreenX);
+        int enemyScreenOrdinate = getScreenOrdinate(playerOrdinate, playerScreenY);
+        graph.drawImage(getImage(), enemyScreenAbscissa, enemyScreenOrdinate,
+                getFigureWidth(), getFigureHeight(), null);
         ++draw_counter;
         if (this.draw_counter == 2*getDrawRate())
             this.draw_counter = 0;
+        if (enemyScreenAbscissa >= 0 && enemyScreenAbscissa < GameWindow.screenWidth &&
+                enemyScreenOrdinate >= 0 && enemyScreenOrdinate < GameWindow.screenHeight)
+            wake();
     }
 
-    public void collideHorizontally() {
+    public void die() {
+        this.state = CreatureState.Dead;
+    }
+
+    protected abstract void wake();
+
+    protected void collideHorizontally() {
         this.velocityX *= -1;
     }
 
-    public void collideVertically() {
+    protected void collideVertically() {
         this.velocityY *= -1;
     }
 

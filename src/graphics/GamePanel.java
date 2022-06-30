@@ -22,8 +22,6 @@ import java.util.TimerTask;
  */
 public class GamePanel extends JPanel {
 
-
-
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;

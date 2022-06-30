@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Cossack extends Creature {
 
@@ -108,7 +106,8 @@ public class Cossack extends Creature {
         }
     }
 
-    private void die() {
+    @Override
+    public void die() {
         alive = false;
         /*add music*/
     }
@@ -346,4 +345,6 @@ public class Cossack extends Creature {
     public void setJump(int i) {
         JUMP_SPEED -= i*8;
     }
+
+    protected void wake() {}
 }

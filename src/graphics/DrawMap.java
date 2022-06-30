@@ -402,9 +402,9 @@ public class DrawMap {
         int creatureBottomWorldY = creatureTopWorldY + creature.getSolidArea().height;
 
         int creatureLeftCol = creatureLeftWorldX/GameWindow.blockSize;
-        int creatureRightCol = creatureRightWorldX/GameWindow.blockSize;
+        int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
         int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
-        int creatureBottomRow = creatureBottomWorldY/GameWindow.blockSize;
+        int creatureBottomRow = round((float)creatureBottomWorldY/GameWindow.blockSize);
         char tileNum1, tileNum2;
 
         if (creature.getVelocityY() > 0) {
@@ -427,18 +427,26 @@ public class DrawMap {
             int moveCreatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
             tileNum1 = this.map[moveCreatureRightCol][creatureTopRow];
             tileNum2 = this.map[moveCreatureRightCol][creatureBottomRow];
+//            System.out.printf("%d\n", moveCreatureRightCol);
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.rightCollision();
-        }
-        if (creature.getVelocityX() < 0) {
+//                if (creature instanceof Mavka)
+//                    System.out.printf("right %d %d\n", moveCreatureRightCol, creature.getOrdinate());
+            }
+        } else if (creature.getVelocityX() < 0) {
             int moveCreatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
             tileNum1 = this.map[moveCreatureLeftCol][creatureTopRow];
             tileNum2 = this.map[moveCreatureLeftCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.leftCollision();
+//                if (creature instanceof Mavka)
+//                    System.out.printf("left %d %d\n", moveCreatureLeftCol, creature.getOrdinate());
+            }
         }
+//        if (creature instanceof Mavka)
+//            System.out.printf("%d %d %d %d\n", creatureTopRow, creatureRightCol, creatureBottomRow, creatureLeftCol);
     }
 
     private void addCreature(String[] characteristics) {
@@ -490,5 +498,10 @@ public class DrawMap {
 
     public void setCossacksParams() {
         cossack.setWorldWidth(map.length*GameWindow.blockSize);
+    }
+
+    private int round(float number) {
+        if (number % 1 == 0) return (int)number - 1;
+        return (int)number;
     }
 }
