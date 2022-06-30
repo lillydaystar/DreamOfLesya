@@ -149,6 +149,10 @@ public class DrawMap {
 
     public void setCossack(Cossack cossack){
         this.cossack = cossack;
+        if(level > 1)
+            this.cossack.health.levelConfigs(level);
+        Bonus sh = new Bonus(7, this.cossack, 25, 12);  //test shablia
+        bonuses.add(sh);
     }
 
     public int getLevel(){
@@ -260,8 +264,8 @@ public class DrawMap {
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
             for (Bonus bonus : bonuses) {
-                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
-                        && bonus.getWorldY() / GameWindow.blockSize == row) {
+                if (bonus != null && bonus.getSolidX() / GameWindow.blockSize == col
+                        && bonus.getSolidY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
                     bonuses.remove(bonus);
                 }

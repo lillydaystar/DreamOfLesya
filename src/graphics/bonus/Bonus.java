@@ -4,6 +4,7 @@ import creatures.Cossack;
 import graphics.GameWindow;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class Bonus {
     private int worldX, worldY;
     private int yVel, xVel;
     private boolean fall;
+
+    private Rectangle solidArea = new Rectangle(3, 3, GameWindow.blockSize - 4, 2*GameWindow.blockSize - 4);
 
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
         /*
@@ -48,13 +51,22 @@ public class Bonus {
                 case 6:
                     image = ImageIO.read(new File("images/SuperPower.png"));
                     break;
+                case 7:
+                    image = ImageIO.read(new File("images/Shablia.png"));
             }
         }catch (IOException e){
             e.printStackTrace();
         }
         this.type = type;
         this.cossack = cossack;
-        fallOut(blockCol, blockRow);
+        if(type < 7)
+            fallOut(blockCol, blockRow);
+        else{
+            yVel = 0;
+            xVel = 0;
+            worldX = blockCol * GameWindow.blockSize;
+            worldY = (blockRow-1) * GameWindow.blockSize;
+        }
     }
 
     private void fallOut(int blockCol, int blockRow) {
@@ -107,6 +119,14 @@ public class Bonus {
 
     public void setxVel(int xVel) {
         this.xVel = xVel;
+    }
+
+    public int getSolidX(){
+        return this.worldX + solidArea.x;
+    }
+
+    public int getSolidY(){
+        return this.worldY + solidArea.y;
     }
 
     public void activateBonus(){
@@ -184,6 +204,10 @@ public class Bonus {
         }
     }
 
+    private void canFight() {
+        this.cossack.setFightMode(1);
+    }
+
     private void dropCoin(){
         cossack.coins++;
     }
@@ -207,6 +231,9 @@ public class Bonus {
                 break;
             case 6:
                 superPower();
+                break;
+            case 7:
+                canFight();
                 break;
         }
     }
