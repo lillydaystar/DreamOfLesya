@@ -1,5 +1,6 @@
 package graphics;
 
+import creatures.Harakternyk;
 import creatures.enemies.*;
 import graphics.bonus.Bonus;
 
@@ -471,6 +472,15 @@ public class DrawMap {
                 break;
             case 'Z':
                 this.creatures.add(new Zlyden(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            /*case 'E':
+                this.creatures.add(new Perelesnyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'C':
+                this.creatures.add(new Chort(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;*/
+            case 'H':
+                this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""

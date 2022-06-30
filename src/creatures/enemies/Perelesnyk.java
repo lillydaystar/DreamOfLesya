@@ -9,28 +9,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Mavka extends WalkingEnemy {
+public class Perelesnyk extends HorizontalEnemy {
 
     private static final int DRAW_RATE = 10;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static final int HORIZONTAL_SPEED = 5;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd;
 
     static {
         loadImage();
     }
 
-    public Mavka(int x, int y) {
+    Perelesnyk(int x, int y) {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
-    }
-
-    public int getDrawRate() {
-        return DRAW_RATE;
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
-        return HORIZONTAL_SPEED;
     }
 
     @Override
@@ -40,30 +31,40 @@ public class Mavka extends WalkingEnemy {
 
     @Override
     public int getFigureHeight() {
-        return 2*GameWindow.blockSize;
+        return GameWindow.blockSize;
     }
 
     @Override
     protected BufferedImage getImage() {
         if (this.velocityX < 0) {
             if (this.draw_counter < getDrawRate())
-                return Mavka.left_fst;
+                return Perelesnyk.left_fst;
             else
-                return Mavka.left_snd;
+                return Perelesnyk.left_snd;
         } else {
             if (this.draw_counter < getDrawRate())
-                return Mavka.right_fst;
+                return Perelesnyk.right_fst;
             else
-                return Mavka.right_snd;
+                return Perelesnyk.right_snd;
         }
+    }
+
+    @Override
+    protected int getDrawRate() {
+        return DRAW_RATE;
+    }
+
+    @Override
+    protected int getHorizontalSpeed() {
+        return HORIZONTAL_SPEED;
     }
 
     private static void loadImage() {
         try {
-            Mavka.left_fst = ImageIO.read(new File("heroes/MavkaL_1.png"));
-            Mavka.left_snd = ImageIO.read(new File("heroes/MavkaL_2.png"));
-            Mavka.right_fst = ImageIO.read(new File("heroes/MavkaR_1.png"));
-            Mavka.right_snd = ImageIO.read(new File("heroes/MavkaR_2.png"));
+            Perelesnyk.left_fst = ImageIO.read(new File("heroes/PerelesnykL_1.png"));
+            Perelesnyk.left_snd = ImageIO.read(new File("heroes/PerelesnykL_2.png"));
+            Perelesnyk.right_fst = ImageIO.read(new File("heroes/PerelesnykR_1.png"));
+            Perelesnyk.right_snd = ImageIO.read(new File("heroes/PerelesnykR_2.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for mavka",
                     "Error", JOptionPane.ERROR_MESSAGE);
