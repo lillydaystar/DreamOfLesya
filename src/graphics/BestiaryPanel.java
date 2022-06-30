@@ -56,7 +56,7 @@ public class BestiaryPanel extends JPanel {
     private void createTable(){
         LinkedList<ImageIcon> images = new LinkedList<>();
         /*Усі зображення істот: */
-        images. add(new ImageIcon("heroes/CossackL_1.png")); //here should be viy
+        images. add(new ImageIcon("heroes/ViyC_1.png")); //here should be viy
         images. add(new ImageIcon("heroes/VodianykL.png"));
         images. add(new ImageIcon("heroes/DomovykL.png"));
         images. add(new ImageIcon("heroes/ZlydenL_1.png"));
@@ -73,10 +73,10 @@ public class BestiaryPanel extends JPanel {
         /*Задаємо ширину і висоту для істот індивідуально*/
         for(int i=0; i<13; i++){
             int width, height;
-            if(i == 0){
+            /*if(i == 0){
                 width = 120;
                 height = 240;
-            }else if (i==5 || i==7 || i==10){
+            }else */if (i==5 || i==7 || i==10){
                 width = 180;
                 height = 240;
             }else if(i == 1 || i == 2 || i == 4 || i == 8) {
@@ -150,8 +150,9 @@ public class BestiaryPanel extends JPanel {
         public CustomRenderer() {
             textArea = new JTextArea();
             textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
             textArea.setOpaque(false);
-            textArea.setFont(new Font("Bookman Old Style", Font.BOLD, 22));
+            textArea.setFont(new Font("Bookman Old Style", Font.BOLD, 21));
         }
 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

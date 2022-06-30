@@ -1,5 +1,6 @@
 package graphics;
 
+import creatures.enemies.Viy;
 import graphics.bonus.Bonus;
 
 import creatures.Creature;
@@ -97,6 +98,7 @@ public class DrawMap {
                 case 5:
                     this.mapFile = new File("worlds/map5.txt");
                     blocks[0].image = ImageIO.read(new File("images/DarkGrass.jpg"));
+                    blocks[1].image = ImageIO.read(new File("images/DarkTree.png"));
                     break;
             }
         } catch (IOException e) {
@@ -459,6 +461,9 @@ public class DrawMap {
                 break;
             case "R":
                 this.creatures.add(new Rusalka(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case "V":
+                this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""
