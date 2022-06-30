@@ -9,7 +9,7 @@ public class GameWindow extends JFrame implements Runnable {
     private static final int CLOCK_RATE = 60;
     private static final long NANOSECOND_IN_SECOND = 1000000000L;
 
-    private static final int blockActualSize = 24;
+    private static final int blockActualSize = 25;
     public static final int blockSize = 2 * blockActualSize;
     static final int rowsOnScreen = 13;
     static final int columnsOnScreen = 17;

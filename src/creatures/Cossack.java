@@ -1,6 +1,5 @@
 package creatures;
 
-import creatures.Creature;
 import graphics.*;
 
 import javax.imageio.ImageIO;
@@ -21,6 +20,7 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean leftCommand, rightCommand, jumpCommand;
+    private boolean collisionRight, collisionLeft, collisionAbove, collisionBelow;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
 
     private int counter;
@@ -225,7 +225,7 @@ public class Cossack extends Creature {
             Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
             Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
             Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
-            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
+//            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);

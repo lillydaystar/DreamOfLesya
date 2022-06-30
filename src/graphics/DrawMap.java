@@ -1,12 +1,10 @@
 package graphics;
 
+import creatures.enemies.*;
 import graphics.bonus.Bonus;
 
 import creatures.Creature;
 import creatures.Cossack;
-import creatures.enemies.Lisovyk;
-import creatures.enemies.Mavka;
-import creatures.enemies.Rusalka;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -197,7 +195,6 @@ public class DrawMap {
             int rectTopY = this.cossack.getWorldY() + collisionArea.y;
             double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
 
-
             int leftCol = rectLeftX/GameWindow.blockSize;
             int rightCol = rectRightX/GameWindow.blockSize;
             int topRow = rectTopY/GameWindow.blockSize;
@@ -345,7 +342,7 @@ public class DrawMap {
             char block1, block2;
             block1 = map[col][bottomRow-1];
             block2 = map[col][topRow];
-            if(block1 == 'H' || block2 == 'H'){
+            if(block1 == 'H' || block2 == 'H') {
                 panel.changeLevel(++this.level);
             }
             else if (block1 != '0') {
@@ -369,16 +366,16 @@ public class DrawMap {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
         }
-        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2){
+        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2) {
             int rectX;
-            if(lORr == 'l'){
+            if(lORr == 'l') {
                 rectX = this.cossack.getWorldX() + GameWindow.blockSize/4;
             }
-            else{
+            else {
                 rectX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - GameWindow.blockSize/4;
             }
             int realCol = rectX/GameWindow.blockSize;
-            if(map[realCol][bottomRow] == 'W'){
+            if(map[realCol][bottomRow] == 'W') {
                 cossack.getDamage();
             }
         }
@@ -397,33 +394,33 @@ public class DrawMap {
         char tileNum1, tileNum2;
 
         if (creature.getVelocityY() > 0) {
-            creatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureBottomRow];
-            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
+            int moveCreatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][moveCreatureBottomRow];
+            tileNum2 = this.map[creatureRightCol][moveCreatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.downCollision();
         }
         if (creature.getVelocityY() < 0) {
-            creatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
-            tileNum2 = this.map[creatureRightCol][creatureTopRow];
+            int moveCreatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][moveCreatureTopRow];
+            tileNum2 = this.map[creatureRightCol][moveCreatureTopRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.upCollision();
         }
         if (creature.getVelocityX() > 0) {
-            creatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureRightCol][creatureTopRow];
-            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
+            int moveCreatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[moveCreatureRightCol][creatureTopRow];
+            tileNum2 = this.map[moveCreatureRightCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.rightCollision();
         }
         if (creature.getVelocityX() < 0) {
-            creatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
-            tileNum2 = this.map[creatureLeftCol][creatureBottomRow];
+            int moveCreatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[moveCreatureLeftCol][creatureTopRow];
+            tileNum2 = this.map[moveCreatureLeftCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.leftCollision();
@@ -437,15 +434,30 @@ public class DrawMap {
         int col = Integer.valueOf(characteristics[1]);
         if (col > this.cols_on_map || col < 0)
             throw new IllegalArgumentException("Неправильний формат карти (колонка ворога за межами)");
-        switch (characteristics[2]) {
-            case "M":
+        switch (characteristics[2].charAt(0)) {
+            case 'M':
                 this.creatures.add(new Mavka(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
-            case "L":
+            case 'R':
+                this.creatures.add(new Rusalka(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'Y':
+                this.creatures.add(new Poludnytsia(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'L':
                 this.creatures.add(new Lisovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
-            case "R":
-                this.creatures.add(new Rusalka(GameWindow.blockSize * col, GameWindow.blockSize * row));
+            case 'K':
+                this.creatures.add(new Vodianyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'U':
+                this.creatures.add(new Poliovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'I':
+                this.creatures.add(new Potercha(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'Z':
+                this.creatures.add(new Zlyden(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""

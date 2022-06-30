@@ -6,6 +6,7 @@ abstract class WalkingEnemy extends Creature {
 
     private static final int GRAVITY = 2;
     private boolean onGround;
+    private boolean alive = true;
 
     WalkingEnemy(int x, int y) {
         super(x, y);
@@ -15,15 +16,16 @@ abstract class WalkingEnemy extends Creature {
 
     @Override
     public void update() {
-        if (this.onGround) {
-            velocityY = GRAVITY;
-            ordinate -= velocityY;
-        } else {
-            velocityY += GRAVITY;
+        if (alive) {
+            if (this.onGround) {
+                super.velocityY = GRAVITY;
+            } else {
+                velocityY += GRAVITY;
+                super.ordinate += super.velocityY;
+            }
+            super.abscissa += super.velocityX;
+            onGround = false;
         }
-        super.abscissa += super.velocityX;
-        super.ordinate += velocityY;
-        onGround = false;
     }
 
     @Override
@@ -43,7 +45,6 @@ abstract class WalkingEnemy extends Creature {
 
     @Override
     public void downCollision() {
-//        super.collideVertically();
         this.onGround = true;
     }
 
