@@ -79,16 +79,16 @@ public class GamePanel extends JPanel {
 
     void update() {
         if(!cossack.alive){
-            this.cossack.setSpeed(1);
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
+                    cossack = null;
+                    dm = null;
                     game = false;
                 }
             };
             java.util.Timer timer = new Timer();
             timer.schedule(timerTask, 4000);
-
         }
         else {
             cossack.update();
@@ -152,6 +152,10 @@ public class GamePanel extends JPanel {
             if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jump();
             }
+
+            if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_F){
+                cossack.fight();
+            }
         }
 
         @Override
@@ -169,6 +173,7 @@ public class GamePanel extends JPanel {
             if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_J) {
                 cossack.jumpRelease();
             }
+
             if(key == KeyEvent.VK_ESCAPE){
                 game = false;
             }
