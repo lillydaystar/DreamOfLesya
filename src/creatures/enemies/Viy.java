@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Viy extends Creature {
 
@@ -40,8 +42,17 @@ public class Viy extends Creature {
         if(countOfChorts == 0 && healthPoints > 0){
             openEyes();
             takeDamage = true;
-            spawnChorts();
-            closeEyes();
+            //таймер
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    spawnChorts();
+                    closeEyes();
+                }
+            };
+            java.util.Timer timer = new Timer();
+            timer.schedule(timerTask, 4500);
+
 
         }else if (healthPoints == 0){
             die();

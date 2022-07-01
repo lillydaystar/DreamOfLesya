@@ -156,7 +156,7 @@ public class DrawMap {
             bonuses.add(sh1);
         }
         if(level == 4){
-            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test shablia
+            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test knife
             bonuses.add(kn);
         }
     }
@@ -234,7 +234,7 @@ public class DrawMap {
                 width, height, null);
     }
 
-    private final Rectangle collisionArea = new Rectangle(2, 2, 22, 45);
+    private final Rectangle collisionArea = new Rectangle(2, 1, 22, 45);
 
     private void checkCollision() {
             int rectLeftX = this.cossack.getWorldX() + collisionArea.x;
@@ -285,12 +285,13 @@ public class DrawMap {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
                         this.cossack.fall = false;
-
+                        fall(rightCol-1, rightCol, bottomRow, 'r');
                     }
                     else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
                         cossack.setVelocityY(0);
                         this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
                         this.cossack.fall = false;
+                        fall(leftCol-1, leftCol, bottomRow, 'l');
                     }
                 }
             }
@@ -303,8 +304,8 @@ public class DrawMap {
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
             for (Bonus bonus : bonuses) {
-                if (bonus != null && bonus.getSolidX() / GameWindow.blockSize == col
-                        && bonus.getSolidY() / GameWindow.blockSize == row) {
+                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
+                        && bonus.getWorldY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
                     bonuses.remove(bonus);
                     break;
@@ -443,7 +444,7 @@ public class DrawMap {
         }
     }
 
-    void chackTile(Creature creature) {
+    void checkTile(Creature creature) {
         int creatureLeftWorldX = creature.getAbscissa() + creature.getSolidArea().x;
         int creatureRightWorldX = creatureLeftWorldX + creature.getSolidArea().width;
         int creatureTopWorldY = creature.getOrdinate() + creature.getSolidArea().y;
