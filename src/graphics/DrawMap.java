@@ -76,7 +76,7 @@ public class DrawMap {
                     blocks[1].image = ImageIO.read(new File("images/BookShelf.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/BookQ.png"));
                     blocks[3].image = ImageIO.read(new File("images/BookB.png"));
-                    blocks[5].image = ImageIO.read(new File("images/house1.png"));
+                    blocks[5].image = ImageIO.read(new File("images/Door.png"));
                     break;
                 case 3:
                     this.mapFile = new File("worlds/map3.txt");
@@ -84,7 +84,7 @@ public class DrawMap {
                     blocks[1].image = ImageIO.read(new File("images/Hay.jpg"));
                     blocks[2].image = ImageIO.read(new File("images/HayQ.png"));
                     blocks[3].image = ImageIO.read(new File("images/HayB.png"));
-                    blocks[5].image = ImageIO.read(new File("images/house1.png"));
+                    blocks[5].image = ImageIO.read(new File("images/Cave.png"));
                     break;
                 case 4:
                     this.mapFile = new File("worlds/map4.txt");
@@ -92,7 +92,7 @@ public class DrawMap {
                     blocks[1].image = ImageIO.read(new File("images/SeaWeed.png"));
                     blocks[2].image = ImageIO.read(new File("images/SeaWeedQ.png"));
                     blocks[3].image = ImageIO.read(new File("images/SeaWeedB.png"));
-                    blocks[5].image = ImageIO.read(new File("images/house1.png"));
+                    blocks[5].image = ImageIO.read(new File("images/Cave.png"));
                     blocks[6].image = ImageIO.read(new File("images/Water.jpg"));
                     break;
                 case 5:
@@ -177,8 +177,26 @@ public class DrawMap {
                         col * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX())     //для пришвидшення обробки інформації
                     g.drawImage(blocks[number].image, x, y, GameWindow.blockSize, GameWindow.blockSize, null);
             } else if(number == 5) {
-                g.drawImage(blocks[number].image, x-GameWindow.blockSize*2, y-GameWindow.blockSize*4,
-                        GameWindow.blockSize*6, GameWindow.blockSize*5, null);
+                int hX, hY, width, height;
+                if(level == 1){
+                    hX = x - 5*GameWindow.blockSize/2;
+                    hY = y-GameWindow.blockSize*4;
+                    width = GameWindow.blockSize*6;
+                    height = GameWindow.blockSize*5;
+                }
+                else if(level == 2){
+                    hX = x - GameWindow.blockSize*2;
+                    hY = y-GameWindow.blockSize*3 + GameWindow.blockSize/2;
+                    width = GameWindow.blockSize*4;
+                    height = GameWindow.blockSize*4;
+                }else{
+                    hX = x - GameWindow.blockSize;
+                    hY = y-GameWindow.blockSize*4;
+                    width = GameWindow.blockSize*6;
+                    height = GameWindow.blockSize*5;
+                }
+                g.drawImage(blocks[number].image, hX, hY,
+                        width, height, null);
             }
             col++;
             if(col == map.length) {
@@ -268,6 +286,7 @@ public class DrawMap {
                         && bonus.getSolidY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
                     bonuses.remove(bonus);
+                    break;
                 }
             }
         }
