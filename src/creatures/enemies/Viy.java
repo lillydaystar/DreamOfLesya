@@ -51,7 +51,13 @@ public class Viy extends Creature {
     private void closeEyes() {
     }
 
-    private void die() {
+    @Override
+    public void die() {
+    }
+
+    @Override
+    protected void wake() {
+
     }
 
     private void openEyes() {
