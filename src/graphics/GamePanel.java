@@ -186,6 +186,10 @@ public class GamePanel extends JPanel {
             if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_F){
                 cossack.fight();
             }
+
+            if(key == KeyEvent.VK_G){
+                cossack.throwKnife();
+            }
         }
 
         @Override

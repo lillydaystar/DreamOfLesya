@@ -1,7 +1,7 @@
 package graphics;
 
 import creatures.enemies.Viy;
-import graphics.bonus.Bonus;
+import creatures.params.Bonus;
 
 import creatures.Creature;
 import creatures.Cossack;
@@ -11,6 +11,7 @@ import creatures.enemies.Rusalka;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -151,8 +152,14 @@ public class DrawMap {
         this.cossack = cossack;
         if(level > 1)
             this.cossack.health.levelConfigs(level);
-        Bonus sh = new Bonus(7, this.cossack, 25, 12);  //test shablia
-        bonuses.add(sh);
+        if(level == 1) {
+            Bonus sh1 = new Bonus(7, this.cossack, 25, 12);  //test shablia
+            bonuses.add(sh1);
+        }
+        if(level == 4){
+            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test shablia
+            bonuses.add(kn);
+        }
     }
 
     public int getLevel(){
@@ -211,12 +218,21 @@ public class DrawMap {
         }
         checkCollision();
         if(level == 5){
-            bossHealthPanel();
+            bossHealthPanel(g);
         }
     }
 
-    private void bossHealthPanel() {
-
+    private void bossHealthPanel(Graphics2D g) {
+        BufferedImage hp = null;
+        try{
+            hp = ImageIO.read(new File("images/BossHp.png"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        int width = 720;
+        int height = 48;
+        g.drawImage(hp, (GameWindow.screenWidth - width)/2, GameWindow.screenHeight - height,
+                width, height, null);
     }
 
     private final Rectangle collisionArea = new Rectangle(2, 2, 22, 45);

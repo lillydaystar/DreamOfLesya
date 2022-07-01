@@ -1,6 +1,6 @@
 package creatures;
 
-import creatures.Creature;
+import creatures.params.Health;
 import graphics.*;
 
 import javax.imageio.ImageIO;
@@ -186,6 +186,10 @@ public class Cossack extends Creature {
                 knifePunch();
             }
         }
+    }
+
+
+    public void throwKnife() {
     }
 
     private void knifePunch() {

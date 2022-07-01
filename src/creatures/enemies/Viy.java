@@ -16,6 +16,7 @@ public class Viy extends Creature {
     private static BufferedImage closed_fst, closed_snd/*, opened_fst, opened_snd*/;
     private int healthPoints;
     private boolean takeDamage = false;
+    private int countOfChorts;
 
     static {
         loadImage();
@@ -25,10 +26,35 @@ public class Viy extends Creature {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, 4*GameWindow.blockSize - 2, 4*GameWindow.blockSize - 2);
         this.healthPoints = 100;
+        spawnChorts();
+    }
+
+    /**
+     * Method to put chorts on the map
+     */
+    private void spawnChorts() {
     }
 
     @Override
     public void update() {
+        if(countOfChorts == 0 && healthPoints > 0){
+            openEyes();
+            takeDamage = true;
+            spawnChorts();
+            closeEyes();
+
+        }else if (healthPoints == 0){
+            die();
+        }
+    }
+
+    private void closeEyes() {
+    }
+
+    private void die() {
+    }
+
+    private void openEyes() {
 
     }
 

@@ -1,4 +1,4 @@
-package graphics.bonus;
+package creatures.params;
 
 import creatures.Cossack;
 import graphics.GameWindow;
@@ -53,6 +53,10 @@ public class Bonus {
                     break;
                 case 7:
                     image = ImageIO.read(new File("images/Shablia.png"));
+                    break;
+                case 8:
+                    image = ImageIO.read(new File("images/Knife.png"));
+                    break;
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -208,6 +212,10 @@ public class Bonus {
         this.cossack.setFightMode(1);
     }
 
+    private void canThrow() {
+        this.cossack.setFightMode(2);
+    }
+
     private void dropCoin(){
         cossack.coins++;
     }
@@ -234,6 +242,9 @@ public class Bonus {
                 break;
             case 7:
                 canFight();
+                break;
+            case 8:
+                canThrow();
                 break;
         }
     }
