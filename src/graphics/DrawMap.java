@@ -344,7 +344,7 @@ public class DrawMap {
             }
         }
 
-        if((bonus.getWorldX() - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize||
+        if((bonus.getWorldX() - GameWindow.blockSize < this.cossack.getWorldX() + this.cossack.getX() + 2 * GameWindow.blockSize ||
                 bonus.getWorldX() * GameWindow.blockSize - GameWindow.blockSize < 18 * GameWindow.blockSize) &&
                 bonus.getWorldX() * GameWindow.blockSize + GameWindow.blockSize > this.cossack.getWorldX() - this.cossack.getX()) {
             int x = bonus.getWorldX() - this.cossack.getWorldX() + cossack.getX();
@@ -529,6 +529,7 @@ public class DrawMap {
                 break;
             case 'H':
                 this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
             case 'V':
                 this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
