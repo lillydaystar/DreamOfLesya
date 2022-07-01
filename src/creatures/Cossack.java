@@ -22,6 +22,7 @@ public class Cossack extends Creature {
 
     private int xVel, yVel;
 
+    private boolean collisionRight, collisionLeft, collisionAbove, collisionBelow;
     private boolean leftCommand, rightCommand, jumpCommand, fightShCommand, fightKCommand;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead, sh_left, sh_right;
 
@@ -124,7 +125,8 @@ public class Cossack extends Creature {
         }
     }
 
-    private void die() {
+    @Override
+    public void die() {
         alive = false;
         /*add music*/
     }
@@ -413,4 +415,6 @@ public class Cossack extends Creature {
     public void setJump(int i) {
         JUMP_SPEED -= i*8;
     }
+
+    protected void wake() {}
 }

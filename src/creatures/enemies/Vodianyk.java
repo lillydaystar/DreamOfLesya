@@ -13,7 +13,7 @@ public class Vodianyk extends VerticalEnemy {
 
     private static final int DRAW_RATE = 10;
     private static final int VERTICAL_SPEED = 3;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd;
+    private static BufferedImage left_fst/*, left_snd*/, right_fst/*, right_snd*/;
 
     static {
         loadImage();
@@ -49,21 +49,21 @@ public class Vodianyk extends VerticalEnemy {
             if (this.draw_counter < getDrawRate())
                 return Vodianyk.left_fst;
             else
-                return Vodianyk.left_snd;
+                return Vodianyk.left_fst;
         } else {
             if (this.draw_counter < getDrawRate())
                 return Vodianyk.right_fst;
             else
-                return Vodianyk.right_snd;
+                return Vodianyk.right_fst;
         }
     }
 
     private static void loadImage() {
         try {
             Vodianyk.left_fst = ImageIO.read(new File("heroes/VodianykL_1.png"));
-            Vodianyk.left_snd = ImageIO.read(new File("heroes/VodianykL_2.png"));
+            /*Vodianyk.left_snd = ImageIO.read(new File("heroes/VodianykL_2.png"));*/
             Vodianyk.right_fst = ImageIO.read(new File("heroes/VodianykR_1.png"));
-            Vodianyk.right_snd = ImageIO.read(new File("heroes/VodianykR_2.png"));
+            /*Vodianyk.right_snd = ImageIO.read(new File("heroes/VodianykR_2.png"));*/
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for vodianyk",
                     "Error", JOptionPane.ERROR_MESSAGE);

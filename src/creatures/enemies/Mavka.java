@@ -9,10 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Mavka extends HorizontalEnemy {
+public class Mavka extends WalkingEnemy {
 
     private static final int DRAW_RATE = 10;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static final int HORIZONTAL_SPEED = 2;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd;
 
     static {
@@ -21,7 +21,7 @@ public class Mavka extends HorizontalEnemy {
 
     public Mavka(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
+        super.solidArea = new Rectangle(3, 1, GameWindow.blockSize - 6, 2*GameWindow.blockSize - 2);
     }
 
     public int getDrawRate() {

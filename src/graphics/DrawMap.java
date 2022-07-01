@@ -2,12 +2,11 @@ package graphics;
 
 import creatures.enemies.Viy;
 import creatures.params.Bonus;
+import creatures.Harakternyk;
+import creatures.enemies.*;
 
 import creatures.Creature;
 import creatures.Cossack;
-import creatures.enemies.Lisovyk;
-import creatures.enemies.Mavka;
-import creatures.enemies.Rusalka;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -242,7 +241,6 @@ public class DrawMap {
             int rectRightX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - collisionArea.x;
             int rectTopY = this.cossack.getWorldY() + collisionArea.y;
             double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
-
 
             int leftCol = rectLeftX/GameWindow.blockSize;
             int rightCol = rectRightX/GameWindow.blockSize;
@@ -498,17 +496,40 @@ public class DrawMap {
         int col = Integer.valueOf(characteristics[1]);
         if (col > this.cols_on_map || col < 0)
             throw new IllegalArgumentException("Неправильний формат карти (колонка ворога за межами)");
-        switch (characteristics[2]) {
-            case "M":
+        switch (characteristics[2].charAt(0)) {
+            case 'M':
                 this.creatures.add(new Mavka(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
-            case "L":
-                this.creatures.add(new Lisovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
-                break;
-            case "R":
+            case 'R':
                 this.creatures.add(new Rusalka(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
-            case "V":
+            case 'Y':
+                this.creatures.add(new Poludnytsia(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'L':
+                this.creatures.add(new Lisovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'K':
+                this.creatures.add(new Vodianyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'U':
+                this.creatures.add(new Poliovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'I':
+                this.creatures.add(new Potercha(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'Z':
+                this.creatures.add(new Zlyden(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'E':
+                this.creatures.add(new Perelesnyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'C':
+                this.creatures.add(new Chort(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
+            case 'H':
+                this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+            case 'V':
                 this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             default:
@@ -519,5 +540,10 @@ public class DrawMap {
 
     public void setCossacksParams() {
         cossack.setWorldWidth(map.length*GameWindow.blockSize);
+    }
+
+    private int round(float number) {
+        if (number % 1 == 0) return (int)number - 1;
+        return (int)number;
     }
 }

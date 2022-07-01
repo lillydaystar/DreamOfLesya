@@ -46,4 +46,7 @@ abstract class HorizontalEnemy extends Creature {
     protected int getVerticalSpeed() {
         return 0;
     }
+
+    @Override
+    protected void wake() {}
 }
