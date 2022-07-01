@@ -72,7 +72,7 @@ public class GamePanel extends JPanel {
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         for (Creature creature : this.dm.creatures) {
-            creature.draw(graphics2D, cossack.getWorldX(), cossack.getWorldY(),
+            creature.draw(graphics2D, cossack.getAbscissa(), cossack.getOrdinate(),
                     cossack.getScreenX(), cossack.getScreenY());
             if (creature.getState() == CreatureState.Dead && creature.getFigureHeight() == 0)
                 this.dm.creatures.remove(creature);
@@ -123,10 +123,16 @@ public class GamePanel extends JPanel {
         }
         else {
             cossack.update();
-            for (Creature creature : this.dm.creatures) {
+            for (int i = 0; i < this.dm.creatures.size(); i++) {
+                Creature creature = dm.creatures.get(i);
                 dm.chackTile(creature);
                 creature.update();
+                if (creature.isFullyDead()) {
+                    this.dm.creatures.remove(creature);
+                    i--;
+                }
             }
+            System.out.println(this.dm.creatures.size());
         }
     }
 

@@ -54,6 +54,7 @@ public class Cossack extends Creature {
     public Cossack() {
         setDefaultCoordinates();
         this.alive = true;
+        this.solidArea = new Rectangle(2, 2, 22, 45);
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -192,6 +193,7 @@ public class Cossack extends Creature {
 
 
     public void throwKnife() {
+
     }
 
     private void knifePunch() {
@@ -221,7 +223,6 @@ public class Cossack extends Creature {
     public void setY(int y) {
         this.yMap = y;
         this.yCord = y;
-
     }
 
     public void setVelocityY(int yVel) {
@@ -232,11 +233,11 @@ public class Cossack extends Creature {
         return yVel;
     }
 
-    public int getWorldX() {
+    public int getAbscissa() {
         return this.xMap;
     }
 
-    public int getWorldY() {
+    public int getOrdinate() {
         return this.yMap;
     }
 
@@ -401,6 +402,11 @@ public class Cossack extends Creature {
     @Override
     protected int getVerticalSpeed() {
         return 0;
+    }
+
+    @Override
+    public Rectangle getSolidArea() {
+        return this.solidArea;
     }
 
     @Override

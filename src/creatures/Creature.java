@@ -22,7 +22,7 @@ public abstract class Creature {
     private int dead_draw_counter;
 
     //shows how many times to draw character while it is disappearing
-    protected final int DEAD_DRAWS = 10;
+    protected final int DEAD_DRAWS = 15;
 
     protected CreatureState state;
 
@@ -62,13 +62,17 @@ public abstract class Creature {
         this.state = CreatureState.Dead;
     }
 
+    public boolean isFullyDead() {
+        return dead_draw_counter == DEAD_DRAWS;
+    }
+
     protected abstract void wake();
 
     protected void collideHorizontally() {
         this.velocityX *= -1;
     }
 
-    protected void collideVertically() {
+    public void collideVertically() {
         this.velocityY *= -1;
     }
 
@@ -129,5 +133,9 @@ public abstract class Creature {
 
     public CreatureState getState() {
         return state;
+    }
+
+    public boolean isAlive() {
+        return this.state == CreatureState.Alive;
     }
 }
