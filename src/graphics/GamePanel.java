@@ -2,6 +2,7 @@ package graphics;
 
 import creatures.Creature;
 import creatures.Cossack;
+import creatures.CreatureState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -70,6 +71,8 @@ public class GamePanel extends JPanel {
         for (Creature creature : this.dm.creatures) {
             creature.draw(graphics2D, cossack.getWorldX(), cossack.getWorldY(),
                     cossack.getScreenX(), cossack.getScreenY());
+            if (creature.getState() == CreatureState.Dead && creature.getFigureHeight() == 0)
+                this.dm.creatures.remove(creature);
         }
         graphics2D.dispose();
         this.revalidate();

@@ -19,7 +19,7 @@ public class Perelesnyk extends HorizontalEnemy {
         loadImage();
     }
 
-    Perelesnyk(int x, int y) {
+    public Perelesnyk(int x, int y) {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
     }
@@ -66,7 +66,7 @@ public class Perelesnyk extends HorizontalEnemy {
             Perelesnyk.right_fst = ImageIO.read(new File("heroes/PerelesnykR_1.png"));
             Perelesnyk.right_snd = ImageIO.read(new File("heroes/PerelesnykR_2.png"));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error while loading images for mavka",
+            JOptionPane.showMessageDialog(null, "Error while loading images for perelesnyk",
                     "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

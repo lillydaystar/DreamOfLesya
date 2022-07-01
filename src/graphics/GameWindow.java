@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class GameWindow extends JFrame implements Runnable {
 
-//    final int scale = 3;
     private static final int CLOCK_RATE = 60;
     private static final long NANOSECOND_IN_SECOND = 1000000000L;
 
@@ -20,7 +19,7 @@ public class GameWindow extends JFrame implements Runnable {
     private JPanel control;
 
     private Thread gameThread;
-    public boolean gameOver;
+    private boolean gameOver;
 
     public GameWindow() {
         super("Lesya's Dream");
@@ -52,7 +51,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.repaint();
     }
 
-    public void drawGame() {
+    void drawGame() {
         this.gameOver = false;
         if(control != null) {
             this.control.setFocusable(false);
@@ -70,7 +69,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.gameThread.start();
     }
 
-    public void drawBestiary(){
+    void drawBestiary(){
         if(control != null){
             control.setFocusable(false);
             this.remove(control);
@@ -89,7 +88,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.panel.update();
     }
 
-    public void redraw() {
+    private void redraw() {
         this.panel.repaint();
         if(!panel.game)
             gameOver = true;
@@ -107,7 +106,7 @@ public class GameWindow extends JFrame implements Runnable {
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        long count = 0;
+        /*long count = 0;*/
         while (this.gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
@@ -122,14 +121,13 @@ public class GameWindow extends JFrame implements Runnable {
                     stopGame();
                 }
                 delta--;
-                count++;
+                /*count++;*/
             }
             if (timer >= NANOSECOND_IN_SECOND) {
 //                System.out.printf("%d FPS\n", count);
-                count = 0;
+                /*count = 0;*/
                 timer = 0;
             }
         }
     }
-
 }

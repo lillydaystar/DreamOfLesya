@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class DrawMap {
+class DrawMap {
 
-    Block[] blocks;
-    LinkedList<Bonus> bonuses = new LinkedList<>();
-    char[][] map;
-    ArrayList<Character> marks = new ArrayList<>();
+    private Block[] blocks;
+    private LinkedList<Bonus> bonuses = new LinkedList<>();
+    private char[][] map;
+    private ArrayList<Character> marks = new ArrayList<>();
     LinkedList<Creature> creatures;
     private File mapFile;
     private Cossack cossack;
@@ -29,7 +29,7 @@ public class DrawMap {
     private GamePanel panel;
     private int cols_on_map, rows_on_map;
 
-    public DrawMap(int level, GamePanel panel) {
+    DrawMap(int level, GamePanel panel) {
         this.panel = panel;
         this.blocks = new Block[10];
         blocks[0] = new Block();
@@ -56,7 +56,7 @@ public class DrawMap {
         loadMap();
     }
 
-    public void loadMap() {
+    private void loadMap() {
         try {
             blocks[4].image = ImageIO.read(new File("images/sunflower.png"));
             switch (level){
@@ -144,11 +144,11 @@ public class DrawMap {
     }
 
 
-    public void setCossack(Cossack cossack){
+    void setCossack(Cossack cossack){
         this.cossack = cossack;
     }
 
-    public int getLevel(){
+    int getLevel(){
         return this.level;
     }
 
@@ -395,7 +395,7 @@ public class DrawMap {
         }
     }
 
-    public void chackTile(Creature creature) {
+    void chackTile(Creature creature) {
         int creatureLeftWorldX = creature.getAbscissa() + creature.getSolidArea().x;
         int creatureRightWorldX = creatureLeftWorldX + creature.getSolidArea().width;
         int creatureTopWorldY = creature.getOrdinate() + creature.getSolidArea().y;
@@ -427,12 +427,9 @@ public class DrawMap {
             int moveCreatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
             tileNum1 = this.map[moveCreatureRightCol][creatureTopRow];
             tileNum2 = this.map[moveCreatureRightCol][creatureBottomRow];
-//            System.out.printf("%d\n", moveCreatureRightCol);
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.rightCollision();
-//                if (creature instanceof Mavka)
-//                    System.out.printf("right %d %d\n", moveCreatureRightCol, creature.getOrdinate());
             }
         } else if (creature.getVelocityX() < 0) {
             int moveCreatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
@@ -441,12 +438,8 @@ public class DrawMap {
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.leftCollision();
-//                if (creature instanceof Mavka)
-//                    System.out.printf("left %d %d\n", moveCreatureLeftCol, creature.getOrdinate());
             }
         }
-//        if (creature instanceof Mavka)
-//            System.out.printf("%d %d %d %d\n", creatureTopRow, creatureRightCol, creatureBottomRow, creatureLeftCol);
     }
 
     private void addCreature(String[] characteristics) {
@@ -481,12 +474,12 @@ public class DrawMap {
             case 'Z':
                 this.creatures.add(new Zlyden(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
-            /*case 'E':
+            case 'E':
                 this.creatures.add(new Perelesnyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             case 'C':
                 this.creatures.add(new Chort(GameWindow.blockSize * col, GameWindow.blockSize * row));
-                break;*/
+                break;
             case 'H':
                 this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
@@ -496,7 +489,7 @@ public class DrawMap {
         }
     }
 
-    public void setCossacksParams() {
+    void setCossacksParams() {
         cossack.setWorldWidth(map.length*GameWindow.blockSize);
     }
 

@@ -14,7 +14,16 @@ public abstract class Creature {
     protected int ordinate;
 
     protected Rectangle solidArea;
+
+    //counts while we do not have to change character's image
     protected int draw_counter;
+
+    //counts while we have to show character while it is disappearing
+    private int dead_draw_counter;
+
+    //shows how many times to draw character while it is disappearing
+    protected final int DEAD_DRAWS = 10;
+
     protected CreatureState state;
 
     Creature() {}
@@ -31,14 +40,22 @@ public abstract class Creature {
                      int playerScreenX, int playerScreenY) {
         int enemyScreenAbscissa = getScreenAbscissa(playerAbscissa, playerScreenX);
         int enemyScreenOrdinate = getScreenOrdinate(playerOrdinate, playerScreenY);
-        graph.drawImage(getImage(), enemyScreenAbscissa, enemyScreenOrdinate,
-                getFigureWidth(), getFigureHeight(), null);
-        ++draw_counter;
-        if (this.draw_counter == 2*getDrawRate())
-            this.draw_counter = 0;
-        if (enemyScreenAbscissa >= 0 && enemyScreenAbscissa < GameWindow.screenWidth &&
-                enemyScreenOrdinate >= 0 && enemyScreenOrdinate < GameWindow.screenHeight)
-            wake();
+        if (this.state != CreatureState.Dead) {
+            graph.drawImage(getImage(), enemyScreenAbscissa, enemyScreenOrdinate,
+                    getFigureWidth(), getFigureHeight(), null);
+            ++draw_counter;
+            if (this.draw_counter == 2 * getDrawRate())
+                this.draw_counter = 0;
+            if (enemyScreenAbscissa >= 0 && enemyScreenAbscissa < GameWindow.screenWidth &&
+                    enemyScreenOrdinate >= 0 && enemyScreenOrdinate < GameWindow.screenHeight)
+                wake();
+        } else {
+            ++dead_draw_counter;
+            int diff = dead_draw_counter*getFigureHeight()/DEAD_DRAWS;
+            graph.drawImage(getImage(), enemyScreenAbscissa,
+                    enemyScreenOrdinate + diff, getFigureWidth(),
+                    getFigureHeight() - diff, null);
+        }
     }
 
     public void die() {
@@ -108,5 +125,9 @@ public abstract class Creature {
 
     public int getOrdinate() {
         return this.ordinate;
+    }
+
+    public CreatureState getState() {
+        return state;
     }
 }
