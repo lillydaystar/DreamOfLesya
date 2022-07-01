@@ -20,7 +20,6 @@ public class Bonus {
     private int yVel, xVel;
     private boolean fall;
 
-    private Rectangle solidArea = new Rectangle(3, 3, GameWindow.blockSize - 4, 2*GameWindow.blockSize - 4);
 
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
         /*
@@ -125,13 +124,6 @@ public class Bonus {
         this.xVel = xVel;
     }
 
-    public int getSolidX(){
-        return this.worldX + solidArea.x;
-    }
-
-    public int getSolidY(){
-        return this.worldY + solidArea.y;
-    }
 
     public void activateBonus(){
         this.active = true;
@@ -213,7 +205,9 @@ public class Bonus {
     }
 
     private void canThrow() {
-        this.cossack.setFightMode(2);
+        if(cossack.getFightMode() > 0)
+            this.cossack.setFightMode(2);
+        else this.cossack.setFightMode(3);
     }
 
     private void dropCoin(){

@@ -157,7 +157,7 @@ class DrawMap {
             bonuses.add(sh1);
         }
         if(level == 4){
-            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test shablia
+            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test knife
             bonuses.add(kn);
         }
     }
@@ -243,56 +243,59 @@ class DrawMap {
         int rectTopY = this.cossack.getOrdinate() + this.cossack.getSolidArea().y;
         double rectBottomY = this.cossack.getY() + 2*GameWindow.blockSize - 1;
 
-        int leftCol = rectLeftX/GameWindow.blockSize;
-        int rightCol = rectRightX/GameWindow.blockSize;
-        int topRow = rectTopY/GameWindow.blockSize;
-        int bottomRow = (int)Math.round(rectBottomY/GameWindow.blockSize);
-        if (this.cossack.isLeftCommand()) {
-            changeCollision(leftCol, bottomRow, topRow);
-            fall(leftCol+1, leftCol, bottomRow, 'l');
-        }
-        else if (this.cossack.isRightCommand()) {
-            changeCollision(rightCol, bottomRow, topRow);
-            fall(rightCol-1, rightCol, bottomRow, 'r');
-        }
-        if(!cossack.onGround()) {
-            char block1, block2;
-            if(cossack.getVelocityY() < 0) {
-                block1 = map[rightCol][topRow];
-                block2 = map[leftCol][topRow];
-                if(cossack.getY() <= GameWindow.blockSize){
-                    this.cossack.setVelocityY(0);
-                    this.cossack.fall = true;
+            int leftCol = rectLeftX/GameWindow.blockSize;
+            int rightCol = rectRightX/GameWindow.blockSize;
+            int topRow = rectTopY/GameWindow.blockSize;
+            int bottomRow = (int)Math.round(rectBottomY/GameWindow.blockSize);
+
+            if (this.cossack.isLeftCommand()) {
+                changeCollision(leftCol, bottomRow, topRow);
+                fall(leftCol+1, leftCol, bottomRow, 'l');
+            }
+            else if (this.cossack.isRightCommand()) {
+                changeCollision(rightCol, bottomRow, topRow);
+                fall(rightCol-1, rightCol, bottomRow, 'r');
+            }
+            if(!cossack.onGround()) {
+                char block1, block2;
+                if(cossack.getVelocityY() < 0) {
+                    block1 = map[rightCol][topRow];
+                    block2 = map[leftCol][topRow];
+                    if(cossack.getY() <= GameWindow.blockSize){
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                    }
+                    else if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                        if(checkBlock(rightCol, topRow))
+                            checkForBonus(rightCol, bottomRow);
+                    } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
+                        this.cossack.setVelocityY(0);
+                        this.cossack.fall = true;
+                        if(checkBlock(leftCol, topRow))
+                            checkForBonus(leftCol,bottomRow);
+                    }
                 }
-                else if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
-                    this.cossack.setVelocityY(0);
-                    this.cossack.fall = true;
-                    if(checkBlock(rightCol, topRow))
-                        checkForBonus(rightCol, bottomRow);
-                } else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
-                    this.cossack.setVelocityY(0);
-                    this.cossack.fall = true;
-                    if (checkBlock(leftCol, topRow))
-                        checkForBonus(leftCol, bottomRow);
+                if(cossack.getVelocityY() > 0) {
+                    block1 = map[rightCol][bottomRow];
+                    block2 = map[leftCol][bottomRow];
+                    checkForBonus(rightCol,bottomRow);
+                    checkForBonus(leftCol,bottomRow);
+                    if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
+                        cossack.setVelocityY(0);
+                        this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
+                        fall(rightCol-1, rightCol, bottomRow, 'r');
+                    }
+                    else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
+                        cossack.setVelocityY(0);
+                        this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
+                        this.cossack.fall = false;
+                        fall(leftCol-1, leftCol, bottomRow, 'l');
+                    }
                 }
             }
-            if(cossack.getVelocityY() > 0) {
-                block1 = map[rightCol][bottomRow];
-                block2 = map[leftCol][bottomRow];
-                checkForBonus(rightCol,bottomRow);
-                checkForBonus(leftCol,bottomRow);
-                if (block1 != '0' && blocks[marks.indexOf(block1)].collision) {
-                    cossack.setVelocityY(0);
-                    this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
-                    this.cossack.fall = false;
-                }
-                else if (block2 != '0' && blocks[marks.indexOf(block2)].collision) {
-                    cossack.setVelocityY(0);
-                    this.cossack.setY(bottomRow*GameWindow.blockSize - 2*GameWindow.blockSize);
-                    this.cossack.fall = false;
-                }
-            }
-        }
     }
 
     private void checkForBonus(int col, int row) {
@@ -302,8 +305,8 @@ class DrawMap {
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
             for (Bonus bonus : bonuses) {
-                if (bonus != null && bonus.getSolidX() / GameWindow.blockSize == col
-                        && bonus.getSolidY() / GameWindow.blockSize == row) {
+                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
+                        && bonus.getWorldY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
                     bonuses.remove(bonus);
                     break;
@@ -442,7 +445,7 @@ class DrawMap {
         }
     }
 
-    void chackTile(Creature creature) {
+    void checkTile(Creature creature) {
         int creatureLeftWorldX = creature.getAbscissa() + creature.getSolidArea().x;
         int creatureRightWorldX = creatureLeftWorldX + creature.getSolidArea().width;
         int creatureTopWorldY = creature.getOrdinate() + creature.getSolidArea().y;

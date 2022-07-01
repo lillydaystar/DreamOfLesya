@@ -179,25 +179,30 @@ public class Cossack extends Creature {
     }
 
     public void fight(){
-        if(fightMode != 0){
-            if(fightMode == 1){
-                fightShCommand = true;
-                shabliaPunch();
-            }
-            else if(fightMode == 2){
-                fightKCommand = true;
-                knifePunch();
-            }
+        if(fightMode == 1 || fightMode == 2){
+            fightShCommand = true;
+            shabliaPunch();
         }
     }
 
 
     public void throwKnife() {
-
+        if(fightMode == 2 || fightMode == 3){
+            fightKCommand = true;
+            knifePunch();
+        }
     }
 
     private void knifePunch() {
         /*here should be a method to fight with enemies*/
+        TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
+            @Override
+            public void run() {
+                fightKCommand = false;
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 500);
     }
 
     private void shabliaPunch() {

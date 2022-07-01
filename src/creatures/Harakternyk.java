@@ -29,7 +29,7 @@ public class Harakternyk extends Creature {
 
     public Harakternyk(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(0, 0, 2*GameWindow.blockSize, 2*GameWindow.blockSize);
+        super.solidArea = new Rectangle(0, 0, 3*GameWindow.blockSize, 3*GameWindow.blockSize);
         super.state = CreatureState.Wait;
     }
 
@@ -50,12 +50,12 @@ public class Harakternyk extends Creature {
 
     @Override
     public int getFigureWidth() {
-        return 2*GameWindow.blockSize;
+        return 3*GameWindow.blockSize;
     }
 
     @Override
     public int getFigureHeight() {
-        return 2*GameWindow.blockSize;
+        return 3*GameWindow.blockSize;
     }
 
     @Override

@@ -94,10 +94,12 @@ public class GamePanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        g.drawImage(shablia, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
-        int x1 = length + (GameWindow.blockSize - 8 - f.stringWidth(st))/2;
-        int y1 = GameWindow.blockSize - 8 + f.getHeight();
-        g.drawString(st, x1, y1);
+        if(cossack.getFightMode() == 1 || cossack.getFightMode() == 2) {
+            g.drawImage(shablia, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
+            int x1 = length + (GameWindow.blockSize - 8 - f.stringWidth(st)) / 2;
+            int y1 = GameWindow.blockSize - 8 + f.getHeight();
+            g.drawString(st, x1, y1);
+        }
         if(cossack.getFightMode() > 1){
             length += GameWindow.blockSize;
             g.drawImage(knife, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
@@ -113,8 +115,6 @@ public class GamePanel extends JPanel {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    cossack = null;
-                    dm = null;
                     game = false;
                 }
             };
@@ -125,14 +125,13 @@ public class GamePanel extends JPanel {
             cossack.update();
             for (int i = 0; i < this.dm.creatures.size(); i++) {
                 Creature creature = dm.creatures.get(i);
-                dm.chackTile(creature);
+                dm.checkTile(creature);
                 creature.update();
                 if (creature.isFullyDead()) {
                     this.dm.creatures.remove(creature);
                     i--;
                 }
             }
-            System.out.println(this.dm.creatures.size());
         }
     }
 
