@@ -1,5 +1,6 @@
 package graphics;
 
+import creatures.enemies.Viy;
 import creatures.Harakternyk;
 import creatures.enemies.*;
 import graphics.bonus.Bonus;
@@ -16,12 +17,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-class DrawMap {
+public class DrawMap {
 
-    private Block[] blocks;
-    private LinkedList<Bonus> bonuses = new LinkedList<>();
-    private char[][] map;
-    private ArrayList<Character> marks = new ArrayList<>();
+    Block[] blocks;
+    LinkedList<Bonus> bonuses = new LinkedList<>();
+    char[][] map;
+    ArrayList<Character> marks = new ArrayList<>();
     LinkedList<Creature> creatures;
     private File mapFile;
     private Cossack cossack;
@@ -29,7 +30,7 @@ class DrawMap {
     private GamePanel panel;
     private int cols_on_map, rows_on_map;
 
-    DrawMap(int level, GamePanel panel) {
+    public DrawMap(int level, GamePanel panel) {
         this.panel = panel;
         this.blocks = new Block[10];
         blocks[0] = new Block();
@@ -56,7 +57,7 @@ class DrawMap {
         loadMap();
     }
 
-    private void loadMap() {
+    public void loadMap() {
         try {
             blocks[4].image = ImageIO.read(new File("images/sunflower.png"));
             switch (level){
@@ -96,6 +97,7 @@ class DrawMap {
                 case 5:
                     this.mapFile = new File("worlds/map5.txt");
                     blocks[0].image = ImageIO.read(new File("images/DarkGrass.jpg"));
+                    blocks[1].image = ImageIO.read(new File("images/DarkTree.png"));
                     break;
             }
         } catch (IOException e) {
@@ -144,11 +146,15 @@ class DrawMap {
     }
 
 
-    void setCossack(Cossack cossack){
+    public void setCossack(Cossack cossack){
         this.cossack = cossack;
+        if(level > 1)
+            this.cossack.health.levelConfigs(level);
+        Bonus sh = new Bonus(7, this.cossack, 25, 12);  //test shablia
+        bonuses.add(sh);
     }
 
-    int getLevel(){
+    public int getLevel(){
         return this.level;
     }
 
@@ -256,8 +262,8 @@ class DrawMap {
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
             for (Bonus bonus : bonuses) {
-                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
-                        && bonus.getWorldY() / GameWindow.blockSize == row) {
+                if (bonus != null && bonus.getSolidX() / GameWindow.blockSize == col
+                        && bonus.getSolidY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
                     bonuses.remove(bonus);
                 }
@@ -346,7 +352,7 @@ class DrawMap {
             char block1, block2;
             block1 = map[col][bottomRow-1];
             block2 = map[col][topRow];
-            if(block1 == 'H' || block2 == 'H') {
+            if(block1 == 'H' || block2 == 'H'){
                 panel.changeLevel(++this.level);
             }
             else if (block1 != '0') {
@@ -380,65 +386,64 @@ class DrawMap {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
         }
-        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2) {
+        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2){
             int rectX;
-            if(lORr == 'l') {
+            if(lORr == 'l'){
                 rectX = this.cossack.getWorldX() + GameWindow.blockSize/4;
             }
-            else {
+            else{
                 rectX = this.cossack.getWorldX() + this.cossack.getFigureWidth() - GameWindow.blockSize/4;
             }
             int realCol = rectX/GameWindow.blockSize;
-            if(map[realCol][bottomRow] == 'W') {
+            if(map[realCol][bottomRow] == 'W'){
                 cossack.getDamage();
             }
         }
     }
 
-    void chackTile(Creature creature) {
+    public void chackTile(Creature creature) {
         int creatureLeftWorldX = creature.getAbscissa() + creature.getSolidArea().x;
         int creatureRightWorldX = creatureLeftWorldX + creature.getSolidArea().width;
         int creatureTopWorldY = creature.getOrdinate() + creature.getSolidArea().y;
         int creatureBottomWorldY = creatureTopWorldY + creature.getSolidArea().height;
 
         int creatureLeftCol = creatureLeftWorldX/GameWindow.blockSize;
-        int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
+        int creatureRightCol = creatureRightWorldX/GameWindow.blockSize;
         int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
-        int creatureBottomRow = round((float)creatureBottomWorldY/GameWindow.blockSize);
+        int creatureBottomRow = creatureBottomWorldY/GameWindow.blockSize;
         char tileNum1, tileNum2;
 
         if (creature.getVelocityY() > 0) {
-            int moveCreatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][moveCreatureBottomRow];
-            tileNum2 = this.map[creatureRightCol][moveCreatureBottomRow];
+            creatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][creatureBottomRow];
+            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.downCollision();
         }
         if (creature.getVelocityY() < 0) {
-            int moveCreatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][moveCreatureTopRow];
-            tileNum2 = this.map[creatureRightCol][moveCreatureTopRow];
+            creatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
+            tileNum2 = this.map[creatureRightCol][creatureTopRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.upCollision();
         }
         if (creature.getVelocityX() > 0) {
-            int moveCreatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[moveCreatureRightCol][creatureTopRow];
-            tileNum2 = this.map[moveCreatureRightCol][creatureBottomRow];
+            creatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureRightCol][creatureTopRow];
+            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.rightCollision();
-            }
-        } else if (creature.getVelocityX() < 0) {
-            int moveCreatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[moveCreatureLeftCol][creatureTopRow];
-            tileNum2 = this.map[moveCreatureLeftCol][creatureBottomRow];
+        }
+        if (creature.getVelocityX() < 0) {
+            creatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
+            tileNum2 = this.map[creatureLeftCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.leftCollision();
-            }
         }
     }
 
@@ -482,6 +487,8 @@ class DrawMap {
                 break;
             case 'H':
                 this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+            case 'V':
+                this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""
@@ -489,7 +496,7 @@ class DrawMap {
         }
     }
 
-    void setCossacksParams() {
+    public void setCossacksParams() {
         cossack.setWorldWidth(map.length*GameWindow.blockSize);
     }
 

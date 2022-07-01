@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Cossack extends Creature {
 
@@ -19,12 +21,12 @@ public class Cossack extends Creature {
 
     private int xVel, yVel;
 
-    private boolean leftCommand, rightCommand, jumpCommand;
     private boolean collisionRight, collisionLeft, collisionAbove, collisionBelow;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead;
+    private boolean leftCommand, rightCommand, jumpCommand, fightShCommand, fightKCommand;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead, sh_left, sh_right;
 
     private int counter;
-    public boolean alive = true;
+    public boolean alive;
     private int WORLD_WIDTH;
     private int WORLD_HEIGHT;
     private static final int STATE_RATE = 20;
@@ -42,6 +44,7 @@ public class Cossack extends Creature {
     public int coins = 0;
 
     public Health health;
+    private int fightMode = 0;
 
     static {
         loadImage();
@@ -49,6 +52,7 @@ public class Cossack extends Creature {
 
     public Cossack() {
         setDefaultCoordinates();
+        this.alive = true;
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -66,9 +70,17 @@ public class Cossack extends Creature {
                 image = Cossack.jump_right;
                 width = 7*GameWindow.blockSize/4;
             }
+            else if(fightShCommand){
+                image = Cossack.sh_right;
+                width = 7*GameWindow.blockSize/4;
+            }
         } else if (leftCommand) {
             if(!onGround() || fall){
                 image = Cossack.jump_left;
+                width = 7*GameWindow.blockSize/4;
+            }
+            else if(fightShCommand){
+                image = Cossack.sh_left;
                 width = 7*GameWindow.blockSize/4;
             }
             else {
@@ -81,6 +93,10 @@ public class Cossack extends Creature {
         } else {
             if(!onGround() || fall){
                 image = Cossack.jump_right;
+                width = 7*GameWindow.blockSize/4;
+            }
+            else if(fightShCommand){
+                image = Cossack.sh_right;
                 width = 7*GameWindow.blockSize/4;
             }
             else {
@@ -158,6 +174,35 @@ public class Cossack extends Creature {
         }
     }
 
+    public void fight(){
+        if(fightMode != 0){
+            if(fightMode == 1){
+                fightShCommand = true;
+                shabliaPunch();
+            }
+            else if(fightMode == 2){
+                fightKCommand = true;
+                knifePunch();
+            }
+        }
+    }
+
+    private void knifePunch() {
+        /*here should be a method to fight with enemies*/
+    }
+
+    private void shabliaPunch() {
+        /*here should be a method to fight with enemies*/
+        TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
+            @Override
+            public void run() {
+                fightShCommand = false;
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 500);
+    }
+
     public int getX() {
         return this.xCord;
     }
@@ -216,7 +261,7 @@ public class Cossack extends Creature {
 
         //якщо козак доходить до краю карти, він мусить дойти до кутка
         //В інших випадках козак знаходиться тільки в центрі екрану
-        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand) || collision)
+        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand) || collision || fightShCommand || fightKCommand)
             this.xVel = 0;
         else if (this.leftCommand && xMap >= 0) {
             this.xVel = -HORIZONTAL_SPEED;
@@ -241,7 +286,9 @@ public class Cossack extends Creature {
             Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
             Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
             Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
-//            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
+            Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
+            Cossack.sh_left = ImageIO.read(new File("heroes/CossackShL.png"));
+            Cossack.sh_right = ImageIO.read(new File("heroes/CossackShR.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for cossack",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -289,6 +336,22 @@ public class Cossack extends Creature {
             return;
         }
         setDefaultCoordinates();
+    }
+
+    /**
+     * Method to let cossack fight with shablia or knives
+     * @param i - new mode value
+     */
+    public void setFightMode(int i){
+        this.fightMode = i;
+    }
+
+    /**
+     * To find out whether cossack can fight by shablia or/and knives
+     * @return cossack's fight mode value
+     */
+    public int getFightMode(){
+        return this.fightMode;
     }
 
     public BufferedImage getImage() {

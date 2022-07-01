@@ -7,25 +7,43 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Health {
     private int healthPoints = 0;
     private final LinkedList<BufferedImage> hpImages;
     private final LinkedList<Integer> hpStatus;
-    private int level;
     private boolean halfHPMode = false;
     public boolean dead = false;
 
     public Health(int level){
-        this.level = level;
-        if (level == 5) {
-            healthPoints = 5;
-        } else {
-            healthPoints = 3;
-        }
+        levelConfigs(level);
         hpImages = new LinkedList<>();
         hpStatus = new LinkedList<>();
+        setFullHP();
+    }
+
+    public void levelConfigs(int level){
+        if (level == 5) {
+            healthPoints = 5;
+            while(hpStatus != null && hpStatus.contains(3)) {
+                int i = hpStatus.indexOf(3);
+                hpStatus.remove(i);
+                hpImages.remove(i);
+            }
+            setFullHP();
+        } else if(level > 2 && hpStatus != null){
+            healthPoints = 3 + Collections.frequency(hpStatus, 3);
+        } else
+            healthPoints = 3;
+
+        if(level > 2){
+            halfHPMode = true;
+        }
+    }
+
+    private void setFullHP() {
         for(int i=0; i<healthPoints; i++){
             try {
                 hpImages.add(ImageIO.read(new File("images/fullHP.png")));
@@ -46,7 +64,7 @@ public class Health {
     }
 
     public void addExtraLife(){
-        if(!hpStatus.contains(3)) {
+        if(Collections.frequency(hpStatus, 3) < 3) {
             healthPoints++;
             try {
                 hpImages.add(ImageIO.read(new File("images/Extra-life.png")));
@@ -114,6 +132,10 @@ public class Health {
                 else if (tempStatus == 1) {
                     hpStatus.set(i,2);
                     hpImages.set(i, ImageIO.read(new File("images/halfHP.png")));
+                } else if (tempStatus == 3) {
+                    hpStatus.remove(i);
+                    hpImages.remove(i);
+                    healthPoints--;
                 }
             } else if (tempStatus == 1) {
                 hpStatus.set(i,0);
