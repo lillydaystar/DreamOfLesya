@@ -443,49 +443,50 @@ public class DrawMap {
         }
     }
 
-    public void chackTile(Creature creature) {
+    void chackTile(Creature creature) {
         int creatureLeftWorldX = creature.getAbscissa() + creature.getSolidArea().x;
         int creatureRightWorldX = creatureLeftWorldX + creature.getSolidArea().width;
         int creatureTopWorldY = creature.getOrdinate() + creature.getSolidArea().y;
         int creatureBottomWorldY = creatureTopWorldY + creature.getSolidArea().height;
 
         int creatureLeftCol = creatureLeftWorldX/GameWindow.blockSize;
-        int creatureRightCol = creatureRightWorldX/GameWindow.blockSize;
+        int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
         int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
-        int creatureBottomRow = creatureBottomWorldY/GameWindow.blockSize;
+        int creatureBottomRow = round((float)creatureBottomWorldY/GameWindow.blockSize);
         char tileNum1, tileNum2;
 
         if (creature.getVelocityY() > 0) {
-            creatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureBottomRow];
-            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
+            int moveCreatureBottomRow = (creatureBottomWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][moveCreatureBottomRow];
+            tileNum2 = this.map[creatureRightCol][moveCreatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.downCollision();
         }
         if (creature.getVelocityY() < 0) {
-            creatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
-            tileNum2 = this.map[creatureRightCol][creatureTopRow];
+            int moveCreatureTopRow = (creatureTopWorldY + creature.getVelocityY())/GameWindow.blockSize;
+            tileNum1 = this.map[creatureLeftCol][moveCreatureTopRow];
+            tileNum2 = this.map[creatureRightCol][moveCreatureTopRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
                     (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
                 creature.upCollision();
         }
         if (creature.getVelocityX() > 0) {
-            creatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureRightCol][creatureTopRow];
-            tileNum2 = this.map[creatureRightCol][creatureBottomRow];
+            int moveCreatureRightCol = (creatureRightWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[moveCreatureRightCol][creatureTopRow];
+            tileNum2 = this.map[moveCreatureRightCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.rightCollision();
-        }
-        if (creature.getVelocityX() < 0) {
-            creatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
-            tileNum1 = this.map[creatureLeftCol][creatureTopRow];
-            tileNum2 = this.map[creatureLeftCol][creatureBottomRow];
+            }
+        } else if (creature.getVelocityX() < 0) {
+            int moveCreatureLeftCol = (creatureLeftWorldX + creature.getVelocityX())/GameWindow.blockSize;
+            tileNum1 = this.map[moveCreatureLeftCol][creatureTopRow];
+            tileNum2 = this.map[moveCreatureLeftCol][creatureBottomRow];
             if ((tileNum1 != '0' && this.blocks[marks.indexOf(tileNum1)].collision) ||
-                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision))
+                    (tileNum2 != '0' && this.blocks[marks.indexOf(tileNum2)].collision)) {
                 creature.leftCollision();
+            }
         }
     }
 
