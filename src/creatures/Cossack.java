@@ -58,6 +58,7 @@ public class Cossack extends Creature {
     public void draw(Graphics2D graphics2D) {
         BufferedImage image;
         int width, height;
+        int x = getScreenX(), y = getScreenY();
         height = 2*GameWindow.blockSize;
         if(!alive){
             image = Cossack.dead;
@@ -82,6 +83,7 @@ public class Cossack extends Creature {
             else if(fightShCommand){
                 image = Cossack.sh_left;
                 width = 7*GameWindow.blockSize/4;
+                x -= GameWindow.blockSize;
             }
             else {
                 if (this.counter < STATE_RATE)
@@ -107,7 +109,7 @@ public class Cossack extends Creature {
                 width = GameWindow.blockSize;
             }
         }
-        graphics2D.drawImage(image, getScreenX(), getScreenY(),
+        graphics2D.drawImage(image, x, y,
                 width, height, null);
         health.drawHP(graphics2D);
         if(!alive) {

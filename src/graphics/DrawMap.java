@@ -210,6 +210,13 @@ public class DrawMap {
                 drawBonus(g, bonus);
         }
         checkCollision();
+        if(level == 5){
+            bossHealthPanel();
+        }
+    }
+
+    private void bossHealthPanel() {
+
     }
 
     private final Rectangle collisionArea = new Rectangle(2, 2, 22, 45);

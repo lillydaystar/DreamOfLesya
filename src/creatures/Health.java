@@ -27,11 +27,8 @@ public class Health {
     public void levelConfigs(int level){
         if (level == 5) {
             healthPoints = 5;
-            while(hpStatus != null && hpStatus.contains(3)) {
-                int i = hpStatus.indexOf(3);
-                hpStatus.remove(i);
-                hpImages.remove(i);
-            }
+            hpStatus.clear();
+            hpImages.clear();
             setFullHP();
         } else if(level > 2 && hpStatus != null){
             healthPoints = 3 + Collections.frequency(hpStatus, 3);
@@ -57,7 +54,7 @@ public class Health {
     public void drawHP(Graphics2D graphics2D){
         int x, y;
         for(int i=0; i<healthPoints; i++){
-            x = i* GameWindow.blockSize;
+            x = i * GameWindow.blockSize;
             y = GameWindow.blockSize/4;
             graphics2D.drawImage(hpImages.get(i), x, y, GameWindow.blockSize, GameWindow.blockSize, null);
         }
@@ -66,6 +63,7 @@ public class Health {
     public void addExtraLife(){
         if(Collections.frequency(hpStatus, 3) < 3) {
             healthPoints++;
+            System.out.println("add points");
             try {
                 hpImages.add(ImageIO.read(new File("images/Extra-life.png")));
                 hpStatus.add(3);
@@ -150,5 +148,9 @@ public class Health {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public int getHealthPoints(){
+        return healthPoints;
     }
 }

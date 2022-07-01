@@ -67,6 +67,9 @@ public class GamePanel extends JPanel {
         int x = GameWindow.screenWidth - fm.stringWidth(s) - 5;
         int y = fm.getHeight();
         graphics2D.drawString(s, x, y);
+        if(cossack.getFightMode() != 0){
+            setFightAttributes(graphics2D);
+        }
         dm.paintMap(graphics2D);
         cossack.draw(graphics2D);
         for (Creature creature : this.dm.creatures) {
@@ -75,6 +78,33 @@ public class GamePanel extends JPanel {
         }
         graphics2D.dispose();
         this.revalidate();
+    }
+
+    private void setFightAttributes(Graphics2D g) {
+        g.setFont(new Font("Upheaval TT (BRK)", Font.BOLD, 23));
+        String st = "F";
+        FontMetrics f = g.getFontMetrics();
+
+        int length = cossack.health.getHealthPoints()*GameWindow.blockSize + GameWindow.blockSize/2;
+        BufferedImage shablia = null, knife = null;
+        try {
+            shablia = ImageIO.read(new File("images/Shablia.png"));
+            knife = ImageIO.read(new File("images/Knife.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g.drawImage(shablia, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
+        int x1 = length + (GameWindow.blockSize - 8 - f.stringWidth(st))/2;
+        int y1 = GameWindow.blockSize - 8 + f.getHeight();
+        g.drawString(st, x1, y1);
+        if(cossack.getFightMode() > 1){
+            length += GameWindow.blockSize;
+            g.drawImage(knife, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
+            st = "G";
+            int x2 = length + (GameWindow.blockSize - 8 - f.stringWidth(st))/2;
+            int y2 = GameWindow.blockSize - 8 + f.getHeight();
+            g.drawString(st, x2, y2);
+        }
     }
 
     void update() {
