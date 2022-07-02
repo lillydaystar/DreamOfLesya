@@ -142,13 +142,13 @@ public class GamePanel extends JPanel {
                 case 1:
                     this.background = ImageIO.read(new File("images/background1.png"));
                     break;
-                case 2:
+                case 4:
                     this.background = ImageIO.read(new File("images/background2.jpg"));
                     break;
                 case 3:
                     this.background = ImageIO.read(new File("images/background3.jpg"));
                     break;
-                case 4:
+                case 2:
                     this.background = ImageIO.read(new File("images/background4.png"));
                     break;
                 case 5:
