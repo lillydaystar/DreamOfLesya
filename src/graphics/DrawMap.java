@@ -167,7 +167,6 @@ public class DrawMap {
 
     public void addCreatures(ArrayList<Creature> creatures){
         this.creatures.addAll(creatures);
-        System.out.println(this.creatures);
         this.cossack.setDefaultCoordinates();
     }
 
@@ -710,5 +709,9 @@ public class DrawMap {
         if (top_y > rectangle.y + rectangle.height || bottom_y < rectangle.y)
             return false;
         return x >= rectangle.x && x <= rectangle.x + rectangle.width;
+    }
+
+    public void victory() {
+        this.cossack.win = true;
     }
 }

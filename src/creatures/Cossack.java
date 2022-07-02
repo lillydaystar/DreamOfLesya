@@ -44,6 +44,7 @@ public class Cossack extends Creature {
     public boolean collision = false;
     public boolean fall = false;
     public int coins = 0;
+    public boolean win = false;
     private boolean invincible = false;
 
     private Knife knife = null;
@@ -130,6 +131,15 @@ public class Cossack extends Creature {
             }
             graphics2D.drawImage(img, (GameWindow.screenWidth-550)/2, (GameWindow.screenHeight-100)/2, 550, 100, null);
             die();
+        }
+        if(win){
+            BufferedImage img = null;
+            try{
+                img = ImageIO.read(new File("images/Victory.png"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            graphics2D.drawImage(img, (GameWindow.screenWidth-750)/2, (GameWindow.screenHeight-250)/2, 750, 250, null);
         }
     }
 

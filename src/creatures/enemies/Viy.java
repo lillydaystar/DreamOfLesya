@@ -35,7 +35,7 @@ public class Viy extends Creature {
         super.solidArea = new Rectangle(1, 1, 4*GameWindow.blockSize - 2, 4*GameWindow.blockSize - 2);
         this.healthPoints = 100;
         this.state = CreatureState.OpenedEyes;
-        this.countOfChorts = 1;
+        this.countOfChorts = 13;
         this.dm = dm;
         this.waves.add(25);
         this.waves.add(50);
@@ -46,14 +46,13 @@ public class Viy extends Creature {
      * Method to put chorts on the map
      */
     public void spawnChorts() {
-        countOfChorts = 1;
+        this.countOfChorts = 13;
+        reloadChorts();
         dm.addCreatures(chorts);
-        System.out.println("spawn");
     }
 
     @Override
     public void update() {
-
         if(takeDamage){
             if(waves.contains(healthPoints)) {
                 takeDamage = false;
@@ -71,17 +70,6 @@ public class Viy extends Creature {
         }
         else if(countOfChorts == 0 && healthPoints > 0 && animation == 0 && this.state == CreatureState.OpenedEyes){
             animation = 4;
-            //таймер
-            /*TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    spawnChorts();
-                    openEyes();
-                }
-            };
-            java.util.Timer timer = new Timer();
-            timer.schedule(timerTask, 7000);*/
-
         }else if (healthPoints == 0){
             finallyDie();
         }
@@ -96,16 +84,14 @@ public class Viy extends Creature {
         int enemyScreenAbscissa = playerScreenX + abscissa - playerAbscissa;
         int enemyScreenOrdinate = playerScreenY + ordinate - playerOrdinate;
         if(animation > 0 && animation < 5){
-            if(animation == 1){
+            if(animation == 1)
                 drawAnimation(graph, enemyScreenAbscissa, enemyScreenOrdinate, a1);
-            }else if(animation == 2){
+            else if(animation == 2)
                 drawAnimation(graph, enemyScreenAbscissa, enemyScreenOrdinate, a2);
-            }
-            else if(animation == 3){
+            else if(animation == 3)
                 drawAnimation(graph, enemyScreenAbscissa, enemyScreenOrdinate, a3);
-            }else {
+            else
                 drawAnimation(graph, enemyScreenAbscissa, enemyScreenOrdinate, a4);
-            }
         }
     }
 
@@ -155,6 +141,7 @@ public class Viy extends Creature {
 
     private void finallyDie() {
         this.state = CreatureState.Dead;
+        dm.victory();
     }
 
     public int getHealthPoints() {
@@ -247,33 +234,27 @@ public class Viy extends Creature {
         }
     }
 
-    private static void loadChorts(){
-        Chort ch1 = new Chort(0,2*GameWindow.blockSize);
-        /*Chort ch2 = new Chort(17*GameWindow.blockSize, 4*GameWindow.blockSize);
-        Chort ch3 = new Chort(29*GameWindow.blockSize,3*GameWindow.blockSize);
-        Chort ch4 = new Chort(5*GameWindow.blockSize, 4*GameWindow.blockSize);
-        Chort ch5 = new Chort(31*GameWindow.blockSize,4*GameWindow.blockSize);
-        Chort ch6 = new Chort(26*GameWindow.blockSize, 5*GameWindow.blockSize);
-        Chort ch7 = new Chort(15*GameWindow.blockSize,6*GameWindow.blockSize);
-        Chort ch8 = new Chort(GameWindow.blockSize, 7*GameWindow.blockSize);
-        Chort ch9 = new Chort(32*GameWindow.blockSize,7*GameWindow.blockSize);
-        Chort ch10 = new Chort(20*GameWindow.blockSize, 8*GameWindow.blockSize);
-        Chort ch11 = new Chort(25*GameWindow.blockSize,9*GameWindow.blockSize);
-        Chort ch12 = new Chort(33*GameWindow.blockSize, 10*GameWindow.blockSize);
-        Chort ch13 = new Chort(17*GameWindow.blockSize,11*GameWindow.blockSize);*/
+    private static void reloadChorts(){
+        chorts.set(0, new Chort(0,2*GameWindow.blockSize));
+        chorts.set(1, new Chort(17*GameWindow.blockSize, 4*GameWindow.blockSize));
+        chorts.set(2, new Chort(29*GameWindow.blockSize,3*GameWindow.blockSize));
+        chorts.set(3, new Chort(5*GameWindow.blockSize, 4*GameWindow.blockSize));
+        chorts.set(4, new Chort(31*GameWindow.blockSize,4*GameWindow.blockSize));
+        chorts.set(5, new Chort(26*GameWindow.blockSize, 5*GameWindow.blockSize));
+        chorts.set(6, new Chort(15*GameWindow.blockSize,6*GameWindow.blockSize));
+        chorts.set(7, new Chort(GameWindow.blockSize, 7*GameWindow.blockSize));
+        chorts.set(8, new Chort(32*GameWindow.blockSize,7*GameWindow.blockSize));
+        chorts.set(9, new Chort(20*GameWindow.blockSize, 8*GameWindow.blockSize));
+        chorts.set(10, new Chort(25*GameWindow.blockSize,9*GameWindow.blockSize));
+        chorts.set(11, new Chort(33*GameWindow.blockSize, 10*GameWindow.blockSize));
+        chorts.set(12, new Chort(17*GameWindow.blockSize,11*GameWindow.blockSize));
+    }
 
-        chorts.add(ch1);
-        /*chorts.add(ch2);
-        chorts.add(ch3);
-        chorts.add(ch4);
-        chorts.add(ch5);
-        chorts.add(ch6);
-        chorts.add(ch7);
-        chorts.add(ch8);
-        chorts.add(ch9);
-        chorts.add(ch10);
-        chorts.add(ch11);
-        chorts.add(ch12);
-        chorts.add(ch13);*/
+    private static void loadChorts(){
+        Chort ch1 = new Chort(0,0);
+
+        for(int i=0; i<13; i++)
+            chorts.add(ch1);
+
     }
 }

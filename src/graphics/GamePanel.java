@@ -71,13 +71,13 @@ public class GamePanel extends JPanel {
             setFightAttributes(graphics2D);
         }
         dm.paintMap(graphics2D);
-        cossack.draw(graphics2D);
         for (Creature creature : this.dm.creatures) {
             creature.draw(graphics2D, cossack.getAbscissa(), cossack.getOrdinate(),
                     cossack.getScreenX(), cossack.getScreenY());
             if (creature.getState() == CreatureState.Dead && creature.getFigureHeight() == 0)
                 this.dm.creatures.remove(creature);
         }
+        cossack.draw(graphics2D);
         graphics2D.dispose();
         this.revalidate();
     }
