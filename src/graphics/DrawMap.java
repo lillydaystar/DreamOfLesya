@@ -29,7 +29,7 @@ class DrawMap {
     private GamePanel panel;
     private int cols_on_map, rows_on_map;
 
-    DrawMap(int level, GamePanel panel) {
+    DrawMap(int level, GamePanel panel, Cossack cossack) {
         this.panel = panel;
         this.blocks = new Block[10];
         blocks[0] = new Block();
@@ -53,6 +53,7 @@ class DrawMap {
         marks.add('W');
         this.creatures = new ArrayList<>();
         this.level = level;
+        setCossack(cossack);
         loadMap();
     }
 
@@ -142,6 +143,7 @@ class DrawMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setCossacksParams();
     }
 
 
@@ -464,6 +466,9 @@ class DrawMap {
                 cossack.getDamage();
             }
         }
+        if(cossack.getKnife() != null && cossack.getKnife().isExist()){
+            checkTile(cossack.getKnife());
+        }
     }
 
     void checkTile(Creature creature) {
@@ -538,7 +543,7 @@ class DrawMap {
                 }
             }
         }
-
+        System.out.println(cossack.getSolidArea());
         Rectangle player = this.cossack.getSolidArea();
         Rectangle truePlayer = new Rectangle(this.cossack.getAbscissa() + player.x,
                 this.cossack.getOrdinate() + player.y, player.width, player.height);

@@ -33,15 +33,15 @@ public class GamePanel extends JPanel {
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
-        this.dm = new DrawMap(level, this);
         this.cossack = new Cossack();
+        this.dm = new DrawMap(level, this, cossack);
         this.cossack.setHealth(level);
         creatures = new LinkedList<>();
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
-        dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
-        this.dm.setCossacksParams();
+        //dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
+        //this.dm.setCossacksParams();
         try {
             Font customFont1 = Font.createFont(Font.TRUETYPE_FONT, new File("files/upheavtt.ttf"));
             Font customFont2 = Font.createFont(Font.TRUETYPE_FONT, new File("files/ka1.ttf"));
@@ -164,10 +164,10 @@ public class GamePanel extends JPanel {
 
     public void changeLevel(int level) {
         this.cossack.setDefaultCoordinates();
-        this.dm = new DrawMap(level, this);
+        this.dm = new DrawMap(level, this, this.cossack);
         setBackgroundImage();
-        dm.setCossack(this.cossack);
-        this.dm.setCossacksParams();
+        //dm.setCossack(this.cossack);
+        //this.dm.setCossacksParams();
     }
 
     private class KeyCommander implements KeyListener {
