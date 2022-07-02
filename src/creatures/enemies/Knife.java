@@ -13,7 +13,7 @@ public class Knife extends HorizontalEnemy {
 
     private static final int SIZE = GameWindow.blockSize/2;
     private static final int DRAW_RATE = 10;
-    private static final int HORIZONTAL_SPEED = 3;
+    private static final int HORIZONTAL_SPEED = 6;
     private boolean exist;
     private static BufferedImage fst;
 
@@ -21,9 +21,10 @@ public class Knife extends HorizontalEnemy {
         loadImage();
     }
 
-    public Knife(int x, int y) {
+    public Knife(int x, int y, int path) {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, SIZE - 2, SIZE - 2);
+        this.velocityX = path*this.getHorizontalSpeed();
         exist = true;
     }
 

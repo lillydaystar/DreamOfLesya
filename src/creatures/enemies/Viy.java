@@ -64,6 +64,7 @@ public class Viy extends Creature {
 
     @Override
     public void die() {
+        getDamage();
     }
 
     @Override
@@ -75,7 +76,7 @@ public class Viy extends Creature {
 
     }
 
-    public void takeDamage(){
+    public void getDamage(){
         healthPoints -= 10;
 
     }
