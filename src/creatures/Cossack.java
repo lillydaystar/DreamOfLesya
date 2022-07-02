@@ -217,6 +217,22 @@ public class Cossack extends Creature {
         timer.schedule(timerTask, 500);
     }
 
+    /**
+     *
+     * @return if cossack moves to left return true, else return false
+     */
+    public boolean getMove(){
+        return leftCommand;
+    }
+
+    public boolean isFightShCommand() {
+        return fightShCommand;
+    }
+
+    public boolean isFightKCommand() {
+        return fightKCommand;
+    }
+
     public int getX() {
         return this.xCord;
     }

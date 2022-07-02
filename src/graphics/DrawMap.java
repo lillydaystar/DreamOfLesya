@@ -342,7 +342,6 @@ class DrawMap {
             map[col][row] = 'B';
             /*method for bonus*/
             throwBonus(col, row);
-            System.out.println("BONUS!!!");
         }
         return map[col][row] != 'Q';
     }
@@ -543,11 +542,19 @@ class DrawMap {
         Rectangle player = this.cossack.getSolidArea();
         Rectangle truePlayer = new Rectangle(this.cossack.getAbscissa() + player.x,
                 this.cossack.getOrdinate() + player.y, player.width, player.height);
+        Rectangle fightArea = null;
+        if(!cossack.getMove() && cossack.isFightShCommand()){
+            fightArea = new Rectangle(this.cossack.getAbscissa() + player.x + this.cossack.getFigureWidth(),
+                    this.cossack.getOrdinate() + player.y, player.width*2, player.height);
+        }else if(cossack.isFightShCommand()){
+            fightArea = new Rectangle(this.cossack.getAbscissa() + player.x - this.cossack.getFigureWidth(),
+                    this.cossack.getOrdinate() + player.y, player.width*2, player.height);
+        }
         if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureTopWorldY)) {
-            if (cossack.getVelocityY() > 0) {
+            if (cossack.getVelocityY() > 0 && creature.isAlive()) {
                 this.cossack.collideVertically();
-                creature.die();
+                killCreature(creature, creatureRightCol, creatureTopRow);
             }
         } else if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureBottomWorldY)) {
@@ -562,6 +569,27 @@ class DrawMap {
             if (creature.isAlive())
                 this.cossack.getDamage();
         }
+        else if(fightArea != null && intersects_with_vertical_segment(fightArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){
+            if(cossack.getMove()){
+                killCreature(creature,creatureRightCol,creatureTopRow);
+            }else cossack.getDamage();
+        }else if(fightArea != null && intersects_with_vertical_segment(fightArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)){
+            if(!cossack.getMove()){
+                killCreature(creature,creatureRightCol,creatureTopRow);
+            } else cossack.getDamage();
+        }
+    }
+
+    private void killCreature(Creature creature, int creatureRightCol, int creatureTopRow){
+        creature.die();
+        if(creature instanceof Chort) {
+            int chance = (int) Math.floor(Math.random() * 3) + 1;
+            if(chance == 1)
+                throwBonus(creatureRightCol - 1, creatureTopRow + 1);
+        }
+        cossack.coins+=5;
     }
 
     private void addCreature(String[] characteristics) {

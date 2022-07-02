@@ -40,7 +40,7 @@ public class Potercha extends HorizontalEnemy {
 
     @Override
     public int getFigureHeight() {
-        return 2*GameWindow.blockSize;
+        return GameWindow.blockSize;
     }
 
     @Override
