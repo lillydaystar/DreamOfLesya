@@ -1,5 +1,7 @@
 package graphics;
 
+import main.Sound;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,6 +21,7 @@ public class GameWindow extends JFrame implements Runnable {
     private JPanel control;
 
     private Thread gameThread;
+    private Sound sound;
     private boolean gameOver;
 
     public GameWindow() {
@@ -26,6 +29,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
         drawMainMenu();
+        this.sound = new Sound();
 //        drawGame();
         this.pack();
         this.setLocationRelativeTo(null);
@@ -58,7 +62,7 @@ public class GameWindow extends JFrame implements Runnable {
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(1);
+        this.panel = new GamePanel(4);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();

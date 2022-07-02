@@ -68,7 +68,7 @@ class DrawMap {
                     blocks[3].image = ImageIO.read(new File("images/TreeB.png"));
                     blocks[5].image = ImageIO.read(new File("images/house1.png"));
                     break;
-                case 4:
+                case 2:
                     this.mapFile = new File("worlds/map2.txt");
                     blocks[0].image = ImageIO.read(new File("images/Plank.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/BookShelf.jpg"));
@@ -84,7 +84,7 @@ class DrawMap {
                     blocks[3].image = ImageIO.read(new File("images/HayB.png"));
                     blocks[5].image = ImageIO.read(new File("images/Cave.png"));
                     break;
-                case 2:
+                case 4:
                     this.mapFile = new File("worlds/map4.txt");
                     blocks[0].image = ImageIO.read(new File("images/Mud.jpg"));
                     blocks[1].image = ImageIO.read(new File("images/SeaWeed.png"));
@@ -387,29 +387,25 @@ class DrawMap {
     }
 
     private void changeCollision(int col, int bottomRow, int topRow) {
-        try {
-            char block1, block2;
-            block1 = map[col][bottomRow-1];
-            block2 = map[col][topRow];
-            if(block1 == 'H' || block2 == 'H'){
-                panel.changeLevel(++this.level);
-            }
-            else if (block1 != '0') {
-                this.cossack.collision = blocks[marks.indexOf(block1)].collision;
-                if(!this.cossack.collision)
-                    checkForBonus(col, bottomRow-1);
-            }
-            else if (block2 != '0') {
-                this.cossack.collision = blocks[marks.indexOf(block2)].collision;
-                if(!this.cossack.collision)
-                    checkForBonus(col, topRow);
-            }
-            else{
-                this.cossack.collision = false;
+        char block1, block2;
+        block1 = map[col][bottomRow-1];
+        block2 = map[col][topRow];
+        if (block1 == 'H' || block2 == 'H') {
+            panel.changeLevel(++this.level);
+        }
+        else if (block1 != '0') {
+            this.cossack.collision = blocks[marks.indexOf(block1)].collision;
+            if (!this.cossack.collision)
                 checkForBonus(col, bottomRow-1);
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.printf("%d %d\n", col, bottomRow);
+        }
+        else if (block2 != '0') {
+            this.cossack.collision = blocks[marks.indexOf(block2)].collision;
+            if(!this.cossack.collision)
+                checkForBonus(col, topRow);
+        }
+        else {
+            this.cossack.collision = false;
+            checkForBonus(col, bottomRow-1);
         }
     }
 
@@ -454,10 +450,10 @@ class DrawMap {
         if (creatureLeftCol < 0 || creatureRightCol < 0)
             creature.leftCollision();
         else if (creatureRightCol >= this.cols_on_map || creatureLeftCol >= this.cols_on_map)
-            creature.rightCollision();
+        creature.rightCollision();
         else if (creatureBottomRow >= this.rows_on_map || creatureTopRow >= this.rows_on_map)
             creature.downCollision();
-        else if (creatureTopRow < 0 || creatureBottomRow < 0)
+        else if (creatureTopRow <= 0 || creatureBottomRow <= 0)
             creature.upCollision();
         else {
             char tileNum1, tileNum2;
@@ -476,7 +472,7 @@ class DrawMap {
             }
             if (creature.getVelocityY() < 0) {
                 int moveCreatureTopRow = (creatureTopWorldY + creature.getVelocityY()) / GameWindow.blockSize;
-                if (moveCreatureTopRow < 0)
+                if (moveCreatureTopRow <= 0)
                     creature.upCollision();
                 else {
                     tileNum1 = this.map[creatureLeftCol][moveCreatureTopRow];

@@ -274,7 +274,8 @@ public class Cossack extends Creature {
 
         //якщо козак доходить до краю карти, він мусить дойти до кутка
         //В інших випадках козак знаходиться тільки в центрі екрану
-        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand) || collision || fightShCommand || fightKCommand)
+        if ((this.leftCommand && this.rightCommand) || (!this.leftCommand && !this.rightCommand) || collision
+                || fightShCommand || fightKCommand)
             this.xVel = 0;
         else if (this.leftCommand && xMap >= 0) {
             this.xVel = -HORIZONTAL_SPEED;
