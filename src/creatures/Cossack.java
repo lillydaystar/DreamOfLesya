@@ -43,6 +43,7 @@ public class Cossack extends Creature {
     public boolean collision = false;
     public boolean fall = false;
     public int coins = 0;
+    private boolean invincible = false;
 
     public Health health;
     private int fightMode = 0;
@@ -306,6 +307,14 @@ public class Cossack extends Creature {
         this.yCord = getScreenY();
     }
 
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
+    }
+
     private static void loadImage() {
         try {
             Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
@@ -359,12 +368,14 @@ public class Cossack extends Creature {
     }
 
     public void getDamage() {
-        health.getDamage();
-        if(health.dead){
-            die();
-            return;
+        if(!invincible) {
+            health.getDamage();
+            if (health.dead) {
+                die();
+                return;
+            }
+            setDefaultCoordinates();
         }
-        setDefaultCoordinates();
     }
 
     /**

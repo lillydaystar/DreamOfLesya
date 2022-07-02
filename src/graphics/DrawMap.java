@@ -558,16 +558,25 @@ class DrawMap {
             }
         } else if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureBottomWorldY)) {
-            if (creature.isAlive())
+            if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
+            else if (creature.isAlive()){
+                killCreature(creature, creatureRightCol, creatureTopRow);
+            }
         } else if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
-            if (creature.isAlive())
+            if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
+            else if (creature.isAlive()){
+                killCreature(creature, creatureRightCol, creatureTopRow);
+            }
         } else if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
-            if (creature.isAlive())
+            if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
+            else if (creature.isAlive()){
+                killCreature(creature, creatureRightCol, creatureTopRow);
+            }
         }
         else if(fightArea != null && intersects_with_vertical_segment(fightArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){

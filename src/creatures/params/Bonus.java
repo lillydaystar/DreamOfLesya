@@ -168,6 +168,8 @@ public class Bonus {
         if(active){
             /*Бонус, який триває певний час. За цей час козак зможе збивати будь-якого ворога*/
             //метод для збивання (потрібні пророблені вороги)
+            this.cossack.setSpeed(1);
+            this.cossack.setInvincible(true);
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -179,6 +181,8 @@ public class Bonus {
         }
         else{
             //метод деактивації бонуса
+            this.cossack.setSpeed(-1);
+            this.cossack.setInvincible(false);
         }
     }
 
