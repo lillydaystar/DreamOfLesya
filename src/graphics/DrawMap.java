@@ -152,7 +152,7 @@ class DrawMap {
         if(level > 1)
             this.cossack.health.levelConfigs(level);
         if(level == 1) {
-            Bonus sh1 = new Bonus(7, this.cossack, 25, 12);  //test shablia
+            Bonus sh1 = new Bonus(8, this.cossack, 25, 12);  //test shablia
             bonuses.add(sh1);
         }
         if(level == 4){
@@ -539,7 +539,11 @@ class DrawMap {
                 }
             }
         }
-        System.out.println(cossack.getSolidArea());
+        if(!(creature instanceof Knife))
+            checkPlayer(creature, creatureRightWorldX, creatureLeftWorldX, creatureBottomWorldY, creatureTopWorldY);
+    }
+
+    private void checkPlayer(Creature creature, int creatureRightWorldX, int creatureLeftWorldX, int creatureBottomWorldY, int creatureTopWorldY) {
         Rectangle player = this.cossack.getSolidArea();
         Rectangle truePlayer = new Rectangle(this.cossack.getAbscissa() + player.x,
                 this.cossack.getOrdinate() + player.y, player.width, player.height);
@@ -551,50 +555,67 @@ class DrawMap {
             fightArea = new Rectangle(this.cossack.getAbscissa() + player.x - this.cossack.getFigureWidth(),
                     this.cossack.getOrdinate() + player.y, player.width*2, player.height);
         }
+        Rectangle knifeArea = null;
+        if(cossack.getKnife() != null){
+            knifeArea = cossack.getKnife().getSolidArea();
+            knifeArea = new Rectangle(this.cossack.getKnife().getAbscissa() + knifeArea.x,
+                    this.cossack.getKnife().getOrdinate() + knifeArea.y, knifeArea.width, knifeArea.height);
+        }
+
         if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureTopWorldY)) {
             if (cossack.getVelocityY() > 0 && creature.isAlive()) {
                 this.cossack.collideVertically();
-                killCreature(creature, creatureRightCol, creatureTopRow);
+                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             }
         } else if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureBottomWorldY)) {
             if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
             else if (creature.isAlive()){
-                killCreature(creature, creatureRightCol, creatureTopRow);
+                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             }
         } else if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
             if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
             else if (creature.isAlive()){
-                killCreature(creature, creatureRightCol, creatureTopRow);
+                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             }
         } else if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
             if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
             else if (creature.isAlive()){
-                killCreature(creature, creatureRightCol, creatureTopRow);
+                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             }
         }
         else if(fightArea != null && intersects_with_vertical_segment(fightArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){
             if(cossack.getMove()){
-                killCreature(creature,creatureRightCol,creatureTopRow);
+                killCreature(creature,creatureRightWorldX,creatureTopWorldY);
             }else cossack.getDamage();
         }else if(fightArea != null && intersects_with_vertical_segment(fightArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)){
             if(!cossack.getMove()){
-                killCreature(creature,creatureRightCol,creatureTopRow);
+                killCreature(creature,creatureRightWorldX,creatureTopWorldY);
             } else cossack.getDamage();
+        }else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)){
+            creature.die();
+            cossack.getKnife().fallApart();
+        }else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){
+            creature.die();
+            cossack.getKnife().fallApart();
         }
     }
 
-    private void killCreature(Creature creature, int creatureRightCol, int creatureTopRow){
+    private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
         creature.die();
         if(creature instanceof Chort) {
+            int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
+            int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
             int chance = (int) Math.floor(Math.random() * 3) + 1;
             if(chance == 1)
                 throwBonus(creatureRightCol - 1, creatureTopRow + 1);

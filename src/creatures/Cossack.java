@@ -201,8 +201,10 @@ public class Cossack extends Creature {
 
     private void knifePunch() {
         /*here should be a method to fight with enemies*/
-        this.knife = new Knife(this.xMap, this.yMap);
-        System.out.println("we punched somebody");
+        int path = 1;
+        if(getMove()) path = -1;
+        this.knife = new Knife(this.xMap, this.yMap, path);
+
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
             public void run() {
