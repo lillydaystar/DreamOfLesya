@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Zlyden extends HorizontalEnemy {
+public class Zlyden extends WalkingEnemy {
 
     private static final int DRAW_RATE = 10;
     private static final int HORIZONTAL_SPEED = 3;
