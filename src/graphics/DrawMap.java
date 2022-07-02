@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-class DrawMap {
+public class DrawMap {
 
     private Block[] blocks;
     private LinkedList<Bonus> bonuses = new LinkedList<>();
@@ -165,6 +165,12 @@ class DrawMap {
         return this.level;
     }
 
+    public void addCreatures(ArrayList<Creature> creatures){
+        this.creatures.addAll(creatures);
+        System.out.println(this.creatures);
+        this.cossack.setDefaultCoordinates();
+    }
+
     void paintMap(Graphics2D g) {
         int col = 0; //порядковий номер стовпця на карті
         int row = 0; //номер рядка
@@ -222,7 +228,10 @@ class DrawMap {
     }
 
     private void bossHealthPanel(Graphics2D g) {
-        Viy v = (Viy) creatures.get(0);
+        Viy v;
+        if(!creatures.isEmpty() && creatures.get(0) instanceof Viy)
+            v = (Viy) creatures.get(0);
+        else return;
         int hp = v.getHealthPoints();
         BufferedImage healthPointsPanel = null;
         BufferedImage hp1 = null, hp2 = null, hp3 = null;
@@ -672,7 +681,9 @@ class DrawMap {
                 this.creatures.add(new Harakternyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
             case 'V':
-                this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row, this));
+                Viy v = (Viy) creatures.get(0);
+                v.spawnChorts();
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""

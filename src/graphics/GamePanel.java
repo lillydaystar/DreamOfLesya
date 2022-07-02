@@ -1,8 +1,7 @@
 package graphics;
 
-import creatures.Creature;
-import creatures.Cossack;
-import creatures.CreatureState;
+import creatures.*;
+import creatures.enemies.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,8 +33,8 @@ public class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
         /*this.level = level;*/
         this.cossack = new Cossack();
-        this.dm = new DrawMap(level, this, cossack);
         this.cossack.setHealth(level);
+        this.dm = new DrawMap(level, this, cossack);
         creatures = new LinkedList<>();
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
@@ -132,6 +131,12 @@ public class GamePanel extends JPanel {
                 if (creature.isFullyDead()) {
                     this.dm.creatures.remove(creature);
                     i--;
+                    if(dm.getLevel() == 5){
+                        if(creature instanceof Chort) {
+                            Viy v = (Viy) dm.creatures.get(0);
+                            v.chortDie();
+                        }
+                    }
                 }
             }
         }

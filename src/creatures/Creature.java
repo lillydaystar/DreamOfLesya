@@ -136,6 +136,8 @@ public abstract class Creature {
     }
 
     public boolean isAlive() {
+        if(this.state == CreatureState.ClosedEyes || this.state == CreatureState.OpenedEyes)
+            return true;
         return this.state == CreatureState.Alive;
     }
 }

@@ -382,6 +382,15 @@ public class Cossack extends Creature {
         this.xVel = this.yVel = 0;
         this.xCord = xMap;
         this.yCord = yMap;
+        this.invincible = true;
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                invincible = false;
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 500);
     }
 
     public void getDamage() {

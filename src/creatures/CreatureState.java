@@ -1,5 +1,5 @@
 package creatures;
 
 public enum CreatureState {
-    Alive, Dead, Wait, Disappearing, Appearing
+    Alive, Dead, Wait, Disappearing, Appearing, OpenedEyes, ClosedEyes
 }
