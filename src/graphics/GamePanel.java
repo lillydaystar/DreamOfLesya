@@ -43,9 +43,11 @@ public class GamePanel extends JPanel {
         dm.setCossack(this.cossack); //для промальовування карти задаються координати козака
         this.dm.setCossacksParams();
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("files/upheavtt.ttf"));
+            Font customFont1 = Font.createFont(Font.TRUETYPE_FONT, new File("files/upheavtt.ttf"));
+            Font customFont2 = Font.createFont(Font.TRUETYPE_FONT, new File("files/ka1.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
+            ge.registerFont(customFont1);
+            ge.registerFont(customFont2);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +121,7 @@ public class GamePanel extends JPanel {
                 }
             };
             java.util.Timer timer = new Timer();
-            timer.schedule(timerTask, 4000);
+            timer.schedule(timerTask, 3000);
         }
         else {
             cossack.update();

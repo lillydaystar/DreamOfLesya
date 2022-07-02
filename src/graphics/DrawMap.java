@@ -223,16 +223,43 @@ class DrawMap {
     }
 
     private void bossHealthPanel(Graphics2D g) {
-        BufferedImage hp = null;
+        Viy v = (Viy) creatures.get(0);
+        int hp = v.getHealthPoints();
+        BufferedImage healthPointsPanel = null;
+        BufferedImage hp1 = null, hp2 = null, hp3 = null;
+        int hpWidth = 500, hpHeight = 20;
+
         try{
-            hp = ImageIO.read(new File("images/BossHp.png"));
+            healthPointsPanel = ImageIO.read(new File("images/BossHp.png"));
+            if(hp == 100){
+                hp3 = ImageIO.read(new File("images/Bhp3.png"));
+            }
+            if(hp > 0){
+                hp1 = ImageIO.read(new File("images/Bhp1.png"));
+            }
+            if(hp > 1){
+                hp2 = ImageIO.read(new File("images/Bhp2.png"));
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
         int width = 720;
         int height = 48;
-        g.drawImage(hp, (GameWindow.screenWidth - width)/2, GameWindow.screenHeight - height,
+        int x = (GameWindow.screenWidth - width)/2, y = GameWindow.screenHeight - height;
+        int hpX = 119 + x, hpY = y + 16;
+        g.drawImage(healthPointsPanel, x, y,
                 width, height, null);
+        if(hp1 != null){
+            g.drawImage(hp1, hpX, hpY, hpWidth, hpHeight, null);
+        }
+        if(hp2 != null){
+            g.drawImage(hp2, hpX+5, hpY, hpWidth*hp/100 , hpHeight, null);
+        }
+        if(hp3 != null){
+            g.drawImage(hp3, hpX, hpY, hpWidth, hpHeight, null);
+        }
+        g.setFont(new Font("Karmatic Arcade", Font.BOLD, 23));
+        g.drawString(String.valueOf(hp), x + width - 90, y + 30);
     }
 
 
@@ -496,8 +523,10 @@ class DrawMap {
                 this.cossack.getOrdinate() + player.y, player.width, player.height);
         if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureTopWorldY)) {
-            this.cossack.collideVertically();
-            creature.die();
+            //if(cossack.getVelocityY() > 0) {
+                this.cossack.collideVertically();
+                creature.die();
+            //}
         } else if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureBottomWorldY)) {
             if (creature.isAlive())

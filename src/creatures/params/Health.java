@@ -27,9 +27,11 @@ public class Health {
     public void levelConfigs(int level){
         if (level == 5) {
             healthPoints = 5;
-            hpStatus.clear();
-            hpImages.clear();
-            setFullHP();
+            if(hpStatus != null && hpImages != null) {
+                hpStatus.clear();
+                hpImages.clear();
+                setFullHP();
+            }
         } else if(level > 2 && hpStatus != null){
             healthPoints = 3 + Collections.frequency(hpStatus, 3);
         } else
