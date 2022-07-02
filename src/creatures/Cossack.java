@@ -57,7 +57,7 @@ public class Cossack extends Creature {
     public Cossack() {
         setDefaultCoordinates();
         this.alive = true;
-        this.solidArea = new Rectangle(2, 2, 22, 45);
+        this.solidArea = new Rectangle(2, 2, 22, 90);
     }
 
     public void draw(Graphics2D graphics2D) {

@@ -543,10 +543,12 @@ class DrawMap {
             checkPlayer(creature, creatureRightWorldX, creatureLeftWorldX, creatureBottomWorldY, creatureTopWorldY);
     }
 
-    private void checkPlayer(Creature creature, int creatureRightWorldX, int creatureLeftWorldX, int creatureBottomWorldY, int creatureTopWorldY) {
+    private void checkPlayer(Creature creature, int creatureRightWorldX,
+                             int creatureLeftWorldX, int creatureBottomWorldY, int creatureTopWorldY) {
         Rectangle player = this.cossack.getSolidArea();
         Rectangle truePlayer = new Rectangle(this.cossack.getAbscissa() + player.x,
                 this.cossack.getOrdinate() + player.y, player.width, player.height);
+
         Rectangle fightArea = null;
         if(!cossack.getMove() && cossack.isFightShCommand()){
             fightArea = new Rectangle(this.cossack.getAbscissa() + player.x + this.cossack.getFigureWidth(),
@@ -555,6 +557,7 @@ class DrawMap {
             fightArea = new Rectangle(this.cossack.getAbscissa() + player.x - this.cossack.getFigureWidth(),
                     this.cossack.getOrdinate() + player.y, player.width*2, player.height);
         }
+
         Rectangle knifeArea = null;
         if(cossack.getKnife() != null){
             knifeArea = cossack.getKnife().getSolidArea();
@@ -562,50 +565,54 @@ class DrawMap {
                     this.cossack.getKnife().getOrdinate() + knifeArea.y, knifeArea.width, knifeArea.height);
         }
 
+        boolean intersectsTop, intersectsBottom, intersectsRight, intersectsLeft;
+        intersectsTop = intersectsBottom = intersectsLeft = intersectsRight = false;
+
         if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureTopWorldY)) {
-            if (cossack.getVelocityY() > 0 && creature.isAlive()) {
-                this.cossack.collideVertically();
-                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
-            }
-        } else if (intersects_with_horizontal_segment(truePlayer,
+            intersectsTop = true;
+        }
+        if (intersects_with_horizontal_segment(truePlayer,
                 creatureLeftWorldX, creatureRightWorldX, creatureBottomWorldY)) {
-            if (creature.isAlive() && !cossack.isInvincible())
-                this.cossack.getDamage();
-            else if (creature.isAlive()){
-                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
-            }
-        } else if (intersects_with_vertical_segment(truePlayer,
+            intersectsBottom = true;
+        }
+        if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
-            if (creature.isAlive() && !cossack.isInvincible())
-                this.cossack.getDamage();
-            else if (creature.isAlive()){
-                killCreature(creature, creatureRightWorldX, creatureTopWorldY);
-            }
-        } else if (intersects_with_vertical_segment(truePlayer,
+            intersectsLeft = true;
+        }
+        if (intersects_with_vertical_segment(truePlayer,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
+            intersectsRight = true;
+        }
+
+        if (cossack.getVelocityY() - creature.getVelocityY() > 0
+                && intersectsTop && !intersectsBottom && creature.isAlive()) {
+            this.cossack.collideVertically();
+            killCreature(creature, creatureRightWorldX, creatureTopWorldY);
+        } else if (intersectsTop || intersectsRight || intersectsLeft || intersectsBottom) {
             if (creature.isAlive() && !cossack.isInvincible())
                 this.cossack.getDamage();
-            else if (creature.isAlive()){
+            else if (creature.isAlive()) {
                 killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             }
         }
-        else if(fightArea != null && intersects_with_vertical_segment(fightArea,
-                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){
-            if(cossack.getMove()){
-                killCreature(creature,creatureRightWorldX,creatureTopWorldY);
-            }else cossack.getDamage();
-        }else if(fightArea != null && intersects_with_vertical_segment(fightArea,
-                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)){
-            if(!cossack.getMove()){
+
+        if (fightArea != null && intersects_with_vertical_segment(fightArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
+            if (cossack.getMove()) {
                 killCreature(creature,creatureRightWorldX,creatureTopWorldY);
             } else cossack.getDamage();
-        }else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
-                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)){
+        } else if (fightArea != null && intersects_with_vertical_segment(fightArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
+            if (!cossack.getMove()) {
+                killCreature(creature,creatureRightWorldX,creatureTopWorldY);
+            } else cossack.getDamage();
+        } else if (knifeArea != null && intersects_with_vertical_segment(knifeArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
             creature.die();
             cossack.getKnife().fallApart();
-        }else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
-                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)){
+        } else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
+                creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
             creature.die();
             cossack.getKnife().fallApart();
         }

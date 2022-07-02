@@ -43,7 +43,6 @@ public class Chort extends Creature {
             this.velocityX = random.nextInt(2*MAX_HORIZONTAL_SPEED + 1) - MAX_HORIZONTAL_SPEED;
             this.velocityY = random.nextInt(2*MAX_VERTICAL_SPEED + 1) - MAX_VERTICAL_SPEED;
         }
-        System.out.printf("%d %d\n", velocityX, velocityY);
         this.abscissa += this.velocityX;
         this.ordinate += this.velocityY;
         direction_count++;
