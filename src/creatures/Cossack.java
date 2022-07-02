@@ -1,5 +1,6 @@
 package creatures;
 
+import creatures.enemies.Knife;
 import creatures.params.Health;
 import graphics.*;
 
@@ -43,7 +44,9 @@ public class Cossack extends Creature {
     public boolean collision = false;
     public boolean fall = false;
     public int coins = 0;
+    private boolean invincible = false;
 
+    private Knife knife = null;
     public Health health;
     private int fightMode = 0;
 
@@ -114,6 +117,10 @@ public class Cossack extends Creature {
         graphics2D.drawImage(image, x, y,
                 width, height, null);
         health.drawHP(graphics2D);
+        if(knife != null && knife.isExist()){
+            knife.draw(graphics2D, this.getAbscissa(), this.getOrdinate(),
+                    this.getScreenX(), this.getScreenY());
+        }
         if(!alive) {
             BufferedImage img = null;
             try{
@@ -185,9 +192,8 @@ public class Cossack extends Creature {
         }
     }
 
-
     public void throwKnife() {
-        if(fightMode == 2 || fightMode == 3){
+        if((fightMode == 2 || fightMode == 3) && this.knife == null){
             fightKCommand = true;
             knifePunch();
         }
@@ -195,6 +201,8 @@ public class Cossack extends Creature {
 
     private void knifePunch() {
         /*here should be a method to fight with enemies*/
+        this.knife = new Knife(this.xMap, this.yMap);
+        System.out.println("we punched somebody");
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
             public void run() {
@@ -215,6 +223,22 @@ public class Cossack extends Creature {
         };
         Timer timer = new Timer();
         timer.schedule(timerTask, 500);
+    }
+
+    /**
+     *
+     * @return if cossack moves to left return true, else return false
+     */
+    public boolean getMove(){
+        return leftCommand;
+    }
+
+    public boolean isFightShCommand() {
+        return fightShCommand;
+    }
+
+    public boolean isFightKCommand() {
+        return fightKCommand;
     }
 
     public int getX() {
@@ -289,6 +313,21 @@ public class Cossack extends Creature {
         this.yMap += this.yVel;
         this.xCord = getScreenX();
         this.yCord = getScreenY();
+
+        if(knife != null && knife.isExist()){
+            knife.update();
+        }
+        else if(knife != null && !knife.isExist()){
+            knife = null;
+        }
+    }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
     }
 
     private static void loadImage() {
@@ -344,12 +383,14 @@ public class Cossack extends Creature {
     }
 
     public void getDamage() {
-        health.getDamage();
-        if(health.dead){
-            die();
-            return;
+        if(!invincible) {
+            health.getDamage();
+            if (health.dead) {
+                die();
+                return;
+            }
+            setDefaultCoordinates();
         }
-        setDefaultCoordinates();
     }
 
     /**
@@ -366,6 +407,10 @@ public class Cossack extends Creature {
      */
     public int getFightMode(){
         return this.fightMode;
+    }
+
+    public Knife getKnife(){
+        return knife;
     }
 
     public BufferedImage getImage() {

@@ -21,7 +21,7 @@ public class Poliovyk extends VerticalEnemy {
 
     public Poliovyk(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
+        super.solidArea = new Rectangle(1, 1, 2*GameWindow.blockSize - 2, GameWindow.blockSize - 2);
     }
 
     public int getDrawRate() {
@@ -35,12 +35,12 @@ public class Poliovyk extends VerticalEnemy {
 
     @Override
     public int getFigureWidth() {
-        return GameWindow.blockSize;
+        return 2*GameWindow.blockSize;
     }
 
     @Override
     public int getFigureHeight() {
-        return 2*GameWindow.blockSize;
+        return GameWindow.blockSize;
     }
 
     @Override
@@ -60,10 +60,10 @@ public class Poliovyk extends VerticalEnemy {
 
     private static void loadImage() {
         try {
-            Poliovyk.left_fst = ImageIO.read(new File("heroes/PolyovykL_1.png"));
-            /*Poliovyk.left_snd = ImageIO.read(new File("heroes/PolyovykL_2.png"));*/
-            Poliovyk.right_fst = ImageIO.read(new File("heroes/PolyovykR_1.png"));
-            /*Poliovyk.right_snd = ImageIO.read(new File("heroes/PolyovykR_2.png"));*/
+            Poliovyk.left_fst = ImageIO.read(new File("heroes/PoliovykL.png"));
+            /*Poliovyk.left_snd = ImageIO.read(new File("heroes/PoliovykL_2.png"));*/
+            Poliovyk.right_fst = ImageIO.read(new File("heroes/PoliovykR.png"));
+            /*Poliovyk.right_snd = ImageIO.read(new File("heroes/PoliovykR_2.png"));*/
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for poliovyk",
                     "Error", JOptionPane.ERROR_MESSAGE);

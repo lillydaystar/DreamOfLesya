@@ -21,7 +21,7 @@ public class Vodianyk extends VerticalEnemy {
 
     public Vodianyk(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
+        super.solidArea = new Rectangle(1, 1, 2*GameWindow.blockSize - 2, GameWindow.blockSize - 2);
     }
 
     public int getDrawRate() {
@@ -35,12 +35,12 @@ public class Vodianyk extends VerticalEnemy {
 
     @Override
     public int getFigureWidth() {
-        return GameWindow.blockSize;
+        return 2*GameWindow.blockSize;
     }
 
     @Override
     public int getFigureHeight() {
-        return 2*GameWindow.blockSize;
+        return GameWindow.blockSize;
     }
 
     @Override
@@ -60,9 +60,9 @@ public class Vodianyk extends VerticalEnemy {
 
     private static void loadImage() {
         try {
-            Vodianyk.left_fst = ImageIO.read(new File("heroes/VodianykL_1.png"));
+            Vodianyk.left_fst = ImageIO.read(new File("heroes/VodianykL.png"));
             /*Vodianyk.left_snd = ImageIO.read(new File("heroes/VodianykL_2.png"));*/
-            Vodianyk.right_fst = ImageIO.read(new File("heroes/VodianykR_1.png"));
+            Vodianyk.right_fst = ImageIO.read(new File("heroes/VodianykR.png"));
             /*Vodianyk.right_snd = ImageIO.read(new File("heroes/VodianykR_2.png"));*/
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error while loading images for vodianyk",

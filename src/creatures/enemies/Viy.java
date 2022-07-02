@@ -75,9 +75,13 @@ public class Viy extends Creature {
 
     }
 
-    public void getDamage(){
+    public void takeDamage(){
         healthPoints -= 10;
 
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
     }
 
     public boolean canTakeDamage(){
