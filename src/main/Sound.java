@@ -1,54 +1,33 @@
 package main;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.*;
-import java.net.URL;
+import java.io.File;
 
 public class Sound {
 
-    private Clip clip;
-    private URL anthem_url;
-    private URL upa_url;
+    private static File anthem = new File("audio/Ukrainian_national_anthem.wav");
+    private static File upa = new File("audio/Oy_u_luzi_chervona_kalyna.wav");
 
-    public Sound() {
-        anthem_url = getClass().getResource("./audio/Ukrainian_national_anthem.wav");
-        upa_url = getClass().getResource("./audio/Oy_u_luzi_chervona_kalyna.wav");
-    }
-
-    public void setMusic(Music music) {
+    public static Clip getClip(Music music) {
+        File file;
+        switch (music) {
+            case Background_Anthem:
+                file = Sound.anthem;
+                break;
+            case Background_UPA:
+                file = Sound.upa;
+                break;
+            default:
+                file = null;
+        }
         try {
-            /*switch (music) {
-                case Background_UPA: {*/
-                    AudioInputStream ais = AudioSystem.getAudioInputStream(upa_url);
-                    this.clip = AudioSystem.getClip();
-                    this.clip.open(ais);
-                    /*break;
-                }
-                case Background_Anthem: {
-                    AudioInputStream ais = AudioSystem.getAudioInputStream(anthem_url);
-                    this.clip = AudioSystem.getClip();
-                    this.clip.open(ais);
-                    break;
-                }
-            }*/
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            return clip;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error while loading music",
-                    "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }
-
-    public void play() {
-        clip.start();
-    }
-
-    public void stop() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-
-    public void loop() {
-        clip.stop();
+        return null;
     }
 }

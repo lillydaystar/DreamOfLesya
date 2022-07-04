@@ -2,17 +2,10 @@ package graphics;
 
 import main.Music;
 import main.Sound;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
 
 public class GameWindow extends JFrame implements Runnable {
 
@@ -30,23 +23,25 @@ public class GameWindow extends JFrame implements Runnable {
     private JPanel control;
 
     private Thread gameThread;
-    private Sound sound;
     private boolean gameOver;
+    private Clip anthem;
+    private Clip UPA;
 
     public GameWindow() {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
+        this.anthem = Sound.getClip(Music.Background_Anthem);
+        this.UPA = Sound.getClip(Music.Background_UPA);
         drawMainMenu();
-        this.sound = new Sound();
-        playMusic(Music.Background_Anthem);
-//        drawGame();
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
     void drawMainMenu() {
+        if (this.UPA != null)
+            this.UPA.stop();
         if(panel != null){
             panel.setFocusable(false);
             this.remove(panel);
@@ -58,6 +53,10 @@ public class GameWindow extends JFrame implements Runnable {
             control = null;
         }
         this.control = new FirstPanel(this);
+        if (anthem != null) {
+            anthem.start();
+            anthem.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         this.control.setFocusable(true);
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
@@ -66,6 +65,10 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     void drawGame() {
+        if (this.anthem != null)
+            this.anthem.stop();
+        if (this.UPA != null)
+            this.UPA.start();
         this.gameOver = false;
         if(control != null) {
             this.control.setFocusable(false);
@@ -138,40 +141,10 @@ public class GameWindow extends JFrame implements Runnable {
                 /*count++;*/
             }
             if (timer >= NANOSECOND_IN_SECOND) {
-//                System.out.printf("%d FPS\n", count);
+                /*System.out.printf("%d FPS\n", count);*/
                 /*count = 0;*/
                 timer = 0;
             }
         }
-    }
-
-    public void playMusic(Music music) {
-        /*sound.setMusic(music);
-        sound.play();
-        sound.loop();*/
-        /*try {
-            InputStream is = new FileInputStream("audio/Ukrainian_national_anthem.wav");
-            AudioStream as = new AudioStream(is);
-            AudioPlayer.player.start(as);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        File file = new File("audio/Ukrainian_national_anthem.wav");
-        try {
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(file));
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stopMusic() {
-        sound.stop();
-    }
-
-    public void playEffect(Music music) {
-        sound.setMusic(music);
-        sound.play();
     }
 }
