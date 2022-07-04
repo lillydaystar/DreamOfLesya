@@ -25,6 +25,7 @@ public class Cossack extends Creature {
 
     private boolean collisionRight, collisionLeft, collisionAbove, collisionBelow;
     private boolean leftCommand, rightCommand, jumpCommand, fightShCommand, fightKCommand;
+    private boolean shabliaIsAvailable = false;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead, sh_left, sh_right;
 
     private int counter;
@@ -196,7 +197,7 @@ public class Cossack extends Creature {
     }
 
     public void fight(){
-        if(fightMode == 1 || fightMode == 2){
+        if((fightMode == 1 || fightMode == 2) && shabliaIsAvailable){
             fightShCommand = true;
             shabliaPunch();
         }
@@ -213,7 +214,7 @@ public class Cossack extends Creature {
         /*here should be a method to fight with enemies*/
         int path = 1;
         if(getMove()) path = -1;
-        this.knife = new Knife(this.xMap, this.yMap, path);
+        this.knife = new Knife(this.xMap, this.yMap + GameWindow.blockSize/2, path);
 
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
@@ -227,6 +228,7 @@ public class Cossack extends Creature {
 
     private void shabliaPunch() {
         /*here should be a method to fight with enemies*/
+        shabliaIsAvailable = false;
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
             public void run() {
@@ -234,7 +236,16 @@ public class Cossack extends Creature {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(timerTask, 500);
+        timer.schedule(timerTask, 320);
+
+        TimerTask timerTask2 = new TimerTask() {  //тимчасовий таймер для тестування бою
+            @Override
+            public void run() {
+                shabliaIsAvailable = true;
+            }
+        };
+        Timer timer2 = new Timer();
+        timer2.schedule(timerTask2, 2000);
     }
 
     /**
@@ -247,10 +258,6 @@ public class Cossack extends Creature {
 
     public boolean isFightShCommand() {
         return fightShCommand;
-    }
-
-    public boolean isFightKCommand() {
-        return fightKCommand;
     }
 
     public int getX() {
@@ -405,6 +412,8 @@ public class Cossack extends Creature {
 
     public void getDamage() {
         if(!invincible) {
+            knife = null;
+            shabliaIsAvailable = true;
             health.getDamage();
             if (health.dead) {
                 die();
@@ -490,4 +499,12 @@ public class Cossack extends Creature {
     }
 
     protected void wake() {}
+
+    public boolean isShabliaAvailable() {
+        return shabliaIsAvailable;
+    }
+
+    public void setShabliaIsAvailable(boolean shabliaIsAvailable) {
+        this.shabliaIsAvailable = shabliaIsAvailable;
+    }
 }

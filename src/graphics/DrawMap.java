@@ -152,7 +152,7 @@ public class DrawMap {
         if(level > 1)
             this.cossack.health.levelConfigs(level);
         if(level == 1) {
-            Bonus sh1 = new Bonus(8, this.cossack, 25, 12);  //test shablia
+            Bonus sh1 = new Bonus(7, this.cossack, 25, 12);  //test shablia
             bonuses.add(sh1);
         }
         if(level == 4){

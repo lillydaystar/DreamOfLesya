@@ -205,6 +205,7 @@ public class Bonus {
     }
 
     private void canFight() {
+        this.cossack.setShabliaIsAvailable(true);
         this.cossack.setFightMode(1);
     }
 

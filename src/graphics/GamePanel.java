@@ -95,24 +95,31 @@ public class GamePanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        int y = GameWindow.blockSize - 8 + f.getHeight();
         if(cossack.getFightMode() == 1 || cossack.getFightMode() == 2) {
+            if(!cossack.isShabliaAvailable()){
+                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5F));
+            }
             g.drawImage(shablia, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
             int x1 = length + (GameWindow.blockSize - 8 - f.stringWidth(st)) / 2;
-            int y1 = GameWindow.blockSize - 8 + f.getHeight();
-            g.drawString(st, x1, y1);
+            g.drawString(st, x1, y);
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
         }
         if(cossack.getFightMode() > 1){
+            if(cossack.getKnife() != null){
+                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5F));
+            }
             length += GameWindow.blockSize;
             g.drawImage(knife, length, 0, GameWindow.blockSize - 8, GameWindow.blockSize - 8, null);
             st = "G";
             int x2 = length + (GameWindow.blockSize - 8 - f.stringWidth(st))/2;
-            int y2 = GameWindow.blockSize - 8 + f.getHeight();
-            g.drawString(st, x2, y2);
+            g.drawString(st, x2, y);
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
         }
     }
 
     void update() {
-        if(!cossack.alive){
+        if(!cossack.alive || cossack.win){
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
