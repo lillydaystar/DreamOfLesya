@@ -4,12 +4,10 @@ import creatures.Creature;
 
 abstract class VerticalEnemy extends Creature {
 
-//private boolean upCollision, downCollision;
-
     VerticalEnemy(int x, int y) {
         super(x, y);
         this.velocityX = 0;
-        this.velocityY = this.getVerticalSpeed();
+        this.velocityY = this.getSpeed();
     }
 
     @Override
@@ -40,11 +38,6 @@ abstract class VerticalEnemy extends Creature {
     @Override
     public void downCollision() {
         super.collideVertically();
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
-        return 0;
     }
 
     @Override

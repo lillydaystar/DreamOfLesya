@@ -24,7 +24,7 @@ public class Knife extends HorizontalEnemy {
     public Knife(int x, int y, int path) {
         super(x, y);
         super.solidArea = new Rectangle(1, 1, SIZE - 2, SIZE - 2);
-        this.velocityX = path*this.getHorizontalSpeed();
+        this.velocityX = path*this.getSpeed();
         exist = true;
     }
 
@@ -67,7 +67,7 @@ public class Knife extends HorizontalEnemy {
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

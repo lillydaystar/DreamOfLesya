@@ -453,24 +453,24 @@ public class DrawMap {
         if(prevCol >=0 && prevCol < map.length)
             prevBlock = map[prevCol][bottomRow];
         else prevBlock = block;
-        if((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
+        if ((block == '0' || !blocks[marks.indexOf(block)].collision) && !cossack.isJumpCommand()) {
             if(prevBlock == '0' || !blocks[marks.indexOf(prevBlock)].collision)
                 this.cossack.fall = true;
         }
-        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2){
+        else if(cossack.getY() >= GameWindow.screenHeight - 3*GameWindow.blockSize - 2) {
             int rectX;
-            if(lORr == 'l'){
+            if(lORr == 'l') {
                 rectX = this.cossack.getAbscissa() + GameWindow.blockSize/4;
             }
-            else{
+            else {
                 rectX = this.cossack.getAbscissa() + this.cossack.getFigureWidth() - GameWindow.blockSize/4;
             }
             int realCol = rectX/GameWindow.blockSize;
-            if(map[realCol][bottomRow] == 'W'){
+            if(map[realCol][bottomRow] == 'W') {
                 cossack.getDamage();
             }
         }
-        if(cossack.getKnife() != null && cossack.getKnife().isExist()){
+        if(cossack.getKnife() != null && cossack.getKnife().isExist()) {
             checkTile(cossack.getKnife());
         }
     }
@@ -594,8 +594,8 @@ public class DrawMap {
         }
 
         if (cossack.getVelocityY() - creature.getVelocityY() > 0
-                && intersectsTop && !intersectsBottom && creature.isAlive()) {
-            this.cossack.collideVertically();
+                && intersectsTop/* && !intersectsBottom*/ && creature.isAlive()) {
+            System.out.println("here");
             killCreature(creature, creatureRightWorldX, creatureTopWorldY);
         } else if (intersectsTop || intersectsRight || intersectsLeft || intersectsBottom) {
             if (creature.isAlive() && !cossack.isInvincible())

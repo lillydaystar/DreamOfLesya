@@ -29,7 +29,7 @@ public class Potercha extends HorizontalEnemy {
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

@@ -29,7 +29,7 @@ public class Poliovyk extends VerticalEnemy {
     }
 
     @Override
-    protected int getVerticalSpeed() {
+    protected int getSpeed() {
         return VERTICAL_SPEED;
     }
 

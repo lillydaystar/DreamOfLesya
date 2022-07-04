@@ -37,8 +37,8 @@ public class Cossack extends Creature {
     private static int HORIZONTAL_SPEED = 3;
     private static final int SENTINEL_PLAYER_LEFT = 8 * GameWindow.blockSize;
     private int SENTINEL_PLAYER_RIGHT = WORLD_WIDTH - 9 * GameWindow.blockSize;
-    private static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
-    private static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
+    static final int INITIAL_PLAYER_ABSCISSE = 8 * GameWindow.blockSize;
+    static final int INITIAL_PLAYER_ORDINATE = GameWindow.screenHeight - 3*GameWindow.blockSize;
     private static final int FIGURE_HEIGHT = 2*GameWindow.blockSize;
     private static final int FIGURE_WIDTH = GameWindow.blockSize;
     public boolean collision = false;
@@ -472,17 +472,12 @@ public class Cossack extends Creature {
     }
 
     @Override
-    protected int getVerticalSpeed() {
-        return 0;
-    }
-
-    @Override
     public Rectangle getSolidArea() {
         return this.solidArea;
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

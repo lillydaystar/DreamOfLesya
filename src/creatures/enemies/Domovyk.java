@@ -55,7 +55,7 @@ public class Domovyk extends VerticalEnemy {
     }
 
     @Override
-    protected int getVerticalSpeed() {
+    protected int getSpeed() {
         return VERTICAL_SPEED;
     }
 

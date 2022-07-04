@@ -29,7 +29,7 @@ public class Vodianyk extends VerticalEnemy {
     }
 
     @Override
-    protected int getVerticalSpeed() {
+    protected int getSpeed() {
         return VERTICAL_SPEED;
     }
 

@@ -100,12 +100,7 @@ public class Harakternyk extends Creature {
     public void downCollision() { }
 
     @Override
-    protected int getVerticalSpeed() {
-        return 0;
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return 0;
     }
 

@@ -29,7 +29,7 @@ public class Poludnytsia extends WalkingEnemy {
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

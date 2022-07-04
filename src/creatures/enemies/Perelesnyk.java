@@ -55,7 +55,7 @@ public class Perelesnyk extends HorizontalEnemy {
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

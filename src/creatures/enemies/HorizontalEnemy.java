@@ -8,7 +8,7 @@ abstract class HorizontalEnemy extends Creature {
 
     HorizontalEnemy(int x, int y) {
         super(x, y);
-        this.velocityX = this.getHorizontalSpeed();
+        this.velocityX = this.getSpeed();
         this.velocityY = 0;
     }
 
@@ -40,11 +40,6 @@ abstract class HorizontalEnemy extends Creature {
     public void downCollision() {
         //do nothing; as creature moves horizontally thus
         //vertical collision will never occur
-    }
-
-    @Override
-    protected int getVerticalSpeed() {
-        return 0;
     }
 
     @Override

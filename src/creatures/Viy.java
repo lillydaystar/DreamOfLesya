@@ -1,7 +1,8 @@
-package creatures.enemies;
+package creatures;
 
 import creatures.Creature;
 import creatures.CreatureState;
+import creatures.enemies.Chort;
 import graphics.DrawMap;
 import graphics.GameWindow;
 
@@ -208,12 +209,7 @@ public class Viy extends Creature {
     }
 
     @Override
-    protected int getVerticalSpeed() {
-        return 0;
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return 0;
     }
 

@@ -80,7 +80,7 @@ public class Chort extends Creature {
 
     @Override
     protected int getDrawRate() {
-        return  DRAW_RATE;
+        return DRAW_RATE;
     }
 
     @Override
@@ -104,12 +104,7 @@ public class Chort extends Creature {
     }
 
     @Override
-    protected int getVerticalSpeed() {
-        return 0;
-    }
-
-    @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return 0;
     }
 

@@ -55,7 +55,7 @@ public class Rusalka extends WalkingEnemy {
     }
 
     @Override
-    protected int getHorizontalSpeed() {
+    protected int getSpeed() {
         return HORIZONTAL_SPEED;
     }
 

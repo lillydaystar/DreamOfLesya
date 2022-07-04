@@ -13,6 +13,9 @@ public abstract class Creature {
     protected int abscissa;
     protected int ordinate;
 
+    protected int playerXmap = Cossack.INITIAL_PLAYER_ABSCISSE;
+    protected int playerYmap = Cossack.INITIAL_PLAYER_ORDINATE;
+
     protected Rectangle solidArea;
 
     //counts while we do not have to change character's image
@@ -40,6 +43,8 @@ public abstract class Creature {
                      int playerScreenX, int playerScreenY) {
         int enemyScreenAbscissa = getScreenAbscissa(playerAbscissa, playerScreenX);
         int enemyScreenOrdinate = getScreenOrdinate(playerOrdinate, playerScreenY);
+        this.playerXmap = playerAbscissa;
+        this.playerYmap = playerOrdinate;
         if (this.state != CreatureState.Dead) {
             graph.drawImage(getImage(), enemyScreenAbscissa, enemyScreenOrdinate,
                     getFigureWidth(), getFigureHeight(), null);
@@ -99,9 +104,7 @@ public abstract class Creature {
 
     public abstract void downCollision();
 
-    protected abstract int getVerticalSpeed();
-
-    protected abstract int getHorizontalSpeed();
+    protected abstract int getSpeed();
 
     private int getScreenAbscissa(int playerAbscissa, int playerScreenX) {
         return playerScreenX + abscissa - playerAbscissa;

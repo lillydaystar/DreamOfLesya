@@ -1,5 +1,6 @@
 package graphics;
 
+import main.Music;
 import main.Sound;
 
 import javax.swing.*;
