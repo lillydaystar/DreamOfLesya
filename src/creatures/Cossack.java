@@ -214,7 +214,7 @@ public class Cossack extends Creature {
         /*here should be a method to fight with enemies*/
         int path = 1;
         if(getMove()) path = -1;
-        this.knife = new Knife(this.xMap, this.yMap, path);
+        this.knife = new Knife(this.xMap, this.yMap + GameWindow.blockSize/2, path);
 
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
@@ -412,6 +412,8 @@ public class Cossack extends Creature {
 
     public void getDamage() {
         if(!invincible) {
+            knife = null;
+            shabliaIsAvailable = true;
             health.getDamage();
             if (health.dead) {
                 die();
