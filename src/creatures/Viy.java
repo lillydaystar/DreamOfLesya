@@ -47,7 +47,7 @@ public class Viy extends Creature {
      * Method to put chorts on the map
      */
     public void spawnChorts() {
-        this.countOfChorts = 13;
+        this.countOfChorts = 1;
         reloadChorts();
         dm.addCreatures(chorts);
     }

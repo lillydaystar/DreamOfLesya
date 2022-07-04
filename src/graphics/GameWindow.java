@@ -2,9 +2,17 @@ package graphics;
 
 import main.Music;
 import main.Sound;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GameWindow extends JFrame implements Runnable {
 
@@ -31,6 +39,7 @@ public class GameWindow extends JFrame implements Runnable {
         this.setResizable(false);
         drawMainMenu();
         this.sound = new Sound();
+        playMusic(Music.Background_Anthem);
 //        drawGame();
         this.pack();
         this.setLocationRelativeTo(null);
@@ -63,7 +72,7 @@ public class GameWindow extends JFrame implements Runnable {
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(5);
+        this.panel = new GamePanel(1);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();
@@ -134,5 +143,35 @@ public class GameWindow extends JFrame implements Runnable {
                 timer = 0;
             }
         }
+    }
+
+    public void playMusic(Music music) {
+        /*sound.setMusic(music);
+        sound.play();
+        sound.loop();*/
+        /*try {
+            InputStream is = new FileInputStream("audio/Ukrainian_national_anthem.wav");
+            AudioStream as = new AudioStream(is);
+            AudioPlayer.player.start(as);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        File file = new File("audio/Ukrainian_national_anthem.wav");
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    public void playEffect(Music music) {
+        sound.setMusic(music);
+        sound.play();
     }
 }

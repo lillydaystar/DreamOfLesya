@@ -9,22 +9,22 @@ import java.net.URL;
 public class Sound {
 
     private Clip clip;
-    private static URL anthem_url;
-    private static URL upa_url;
+    private URL anthem_url;
+    private URL upa_url;
 
     public Sound() {
-        anthem_url = getClass().getResource("audio/Ukrainian_national_anthem.wav");
-        upa_url = getClass().getResource("audio/Oy_u_luzi_chervona_kalyna.wav");
+        anthem_url = getClass().getResource("./audio/Ukrainian_national_anthem.wav");
+        upa_url = getClass().getResource("./audio/Oy_u_luzi_chervona_kalyna.wav");
     }
 
     public void setMusic(Music music) {
         try {
-            switch (music) {
-                case Background_UPA: {
+            /*switch (music) {
+                case Background_UPA: {*/
                     AudioInputStream ais = AudioSystem.getAudioInputStream(upa_url);
                     this.clip = AudioSystem.getClip();
                     this.clip.open(ais);
-                    break;
+                    /*break;
                 }
                 case Background_Anthem: {
                     AudioInputStream ais = AudioSystem.getAudioInputStream(anthem_url);
@@ -32,7 +32,7 @@ public class Sound {
                     this.clip.open(ais);
                     break;
                 }
-            }
+            }*/
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error while loading music",
                     "Error", JOptionPane.ERROR_MESSAGE);
