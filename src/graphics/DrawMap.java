@@ -621,7 +621,7 @@ public class DrawMap {
     }
 
     private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
-        creature.die();
+
         /*Clip enemy_die = Sound.getClip(Music.Enemy_Death);
         if (enemy_die != null)
             enemy_die.start();*/
@@ -633,6 +633,7 @@ public class DrawMap {
                 throwBonus(creatureRightCol - 1, creatureTopRow + 1);
         }
         cossack.coins+=5;
+        creature.die();
     }
 
     private void addCreature(String[] characteristics) {

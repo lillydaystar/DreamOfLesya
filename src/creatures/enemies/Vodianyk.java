@@ -45,7 +45,7 @@ public class Vodianyk extends VerticalEnemy {
 
     @Override
     protected BufferedImage getImage() {
-        if (this.velocityX < 0) {
+        if (this.velocityY < 0) {
             if (this.draw_counter < getDrawRate())
                 return Vodianyk.left_fst;
             else

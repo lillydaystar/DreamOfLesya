@@ -21,7 +21,7 @@ public class Perelesnyk extends HorizontalEnemy {
 
     public Perelesnyk(int x, int y) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, 2*GameWindow.blockSize - 2);
+        super.solidArea = new Rectangle(1, 1, GameWindow.blockSize - 2, GameWindow.blockSize - 2);
     }
 
     @Override
