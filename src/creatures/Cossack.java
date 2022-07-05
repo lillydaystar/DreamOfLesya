@@ -62,7 +62,7 @@ public class Cossack extends Creature {
     public Cossack() {
         setDefaultCoordinates();
         this.alive = true;
-        this.solidArea = new Rectangle(2, 2, 22, 90);
+        this.solidArea = new Rectangle(2, 0, 20, 90);
         this.standRight = true;
     }
 
