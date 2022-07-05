@@ -1,7 +1,7 @@
 package graphics;
 
-import main.Music;
-import main.Sound;
+import sound.Music;
+import sound.Sound;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +26,7 @@ public class GameWindow extends JFrame implements Runnable {
     private boolean gameOver;
     private Clip anthem;
     private Clip UPA;
+    private Clip bestiary;
 
     public GameWindow() {
         super("Lesya's Dream");
@@ -33,6 +34,10 @@ public class GameWindow extends JFrame implements Runnable {
         this.setResizable(false);
         this.anthem = Sound.getClip(Music.Background_Anthem);
         this.UPA = Sound.getClip(Music.Background_UPA);
+        this.bestiary = Sound.getClip(Music.Bestiary_Background);
+        Sound.setVolume(this.anthem, 0.15f);
+        Sound.setVolume(this.bestiary, 0.15f);
+        Sound.setVolume(this.UPA, 0.1f);
         drawMainMenu();
         this.pack();
         this.setLocationRelativeTo(null);
@@ -40,8 +45,7 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     void drawMainMenu() {
-        if (this.UPA != null)
-            this.UPA.stop();
+        stopBackgroundSounds();
         if(panel != null){
             panel.setFocusable(false);
             this.remove(panel);
@@ -53,9 +57,9 @@ public class GameWindow extends JFrame implements Runnable {
             control = null;
         }
         this.control = new FirstPanel(this);
-        if (anthem != null) {
-            anthem.start();
-            anthem.loop(Clip.LOOP_CONTINUOUSLY);
+        if (this.anthem != null) {
+            this.anthem.start();
+            this.anthem.loop(Clip.LOOP_CONTINUOUSLY);
         }
         this.control.setFocusable(true);
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -65,17 +69,18 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     void drawGame() {
-        if (this.anthem != null)
-            this.anthem.stop();
-        if (this.UPA != null)
-            this.UPA.start();
+        stopBackgroundSounds();
         this.gameOver = false;
         if(control != null) {
             this.control.setFocusable(false);
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(4);
+        this.panel = new GamePanel(1);
+        if (this.UPA != null) {
+            this.UPA.start();
+            this.UPA.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();
@@ -86,13 +91,18 @@ public class GameWindow extends JFrame implements Runnable {
         this.gameThread.start();
     }
 
-    void drawBestiary(){
+    void drawBestiary() {
+        stopBackgroundSounds();
         if(control != null){
             control.setFocusable(false);
             this.remove(control);
             control = null;
         }
         this.control = new BestiaryPanel(this);
+        if (this.bestiary != null) {
+            this.bestiary.start();
+            this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
         this.revalidate();
@@ -145,6 +155,21 @@ public class GameWindow extends JFrame implements Runnable {
                 /*count = 0;*/
                 timer = 0;
             }
+        }
+    }
+
+    private void stopBackgroundSounds() {
+        if (this.UPA != null) {
+            this.UPA.stop();
+            this.UPA.setMicrosecondPosition(0);
+        }
+        if (this.bestiary != null) {
+            this.bestiary.stop();
+            this.bestiary.setMicrosecondPosition(0);
+        }
+        if (this.anthem != null) {
+            this.anthem.stop();
+            this.anthem.setMicrosecondPosition(0);
         }
     }
 }

@@ -3,8 +3,11 @@ package creatures;
 import creatures.enemies.Knife;
 import creatures.params.Health;
 import graphics.*;
+import sound.Music;
+import sound.Sound;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -159,7 +162,11 @@ public class Cossack extends Creature {
     @Override
     public void die() {
         alive = false;
-        /*add music*/
+        Clip die_klip = Sound.getClip(Music.Cossack_Death);
+        if (die_klip != null) {
+            Sound.setVolume(die_klip, .1f);
+            die_klip.start();
+        }
     }
 
     @Override
@@ -232,6 +239,11 @@ public class Cossack extends Creature {
         /*here should be a method to fight with enemies*/
         int path = 1;
         if(getMove()) path = -1;
+        Clip knife_clip = Sound.getClip(Music.Knife_Sound);
+        if (knife_clip != null) {
+            knife_clip.start();
+            knife_clip.loop(0);
+        }
         this.knife = new Knife(this.xMap, this.yMap + GameWindow.blockSize/2, path);
 
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
@@ -246,6 +258,11 @@ public class Cossack extends Creature {
 
     private void shabliaPunch() {
         /*here should be a method to fight with enemies*/
+        Clip sabre_clip = Sound.getClip(Music.Sabre_Sound);
+        if (sabre_clip != null) {
+            sabre_clip.start();
+            sabre_clip.loop(0);
+        }
         shabliaIsAvailable = false;
         TimerTask timerTask = new TimerTask() {  //тимчасовий таймер для тестування бою
             @Override
@@ -431,6 +448,11 @@ public class Cossack extends Creature {
 
     public void getDamage() {
         if(!invincible) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("Interrupted exception!");
+            }
             knife = null;
             shabliaIsAvailable = true;
             health.getDamage();

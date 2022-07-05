@@ -1,7 +1,5 @@
 package creatures;
 
-import creatures.Creature;
-import creatures.CreatureState;
 import creatures.enemies.Chort;
 import graphics.DrawMap;
 import graphics.GameWindow;
@@ -71,7 +69,7 @@ public class Viy extends Creature {
         }
         else if(countOfChorts == 0 && healthPoints > 0 && animation == 0 && this.state == CreatureState.OpenedEyes){
             animation = 4;
-        }else if (healthPoints == 0){
+        }else if (healthPoints == 0) {
             finallyDie();
         }
     }
@@ -133,7 +131,7 @@ public class Viy extends Creature {
         spawnChorts();
     }
 
-    public void getDamage(){
+    public void getDamage() {
         healthPoints-=5;
         if(healthPoints == 0){
             finallyDie();

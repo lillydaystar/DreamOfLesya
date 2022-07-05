@@ -1,6 +1,7 @@
 package creatures.enemies;
 
 import creatures.Creature;
+import creatures.CreatureState;
 
 abstract class BearingEnemy extends Creature {
 
@@ -9,17 +10,20 @@ abstract class BearingEnemy extends Creature {
 
     BearingEnemy(int x, int y) {
         super(x, y);
+        this.state = CreatureState.Wait;
     }
 
     @Override
     public void update() {
-        if (scan_counter == SCAN_RATE) {
-            count_velocity();
-            scan_counter = -1;
+        if (this.state == CreatureState.Alive) {
+            if (scan_counter == SCAN_RATE) {
+                count_velocity();
+                scan_counter = -1;
+            }
+            this.abscissa += this.velocityX;
+            this.ordinate += this.velocityY;
+            scan_counter++;
         }
-        this.abscissa += this.velocityX;
-        this.ordinate += this.velocityY;
-        scan_counter++;
     }
 
     @Override
@@ -44,7 +48,9 @@ abstract class BearingEnemy extends Creature {
 
     @Override
     public void wake() {
-
+        if (this.state == CreatureState.Wait) {
+            this.state = CreatureState.Alive;
+        }
     }
 
     private void count_velocity() {

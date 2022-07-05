@@ -4,8 +4,11 @@ import creatures.params.Bonus;
 import creatures.enemies.*;
 
 import creatures.*;
+import sound.Music;
+import sound.Sound;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -147,7 +150,7 @@ public class DrawMap {
     }
 
 
-    void setCossack(Cossack cossack){
+    private void setCossack(Cossack cossack){
         this.cossack = cossack;
         if(level > 1)
             this.cossack.health.levelConfigs(level);
@@ -595,7 +598,6 @@ public class DrawMap {
 
         if (cossack.getVelocityY() - creature.getVelocityY() > 0
                 && intersectsTop/* && !intersectsBottom*/ && creature.isAlive()) {
-            System.out.println("here");
             killCreature(creature, creatureRightWorldX, creatureTopWorldY);
         } else if (intersectsTop || intersectsRight || intersectsLeft || intersectsBottom) {
             if (creature.isAlive() && !cossack.isInvincible())
@@ -628,6 +630,9 @@ public class DrawMap {
 
     private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
         creature.die();
+        /*Clip enemy_die = Sound.getClip(Music.Enemy_Death);
+        if (enemy_die != null)
+            enemy_die.start();*/
         if(creature instanceof Chort) {
             int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
             int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;
@@ -693,7 +698,7 @@ public class DrawMap {
         }
     }
 
-    public void setCossacksParams() {
+    private void setCossacksParams() {
         cossack.setWorldWidth(map.length*GameWindow.blockSize);
     }
 
