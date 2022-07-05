@@ -154,14 +154,6 @@ public class DrawMap {
         this.cossack = cossack;
         if(level > 1)
             this.cossack.health.levelConfigs(level);
-        if(level == 1) {
-            Bonus sh1 = new Bonus(7, this.cossack, 25, 12);  //test shablia
-            bonuses.add(sh1);
-        }
-        if(level == 4){
-            Bonus kn = new Bonus(8, this.cossack, 25, 12);  //test knife
-            bonuses.add(kn);
-        }
     }
 
     int getLevel(){
@@ -721,5 +713,9 @@ public class DrawMap {
 
     public void victory() {
         this.cossack.win = true;
+    }
+
+    List<Bonus> getBonuses() {
+        return this.bonuses;
     }
 }

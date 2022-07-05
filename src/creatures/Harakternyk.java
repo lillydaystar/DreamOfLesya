@@ -8,15 +8,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class Harakternyk extends Creature {
 
     private static final int DRAW_RATE = 60;
 
-    private static final float DISAPPEAR_PROBABILITY = 1f/2;
+//    private static final float DISAPPEAR_PROBABILITY = 1f/2;
 
-    private static Random rand;
     private static BufferedImage image_0, image_1, image_2, image_3, image_4, image_5, image_6, image_7;
 
     //counts when (and if) charakternyk is disappearing
@@ -24,7 +22,6 @@ public class Harakternyk extends Creature {
 
     static {
         loadImage();
-        rand = new Random();
     }
 
     public Harakternyk(int x, int y) {
@@ -41,7 +38,7 @@ public class Harakternyk extends Creature {
                 character_count++;
             }
             if (character_count == 8) {
-                state = CreatureState.Wait;
+                state = CreatureState.Dead;
                 character_count = 0;
                 move();
             }
@@ -107,12 +104,12 @@ public class Harakternyk extends Creature {
     @Override
     protected void wake() {
         if (state == CreatureState.Wait) {
-            float choise = rand.nextFloat();
-            if (choise <= DISAPPEAR_PROBABILITY)
-                this.state = CreatureState.Disappearing;
-            else
-                this.state = CreatureState.Appearing;
-            System.out.println(state);
+//            float choise = super.random.nextFloat();
+//            if (choise <= DISAPPEAR_PROBABILITY)
+            this.state = CreatureState.Disappearing;
+//            else
+//                this.state = CreatureState.Appearing;
+//            System.out.println(state);
             character_count = 0;
             draw_counter = 0;
         }

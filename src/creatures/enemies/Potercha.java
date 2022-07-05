@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Potercha extends HorizontalEnemy {
+public class Potercha extends BearingEnemy {
 
     private static final int DRAW_RATE = 10;
     private static final int HORIZONTAL_SPEED = 4;

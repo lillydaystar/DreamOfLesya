@@ -4,6 +4,7 @@ import graphics.GameWindow;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public abstract class Creature {
 
@@ -16,6 +17,8 @@ public abstract class Creature {
     protected int playerXmap = Cossack.INITIAL_PLAYER_ABSCISSE;
     protected int playerYmap = Cossack.INITIAL_PLAYER_ORDINATE;
 
+    protected boolean top_collision, bottom_collision, left_collision, right_collision;
+
     protected Rectangle solidArea;
 
     //counts while we do not have to change character's image
@@ -27,6 +30,7 @@ public abstract class Creature {
     //shows how many times to draw character while it is disappearing
     protected final int DEAD_DRAWS = 15;
 
+    protected Random random;
     protected CreatureState state;
 
     Creature() {}
@@ -35,6 +39,7 @@ public abstract class Creature {
         this.abscissa = x;
         this.ordinate = y;
         this.state = CreatureState.Alive;
+        this.random = new Random();
     }
 
     public abstract void update();
@@ -56,7 +61,7 @@ public abstract class Creature {
                 wake();
         } else {
             ++dead_draw_counter;
-            System.out.println(dead_draw_counter);
+//            System.out.println(dead_draw_counter);
             int diff = dead_draw_counter*getFigureHeight()/DEAD_DRAWS;
             graph.drawImage(getImage(), enemyScreenAbscissa,
                     enemyScreenOrdinate + diff, getFigureWidth(),
@@ -69,7 +74,8 @@ public abstract class Creature {
     }
 
     public boolean isFullyDead() {
-        return dead_draw_counter == DEAD_DRAWS;
+        return dead_draw_counter >= DEAD_DRAWS ||
+                this instanceof Harakternyk && this.state == CreatureState.Dead;
     }
 
     protected abstract void wake();

@@ -2,6 +2,7 @@ package graphics;
 
 import creatures.*;
 import creatures.enemies.*;
+import creatures.params.Bonus;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,13 +26,13 @@ public class GamePanel extends JPanel {
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
-    /*private int level;*/
+    private int level;
     private List<Creature> creatures;
     public boolean game = true;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-        /*this.level = level;*/
+        this.level = level;
         this.cossack = new Cossack();
         this.cossack.setHealth(level);
         this.dm = new DrawMap(level, this, cossack);
@@ -137,6 +138,18 @@ public class GamePanel extends JPanel {
                 creature.update();
                 if (creature.isFullyDead()) {
                     this.dm.creatures.remove(creature);
+                    if (creature instanceof Harakternyk) {
+                        if (this.level == 2) {
+                            Bonus sh1 = new Bonus(7, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 1,
+                                    creature.getOrdinate()/GameWindow.blockSize + 2);
+                            this.dm.getBonuses().add(sh1);
+                        }
+                        if (this.level == 4) {
+                            Bonus sh2 = new Bonus(8, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 1,
+                                    creature.getOrdinate()/GameWindow.blockSize + 2);
+                            this.dm.getBonuses().add(sh2);
+                        }
+                    }
                     i--;
                     if(dm.getLevel() == 5){
                         if(creature instanceof Chort) {

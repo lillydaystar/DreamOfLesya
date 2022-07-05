@@ -168,10 +168,10 @@ public class Cossack extends Creature {
     public void die() {
         alive = false;
         Clip die_klip = Sound.getClip(Music.Cossack_Death);
-        if (die_klip != null) {
-            Sound.setVolume(die_klip, .1f);
-            die_klip.start();
-        }
+//        if (die_klip != null) {
+//            Sound.setVolume(die_klip, .1f);
+//            die_klip.start();
+//        }
     }
 
     @Override
