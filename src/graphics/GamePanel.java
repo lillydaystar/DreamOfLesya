@@ -139,12 +139,12 @@ public class GamePanel extends JPanel {
                     this.dm.creatures.remove(creature);
                     if (creature instanceof Harakternyk) {
                         if (this.level == 2) {
-                            Bonus sh1 = new Bonus(7, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 1,
+                            Bonus sh1 = new Bonus(7, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 2,
                                     creature.getOrdinate()/GameWindow.blockSize + 2);
                             this.dm.getBonuses().add(sh1);
                         }
                         if (this.level == 4) {
-                            Bonus sh2 = new Bonus(8, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 1,
+                            Bonus sh2 = new Bonus(8, this.cossack, creature.getAbscissa()/GameWindow.blockSize + 2,
                                     creature.getOrdinate()/GameWindow.blockSize + 2);
                             this.dm.getBonuses().add(sh2);
                         }
