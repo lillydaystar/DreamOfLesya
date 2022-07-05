@@ -23,7 +23,7 @@ public class Knife extends HorizontalEnemy {
 
     public Knife(int x, int y, int path) {
         super(x, y);
-        super.solidArea = new Rectangle(1, 1, SIZE - 2, SIZE - 2);
+        super.solidArea = new Rectangle(0, 0, SIZE, SIZE);
         this.velocityX = path*this.getSpeed();
         exist = true;
     }

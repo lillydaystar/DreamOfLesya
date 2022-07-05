@@ -673,6 +673,9 @@ public class DrawMap {
             case 'E':
                 this.creatures.add(new Perelesnyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;
+            case 'D':
+                this.creatures.add(new Domovyk(GameWindow.blockSize * col, GameWindow.blockSize * row));
+                break;
             case 'C':
                 this.creatures.add(new Chort(GameWindow.blockSize * col, GameWindow.blockSize * row));
                 break;

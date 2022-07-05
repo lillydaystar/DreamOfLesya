@@ -24,9 +24,9 @@ public class Cossack extends Creature {
     private int xVel, yVel;
 
     private boolean collisionRight, collisionLeft, collisionAbove, collisionBelow;
-    private boolean leftCommand, rightCommand, jumpCommand, fightShCommand, fightKCommand;
+    private boolean standLeft, standRight, leftCommand, rightCommand, jumpCommand, fightShCommand, fightKCommand;
     private boolean shabliaIsAvailable = false;
-    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place, jump_left, jump_right, dead, sh_left, sh_right;
+    private static BufferedImage left_fst, left_snd, right_fst, right_snd, on_place_right, on_place_left, jump_left, jump_right, dead, sh_left, sh_right;
 
     private int counter;
     public boolean alive;
@@ -71,8 +71,8 @@ public class Cossack extends Creature {
             image = Cossack.dead;
             width = GameWindow.blockSize;
         }
-        else if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand)) {
-            image = Cossack.on_place;
+        else if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand && standRight)) {
+            image = Cossack.on_place_right;
             width = GameWindow.blockSize;
             if(!onGround() || fall){
                 image = Cossack.jump_right;
@@ -82,7 +82,19 @@ public class Cossack extends Creature {
                 image = Cossack.sh_right;
                 width = 7*GameWindow.blockSize/4;
             }
-        } else if (leftCommand) {
+        } else if (!leftCommand && !rightCommand &&standLeft) {
+            image = Cossack.on_place_left;
+            width = GameWindow.blockSize;
+            if(!onGround() || fall){
+                image = Cossack.jump_left;
+                width = 7*GameWindow.blockSize/4;
+            }
+            else if(fightShCommand){
+                image = Cossack.sh_left;
+                width = 7*GameWindow.blockSize/4;
+                x -= GameWindow.blockSize;
+            }
+        }else if (leftCommand) {
             if(!onGround() || fall){
                 image = Cossack.jump_left;
                 width = 7*GameWindow.blockSize/4;
@@ -161,12 +173,16 @@ public class Cossack extends Creature {
     }
 
     public void rightPressed() {
+        this.standLeft = false;
+        this.standRight = false;
         if (!this.rightCommand) {
             this.rightCommand = true;
         }
     }
 
     public void leftPressed() {
+        this.standLeft = false;
+        this.standRight = false;
         if (!this.leftCommand) {
             this.leftCommand = true;
         }
@@ -175,12 +191,14 @@ public class Cossack extends Creature {
     public void rightReleased() {
         if (this.rightCommand) {
             this.rightCommand = false;
+            this.standRight = true;
         }
     }
 
     public void leftReleased() {
         if (this.leftCommand) {
             this.leftCommand = false;
+            this.standLeft = true;
         }
     }
 
@@ -253,7 +271,7 @@ public class Cossack extends Creature {
      * @return if cossack moves to left return true, else return false
      */
     public boolean getMove(){
-        return leftCommand;
+        return leftCommand || standLeft;
     }
 
     public boolean isFightShCommand() {
@@ -355,7 +373,8 @@ public class Cossack extends Creature {
             Cossack.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
             Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
             Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
-            Cossack.on_place = ImageIO.read(new File("heroes/CossackS.png"));
+            Cossack.on_place_right = ImageIO.read(new File("heroes/CossackS.png"));
+            Cossack.on_place_left = ImageIO.read(new File("heroes/CossackSL.png"));
             Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));
             Cossack.jump_right = ImageIO.read(new File("heroes/CossackJR.png"));
             Cossack.dead = ImageIO.read(new File("heroes/Cossack_dead.png"));
