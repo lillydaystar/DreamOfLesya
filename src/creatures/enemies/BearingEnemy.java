@@ -2,7 +2,6 @@ package creatures.enemies;
 
 import creatures.Creature;
 import creatures.CreatureState;
-import graphics.GameWindow;
 
 abstract class BearingEnemy extends Creature {
 
@@ -77,56 +76,72 @@ abstract class BearingEnemy extends Creature {
             boolean direction = super.random.nextBoolean();
             if (top_collision && bottom_collision) {
                 super.velocityY = 0;
-                if (right_collision && left_collision)
+                if (right_collision && left_collision) {
+                    System.out.println("both both");
                     super.velocityX = 0;
-                else if (right_collision)
+                } else if (right_collision) {
                     super.velocityX = -getSpeed();
-                else if (left_collision)
+                    System.out.println("both r");
+                } else if (left_collision) {
                     super.velocityX = getSpeed();
-                else
+                    System.out.println("both l");
+                } else {
                     super.velocityX = getSpeed() * (direction ? -1 : 1);
+                    System.out.println("both n");
+                }
             } else if (top_collision) {
                 if (right_collision && left_collision) {
-                    super.velocityY = getSpeed();
                     super.velocityX = 0;
+                    super.velocityY = getSpeed();
+                    System.out.println("top both");
                 } else if (right_collision) {
                     super.velocityX = -(int)(getSpeed()*cos_new_angle);
                     super.velocityY = (int)(getSpeed()*sin_new_angle);
-                    System.out.println(velocityX+" "+velocityY);
+                    System.out.println("top r");
                 } else if (left_collision) {
                     super.velocityX = (int)(getSpeed()*cos_new_angle);
                     super.velocityY = (int)(getSpeed()*sin_new_angle);
+                    System.out.println("top l");
                 } else {
-                    super.velocityX = getSpeed() * (direction ? 1 : -1);
+                    super.velocityX = (int)(getSpeed()*cos_new_angle) * (direction ? 1 : -1);
                     super.velocityY = (int)(getSpeed()*sin_new_angle);
+                    System.out.println("top n");
                 }
             } else if (bottom_collision) {
                 if (right_collision && left_collision) {
-                    super.velocityY = -getSpeed();
                     super.velocityX = 0;
+                    super.velocityY = -getSpeed();
+                    System.out.println("bot both");
                 } else if (right_collision) {
                     super.velocityX = -(int)(getSpeed()*cos_new_angle);
                     super.velocityY = -(int)(getSpeed()*sin_new_angle);
+                    System.out.println("bot r");
                 } else if (left_collision) {
                     super.velocityX = (int)(getSpeed()*cos_new_angle);
                     super.velocityY = -(int)(getSpeed()*sin_new_angle);
+                    System.out.println("bot l");
                 } else {
-                    super.velocityX = getSpeed() * (direction ? 1 : -1);
+                    super.velocityX = (int)(getSpeed()*cos_new_angle) * (direction ? 1 : -1);
                     super.velocityY = -(int)(getSpeed()*sin_new_angle);
+                    System.out.println("bot n");
                 }
             } else {
                 if (right_collision && left_collision) {
                     super.velocityX = 0;
                     super.velocityY = getSpeed() * (direction ? 1 : -1);
+                    System.out.println("n both");
                 } else if (right_collision) {
                     super.velocityX = -(int)(getSpeed()*cos_new_angle);
                     super.velocityY = (int)(getSpeed()*sin_new_angle) * (direction ? 1 : -1);
+                    System.out.println("n r");
                 } else if (left_collision) {
-                    super.velocityX = (int)(getSpeed()*cos_new_angle);
-                    super.velocityY = (int)(getSpeed()*sin_new_angle) * (direction ? 1 : -1);
+                    super.velocityX = (int)(getSpeed()*cos_new_angle) * (direction ? 1 : -1);
+                    super.velocityY = (int)(getSpeed()*sin_new_angle);
+                    System.out.println("n l");
                 }
             }
         }
+        System.out.println(velocityX+" "+velocityY);
         top_collision = bottom_collision = right_collision = left_collision = false;
     }
 }
