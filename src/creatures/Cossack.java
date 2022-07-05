@@ -63,6 +63,7 @@ public class Cossack extends Creature {
         setDefaultCoordinates();
         this.alive = true;
         this.solidArea = new Rectangle(2, 2, 22, 90);
+        this.standRight = true;
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -131,8 +132,12 @@ public class Cossack extends Creature {
                 width = GameWindow.blockSize;
             }
         }
+        if(invincible){
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6F));
+        }
         graphics2D.drawImage(image, x, y,
                 width, height, null);
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
         health.drawHP(graphics2D);
         if(knife != null && knife.isExist()){
             knife.draw(graphics2D, this.getAbscissa(), this.getOrdinate(),
@@ -288,7 +293,7 @@ public class Cossack extends Creature {
      * @return if cossack moves to left return true, else return false
      */
     public boolean getMove(){
-        return leftCommand || standLeft;
+        return (leftCommand || standLeft) && !rightCommand;
     }
 
     public boolean isFightShCommand() {
@@ -443,7 +448,7 @@ public class Cossack extends Creature {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(timerTask, 500);
+        timer.schedule(timerTask, 1000);
     }
 
     public void getDamage() {

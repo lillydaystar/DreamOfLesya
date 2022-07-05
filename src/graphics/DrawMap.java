@@ -609,14 +609,14 @@ public class DrawMap {
 
         if (fightArea != null && intersects_with_vertical_segment(fightArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
-            if (cossack.getMove()) {
+            if (cossack.getMove() && creature.isAlive()) {
                 killCreature(creature,creatureRightWorldX,creatureTopWorldY);
-            } else cossack.getDamage();
+            } else if (creature.isAlive()) cossack.getDamage();
         } else if (fightArea != null && intersects_with_vertical_segment(fightArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
-            if (!cossack.getMove()) {
+            if (!cossack.getMove() && creature.isAlive()) {
                 killCreature(creature,creatureRightWorldX,creatureTopWorldY);
-            } else cossack.getDamage();
+            } else if(creature.isAlive()) cossack.getDamage();
         } else if (knifeArea != null && intersects_with_vertical_segment(knifeArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
             creature.die();
