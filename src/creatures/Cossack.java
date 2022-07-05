@@ -62,7 +62,7 @@ public class Cossack extends Creature {
     public Cossack() {
         setDefaultCoordinates();
         this.alive = true;
-        this.solidArea = new Rectangle(2, 2, 20, 90);
+        this.solidArea = new Rectangle(2, 2, 20, 94);
         this.standRight = true;
     }
 
@@ -78,7 +78,7 @@ public class Cossack extends Creature {
         else if ((leftCommand && rightCommand) || (!leftCommand && !rightCommand && standRight)) {
             image = Cossack.on_place_right;
             width = GameWindow.blockSize;
-            if(!onGround() || fall){
+            if(!onGround() || fall || jumpCommand){
                 image = Cossack.jump_right;
                 width = 7*GameWindow.blockSize/4;
             }
@@ -89,7 +89,7 @@ public class Cossack extends Creature {
         } else if (!leftCommand && !rightCommand &&standLeft) {
             image = Cossack.on_place_left;
             width = GameWindow.blockSize;
-            if(!onGround() || fall){
+            if(!onGround() || fall || jumpCommand){
                 image = Cossack.jump_left;
                 width = 7*GameWindow.blockSize/4;
             }
@@ -99,7 +99,7 @@ public class Cossack extends Creature {
                 x -= GameWindow.blockSize;
             }
         }else if (leftCommand) {
-            if(!onGround() || fall){
+            if(!onGround() || fall || jumpCommand){
                 image = Cossack.jump_left;
                 width = 7*GameWindow.blockSize/4;
             }
@@ -116,7 +116,7 @@ public class Cossack extends Creature {
                 width = GameWindow.blockSize;
             }
         } else {
-            if(!onGround() || fall){
+            if(!onGround() || fall || jumpCommand){
                 image = Cossack.jump_right;
                 width = 7*GameWindow.blockSize/4;
             }
@@ -456,7 +456,7 @@ public class Cossack extends Creature {
     public void getDamage() {
         if(!invincible) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 System.out.println("Interrupted exception!");
             }

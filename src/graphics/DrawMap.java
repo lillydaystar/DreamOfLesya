@@ -682,8 +682,6 @@ public class DrawMap {
                 break;
             case 'V':
                 this.creatures.add(new Viy(GameWindow.blockSize * col, GameWindow.blockSize * row, this));
-                Viy v = (Viy) creatures.get(0);
-                v.spawnChorts();
                 break;
             default:
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""

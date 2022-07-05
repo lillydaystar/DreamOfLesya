@@ -39,13 +39,13 @@ public class Bonus {
                     image = ImageIO.read(new File("images/SpeedUp.png"));
                     break;
                 case 3:
-                    image = ImageIO.read(new File("images/JumpHigher.png"));
+                    image = ImageIO.read(new File("images/AddHP.png"));
                     break;
                 case 4:
                     image = ImageIO.read(new File("images/Extra-life.png"));
                     break;
                 case 5:
-                    image = ImageIO.read(new File("images/AddHP.png"));
+                    image = ImageIO.read(new File("images/JumpHigher.png"));
                     break;
                 case 6:
                     image = ImageIO.read(new File("images/SuperPower.png"));
@@ -228,13 +228,13 @@ public class Bonus {
                 speedUp();
                 break;
             case 3:
-                jumpHigher();
+                addHP();
                 break;
             case 4:
                 extraLife();
                 break;
             case 5:
-                addHP();
+                jumpHigher();
                 break;
             case 6:
                 superPower();

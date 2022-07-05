@@ -63,9 +63,11 @@ public abstract class Creature {
             ++dead_draw_counter;
 //            System.out.println(dead_draw_counter);
             int diff = dead_draw_counter*getFigureHeight()/DEAD_DRAWS;
-            graph.drawImage(getImage(), enemyScreenAbscissa,
-                    enemyScreenOrdinate + diff, getFigureWidth(),
-                    getFigureHeight() - diff, null);
+            if(diff <= getFigureHeight()) {
+                graph.drawImage(getImage(), enemyScreenAbscissa,
+                        enemyScreenOrdinate + diff, getFigureWidth(),
+                        getFigureHeight() - diff, null);
+            }
         }
     }
 

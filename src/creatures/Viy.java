@@ -39,6 +39,7 @@ public class Viy extends Creature {
         this.waves.add(25);
         this.waves.add(50);
         this.waves.add(75);
+        this.animation = 5;
     }
 
     /**

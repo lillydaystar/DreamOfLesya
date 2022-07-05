@@ -119,7 +119,16 @@ public class BestiaryPanel extends JPanel {
 
         table.setRowHeight(440);
         table.setOpaque(false);
-        JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL){
+          @Override
+          public boolean isVisible(){
+              return true;
+          }
+        };
+        scrollBar.setUnitIncrement(20);
+        JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setVerticalScrollBar(scrollBar);
         scroll.setSize(GameWindow.screenWidth, GameWindow.screenHeight);
         scroll.setLocation(0,0);
         scroll.setOpaque(false);
