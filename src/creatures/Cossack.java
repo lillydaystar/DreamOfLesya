@@ -62,7 +62,7 @@ public class Cossack extends Creature {
     public Cossack() {
         setDefaultCoordinates();
         this.alive = true;
-        this.solidArea = new Rectangle(2, 2, 22, 90);
+        this.solidArea = new Rectangle(2, 2, 20, 90);
         this.standRight = true;
     }
 
@@ -166,11 +166,13 @@ public class Cossack extends Creature {
 
     @Override
     public void die() {
-        alive = false;
-        Clip die_klip = Sound.getClip(Music.Cossack_Death);
-        if (die_klip != null) {
-            Sound.setVolume(die_klip, .1f);
-            die_klip.start();
+        if(alive) {
+            alive = false;
+            Clip die_klip = Sound.getClip(Music.Cossack_Death);
+            if (die_klip != null) {
+                Sound.setVolume(die_klip, .1f);
+                die_klip.start();
+            }
         }
     }
 

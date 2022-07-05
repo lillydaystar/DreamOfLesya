@@ -2,6 +2,7 @@ package graphics;
 
 import creatures.*;
 import creatures.enemies.*;
+import sound.Music;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -120,14 +121,12 @@ public class GamePanel extends JPanel {
 
     void update() {
         if(!cossack.alive || cossack.win){
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    game = false;
-                }
-            };
-            java.util.Timer timer = new Timer();
-            timer.schedule(timerTask, 3000);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            game = false;
         }
         else {
             cossack.update();
