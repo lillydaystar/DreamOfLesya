@@ -76,7 +76,7 @@ public class GameWindow extends JFrame implements Runnable {
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(1);
+        this.panel = new GamePanel(4);
         if (this.UPA != null) {
             this.UPA.start();
             this.UPA.loop(Clip.LOOP_CONTINUOUSLY);

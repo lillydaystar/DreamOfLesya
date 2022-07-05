@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Rusalka extends WalkingEnemy {
 
     private static final int DRAW_RATE = 10;
-    private static final int HORIZONTAL_SPEED = 2;
+    private static final int HORIZONTAL_SPEED = 3;
     private static BufferedImage left_fst, left_snd, right_fst, right_snd;
 
     static {
