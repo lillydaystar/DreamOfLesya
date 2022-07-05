@@ -45,7 +45,7 @@ public class Poliovyk extends VerticalEnemy {
 
     @Override
     protected BufferedImage getImage() {
-        if (this.velocityX < 0) {
+        if (this.velocityY < 0) {
             if (this.draw_counter < getDrawRate())
                 return Poliovyk.left_fst;
             else
