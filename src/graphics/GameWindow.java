@@ -82,7 +82,6 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     void drawBestiary() {
-        stopBackgroundSounds();
         if(control != null){
             control.setFocusable(false);
             this.remove(control);

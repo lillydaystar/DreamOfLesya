@@ -635,8 +635,8 @@ public class DrawMap {
     private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
         Clip enemy_die = Sound.getClip(Music.Enemy_Death);
         if (enemy_die != null) {
-            enemy_die.start();
             enemy_die.setMicrosecondPosition(0);
+            enemy_die.start();
         }
         if(creature instanceof Chort) {
             int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
@@ -724,6 +724,11 @@ public class DrawMap {
     }
 
     public void victory() {
+        Clip clip = Sound.getClip(Music.Victory_Sound);
+        if (clip != null) {
+            Sound.setVolume(clip, .3f);
+            clip.start();
+        }
         this.cossack.win = true;
     }
 
