@@ -109,7 +109,6 @@ public class Harakternyk extends Creature {
             this.state = CreatureState.Disappearing;
 //            else
 //                this.state = CreatureState.Appearing;
-//            System.out.println(state);
             character_count = 0;
             draw_counter = 0;
         }

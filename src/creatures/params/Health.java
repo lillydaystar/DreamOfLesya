@@ -64,7 +64,6 @@ public class Health {
     public void addExtraLife(){
         if(Collections.frequency(hpStatus, 3) < 3) {
             healthPoints++;
-            System.out.println("add points");
             try {
                 hpImages.add(ImageIO.read(new File("images/Extra-life.png")));
                 hpStatus.add(3);

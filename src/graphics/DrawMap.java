@@ -332,8 +332,10 @@ public class DrawMap {
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
             for (Bonus bonus : bonuses) {
-                if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
-                        && bonus.getWorldY() / GameWindow.blockSize == row) {
+                if (bonus != null && ((bonus.getWorldX() / GameWindow.blockSize == col
+                        && bonus.getWorldY() / GameWindow.blockSize == row ) ||
+                        ((bonus.getWorldX() + GameWindow.blockSize)/ GameWindow.blockSize == col
+                                && bonus.getWorldY() / GameWindow.blockSize == row ))) {
                     bonus.activateBonus();
                     Clip bonus_activate = Sound.getClip(Music.Take_Bonus);
                     if (bonus_activate != null) {
@@ -374,13 +376,22 @@ public class DrawMap {
         bonus.setWorldY(bonus.getWorldY()+bonus.getyVel());
 
         if(bonus.isFall()){
+            int x = bonus.getWorldX();
+            int y = bonus.getWorldY();
+            int solidX = bonus.getSolidArea().x;
             bonus.setyVel(bonus.getyVel()+2);
-            if(map[bonus.getWorldX()/GameWindow.blockSize + 1][bonus.getWorldY()/GameWindow.blockSize] != '0'
-                    && map[bonus.getWorldX()/GameWindow.blockSize + 1][bonus.getWorldY()/GameWindow.blockSize] != '+'){
+            if(map[(x - solidX)/GameWindow.blockSize + 1][y/GameWindow.blockSize] != '0'
+                    && map[(x - solidX)/GameWindow.blockSize + 1][y/GameWindow.blockSize] != '+' &&
+                    map[(x+GameWindow.blockSize + solidX)/GameWindow.blockSize][y/GameWindow.blockSize] != '0' &&
+                    map[(x+GameWindow.blockSize + solidX)/GameWindow.blockSize][y/GameWindow.blockSize] != '+'){
                 bonus.setFall(false);
                 bonus.setxVel(0);
                 bonus.setyVel(0);
-                bonus.setWorldY((bonus.getWorldY()/GameWindow.blockSize - 1)*GameWindow.blockSize);
+                bonus.setWorldY((y/GameWindow.blockSize - 1)*GameWindow.blockSize);
+            }
+            if(x >= cols_on_map*GameWindow.blockSize - GameWindow.blockSize || x <= GameWindow.blockSize/2 ||
+                    isBonusCollisionRight(bonus)){
+                bonus.setxVel(0);
             }
         }
 
@@ -392,6 +403,21 @@ public class DrawMap {
             graphics2D.drawImage(bonus.getImage(), x, y,
                     GameWindow.blockSize, GameWindow.blockSize, null);
         }
+    }
+
+    private boolean isBonusCollisionRight(Bonus bonus) {
+        int rightX = bonus.getWorldX() + bonus.getSolidArea().width;
+        int topY = bonus.getWorldY();
+        int bottomY = bonus.getWorldY() + bonus.getSolidArea().height;
+
+        int col = rightX/GameWindow.blockSize;
+        int topRow = topY/GameWindow.blockSize;
+        int bottomRow = bottomY/GameWindow.blockSize;
+
+        char block1 = map[col][topRow];
+        char block2 = map[col][bottomRow];
+
+        return (block1 != '0' && blocks[marks.indexOf(block1)].collision) || (block2 != '0' && blocks[marks.indexOf(block2)].collision);
     }
 
     private int randomNumber() {
@@ -623,11 +649,11 @@ public class DrawMap {
             } else if(creature.isAlive()) cossack.getDamage();
         } else if (knifeArea != null && intersects_with_vertical_segment(knifeArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureLeftWorldX)) {
-            creature.die();
+            killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             cossack.getKnife().fallApart();
         } else if(knifeArea != null && intersects_with_vertical_segment(knifeArea,
                 creatureTopWorldY, creatureBottomWorldY, creatureRightWorldX)) {
-            creature.die();
+            killCreature(creature, creatureRightWorldX, creatureTopWorldY);
             cossack.getKnife().fallApart();
         }
     }
@@ -635,6 +661,7 @@ public class DrawMap {
     private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
         Clip enemy_die = Sound.getClip(Music.Enemy_Death);
         if (enemy_die != null) {
+            Sound.setVolume(enemy_die,0.3f);
             enemy_die.setMicrosecondPosition(0);
             enemy_die.start();
         }

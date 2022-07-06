@@ -57,6 +57,10 @@ public class GamePanel extends JPanel {
                 this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
             }
         }
+        if(level == 5){
+            Bonus kn = new Bonus(8, this.cossack, 10, 12);
+            this.dm.getBonuses().add(kn);
+        }
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
@@ -189,7 +193,7 @@ public class GamePanel extends JPanel {
                     this.background = ImageIO.read(new File("images/background1.png"));
                     break;
                 case 2:
-                    this.background = ImageIO.read(new File("images/background2.jpg"));
+                    this.background = ImageIO.read(new File("images/background2(1).jpg"));
                     break;
                 case 3:
                     this.background = ImageIO.read(new File("images/background3.jpg"));

@@ -4,6 +4,7 @@ import creatures.Cossack;
 import graphics.GameWindow;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class Bonus {
     private int worldX, worldY;
     private int yVel, xVel;
     private boolean fall;
+
+    private final Rectangle solidArea = new Rectangle(2,1, GameWindow.blockSize-4, GameWindow.blockSize-2);
 
 
     public Bonus(int type, Cossack cossack, int blockCol, int blockRow){
@@ -123,6 +126,9 @@ public class Bonus {
         this.xVel = xVel;
     }
 
+    public Rectangle getSolidArea(){
+        return this.solidArea;
+    }
 
     public void activateBonus(){
         this.active = true;

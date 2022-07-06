@@ -70,7 +70,7 @@ public class GameWindow extends JFrame implements Runnable {
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(4);
+        this.panel = new GamePanel(5);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();
@@ -136,8 +136,6 @@ public class GameWindow extends JFrame implements Runnable {
                 /*count++;*/
             }
             if (timer >= NANOSECOND_IN_SECOND) {
-                /*System.out.printf("%d FPS\n", count);*/
-                /*count = 0;*/
                 timer = 0;
             }
         }
