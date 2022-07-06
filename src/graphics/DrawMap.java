@@ -327,6 +327,12 @@ public class DrawMap {
 
     private void checkForBonus(int col, int row) {
         if (map[col][row] == '+') {
+            Clip pick_coin = Sound.getClip(Music.Coin_Pick);
+            if (pick_coin != null) {
+                Sound.setVolume(pick_coin,0.2f);
+                pick_coin.setMicrosecondPosition(0);
+                pick_coin.start();
+            }
             cossack.coins++;
             map[col][row] = '0';
         }
@@ -673,7 +679,7 @@ public class DrawMap {
                 throwBonus(creatureRightCol - 1, creatureTopRow + 1);
         }
         if(!(creature instanceof Viy))
-            cossack.coins+=5;
+            cossack.coins += 5;
         creature.die();
     }
 

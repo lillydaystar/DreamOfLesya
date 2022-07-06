@@ -3,8 +3,11 @@ package creatures;
 import creatures.enemies.Chort;
 import graphics.DrawMap;
 import graphics.GameWindow;
+import sound.Music;
+import sound.Sound;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -69,6 +72,12 @@ public class Viy extends Creature {
             animation = 0;
         }
         else if(countOfChorts == 0 && healthPoints > 0 && animation == 0 && this.state == CreatureState.OpenedEyes){
+            Clip viy_opens_eyes = Sound.getClip(Music.Viy_Opens_Eyes);
+            if (viy_opens_eyes != null) {
+                Sound.setVolume(viy_opens_eyes,0.3f);
+                viy_opens_eyes.setMicrosecondPosition(0);
+                viy_opens_eyes.start();
+            }
             animation = 4;
         }else if (healthPoints == 0) {
             finallyDie();
@@ -148,9 +157,6 @@ public class Viy extends Creature {
         return healthPoints;
     }
 
-    public boolean canTakeDamage(){
-        return takeDamage;
-    }
 
     @Override
     public int getFigureWidth() {
