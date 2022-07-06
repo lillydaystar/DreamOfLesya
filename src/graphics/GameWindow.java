@@ -25,19 +25,13 @@ public class GameWindow extends JFrame implements Runnable {
     private Thread gameThread;
     private boolean gameOver;
     private Clip anthem;
-    private Clip UPA;
-    private Clip bestiary;
 
     public GameWindow() {
         super("Lesya's Dream");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.anthem = Sound.getClip(Music.Background_Anthem);
-        this.UPA = Sound.getClip(Music.Background_UPA);
-        this.bestiary = Sound.getClip(Music.Bestiary_Background);
         Sound.setVolume(this.anthem, 0.15f);
-        Sound.setVolume(this.bestiary, 0.15f);
-        Sound.setVolume(this.UPA, 0.1f);
         drawMainMenu();
         this.pack();
         this.setLocationRelativeTo(null);
@@ -76,11 +70,7 @@ public class GameWindow extends JFrame implements Runnable {
             this.remove(control);
             control = null;
         }
-        this.panel = new GamePanel(1);
-        if (this.UPA != null) {
-            this.UPA.start();
-            this.UPA.loop(Clip.LOOP_CONTINUOUSLY);
-        }
+        this.panel = new GamePanel(4);
         this.panel.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.panel);
         this.revalidate();
@@ -99,10 +89,6 @@ public class GameWindow extends JFrame implements Runnable {
             control = null;
         }
         this.control = new BestiaryPanel(this);
-        if (this.bestiary != null) {
-            this.bestiary.start();
-            this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
-        }
         this.control.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.add(this.control);
         this.revalidate();
@@ -159,14 +145,6 @@ public class GameWindow extends JFrame implements Runnable {
     }
 
     private void stopBackgroundSounds() {
-        if (this.UPA != null) {
-            this.UPA.stop();
-            this.UPA.setMicrosecondPosition(0);
-        }
-        if (this.bestiary != null) {
-            this.bestiary.stop();
-            this.bestiary.setMicrosecondPosition(0);
-        }
         if (this.anthem != null) {
             this.anthem.stop();
             this.anthem.setMicrosecondPosition(0);

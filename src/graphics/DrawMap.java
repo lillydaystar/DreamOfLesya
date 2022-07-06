@@ -335,6 +335,12 @@ public class DrawMap {
                 if (bonus != null && bonus.getWorldX() / GameWindow.blockSize == col
                         && bonus.getWorldY() / GameWindow.blockSize == row) {
                     bonus.activateBonus();
+                    Clip bonus_activate = Sound.getClip(Music.Take_Bonus);
+                    if (bonus_activate != null) {
+                        Sound.setVolume(bonus_activate, .3f);
+                        bonus_activate.setMicrosecondPosition(0);
+                        bonus_activate.start();
+                    }
                     bonuses.remove(bonus);
                     break;
                 }
@@ -354,6 +360,12 @@ public class DrawMap {
     private void throwBonus(int col, int row) {
         int bonusNum = randomNumber();
         Bonus b = new Bonus(bonusNum, this.cossack, col, row);
+        Clip bonus_throw = Sound.getClip(Music.Bonus_Throw);
+        if (bonus_throw != null) {
+            Sound.setVolume(bonus_throw, .3f);
+            bonus_throw.setMicrosecondPosition(0);
+            bonus_throw.start();
+        }
         bonuses.add(b);
     }
 
@@ -621,10 +633,11 @@ public class DrawMap {
     }
 
     private void killCreature(Creature creature, int creatureRightWorldX, int creatureTopWorldY){
-
-        /*Clip enemy_die = Sound.getClip(Music.Enemy_Death);
-        if (enemy_die != null)
-            enemy_die.start();*/
+        Clip enemy_die = Sound.getClip(Music.Enemy_Death);
+        if (enemy_die != null) {
+            enemy_die.start();
+            enemy_die.setMicrosecondPosition(0);
+        }
         if(creature instanceof Chort) {
             int creatureRightCol = round((float)creatureRightWorldX/GameWindow.blockSize);
             int creatureTopRow = creatureTopWorldY/GameWindow.blockSize;

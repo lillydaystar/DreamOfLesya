@@ -4,8 +4,10 @@ import creatures.*;
 import creatures.enemies.*;
 import creatures.params.Bonus;
 import sound.Music;
+import sound.Sound;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -30,6 +32,8 @@ public class GamePanel extends JPanel {
     private int level;
     private List<Creature> creatures;
     public boolean game = true;
+    private Clip UPA;
+    private Clip bestiary;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
@@ -38,6 +42,21 @@ public class GamePanel extends JPanel {
         this.cossack.setHealth(level);
         this.dm = new DrawMap(level, this, cossack);
         creatures = new LinkedList<>();
+        this.UPA = Sound.getClip(Music.Background_UPA);
+        this.bestiary = Sound.getClip(Music.Bestiary_Background);
+        Sound.setVolume(this.bestiary, 0.15f);
+        Sound.setVolume(this.UPA, 0.1f);
+        if (level != 5) {
+            if (this.UPA != null) {
+                this.UPA.start();
+                this.UPA.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        } else {
+            if (this.bestiary != null) {
+                this.bestiary.start();
+                this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        }
         setBackgroundImage();
         this.addKeyListener(new KeyCommander());
         this.revalidate();
@@ -127,6 +146,7 @@ public class GamePanel extends JPanel {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            stopMusic();
             game = false;
         }
         else {
@@ -190,6 +210,13 @@ public class GamePanel extends JPanel {
         this.cossack.setDefaultCoordinates();
         this.dm = new DrawMap(level, this, this.cossack);
         setBackgroundImage();
+        if (level == 5) {
+            stopMusic();
+            if (this.bestiary != null) {
+                this.bestiary.start();
+                this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        }
         //dm.setCossack(this.cossack);
         //this.dm.setCossacksParams();
     }
@@ -241,8 +268,18 @@ public class GamePanel extends JPanel {
             }
 
             if(key == KeyEvent.VK_ESCAPE){
+                stopMusic();
                 game = false;
             }
+        }
+    }
+
+    private void stopMusic() {
+        if (this.UPA != null) {
+            this.UPA.stop();
+        }
+        if (this.bestiary != null) {
+            this.bestiary.stop();
         }
     }
 }

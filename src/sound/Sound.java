@@ -66,9 +66,7 @@ public class Sound {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
             return clip;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) { }
         return null;
     }
 
