@@ -672,7 +672,8 @@ public class DrawMap {
             if(chance == 1)
                 throwBonus(creatureRightCol - 1, creatureTopRow + 1);
         }
-        cossack.coins+=5;
+        if(!(creature instanceof Viy))
+            cossack.coins+=5;
         creature.die();
     }
 
