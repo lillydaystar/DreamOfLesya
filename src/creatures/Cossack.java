@@ -393,9 +393,9 @@ public class Cossack extends Creature {
     private static void loadImage() {
         try {
             Cossack.left_fst = ImageIO.read(new File("heroes/CossackL_1.png"));
-            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL(move2).png"));
+            Cossack.left_snd = ImageIO.read(new File("heroes/CossackL_2.png"));
             Cossack.right_fst = ImageIO.read(new File("heroes/CossackR_1.png"));
-            Cossack.right_snd = ImageIO.read(new File("heroes/Cossack(move2).png"));
+            Cossack.right_snd = ImageIO.read(new File("heroes/CossackR_2.png"));
             Cossack.on_place_right = ImageIO.read(new File("heroes/CossackS.png"));
             Cossack.on_place_left = ImageIO.read(new File("heroes/CossackSL.png"));
             Cossack.jump_left = ImageIO.read(new File("heroes/CossackJL.png"));

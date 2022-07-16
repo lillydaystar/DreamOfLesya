@@ -162,7 +162,7 @@ public class GameWindow extends JFrame implements Runnable {
         test[0].add(exitButton);
         this.add(test[0]);
         test[0].setOpaque(true);
-        test[0].setBackground(new Color(0,0,0,20));
+        test[0].setBackground(new Color(0,0,0,0));
     }
 
     private void restartLevel() {
