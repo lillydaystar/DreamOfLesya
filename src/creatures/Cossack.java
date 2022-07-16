@@ -63,7 +63,6 @@ public class Cossack extends Creature {
         setDefaultCoordinates();
         this.alive = true;
         this.solidArea = new Rectangle(2, 2, 20, 94);
-        this.standRight = true;
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -451,6 +450,7 @@ public class Cossack extends Creature {
         };
         Timer timer = new Timer();
         timer.schedule(timerTask, 1000);
+        this.standRight = true;
     }
 
     public void getDamage() {

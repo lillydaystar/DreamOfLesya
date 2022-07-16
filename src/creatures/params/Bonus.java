@@ -130,6 +130,10 @@ public class Bonus {
         return this.solidArea;
     }
 
+    public int getType(){
+        return type;
+    }
+
     public void activateBonus(){
         this.active = true;
         switchType();

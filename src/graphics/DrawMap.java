@@ -31,6 +31,7 @@ public class DrawMap {
     private int level;
     private GamePanel panel;
     private int cols_on_map, rows_on_map;
+    private int levelCoins;
 
     DrawMap(int level, GamePanel panel, Cossack cossack) {
         this.panel = panel;
@@ -150,7 +151,7 @@ public class DrawMap {
     }
 
 
-    private void setCossack(Cossack cossack){
+    public void setCossack(Cossack cossack){
         this.cossack = cossack;
         if(level > 1)
             this.cossack.health.levelConfigs(level);
@@ -334,6 +335,7 @@ public class DrawMap {
                 pick_coin.start();
             }
             cossack.coins++;
+            levelCoins++;
             map[col][row] = '0';
         }
         if(map[col][row] == '0' && !bonuses.isEmpty()){
@@ -343,6 +345,9 @@ public class DrawMap {
                         ((bonus.getWorldX() + GameWindow.blockSize)/ GameWindow.blockSize == col
                                 && bonus.getWorldY() / GameWindow.blockSize == row ))) {
                     bonus.activateBonus();
+                    if(bonus.getType() == 1){
+                        levelCoins++;
+                    }
                     Clip bonus_activate = Sound.getClip(Music.Take_Bonus);
                     if (bonus_activate != null) {
                         Sound.setVolume(bonus_activate, .3f);
@@ -678,8 +683,10 @@ public class DrawMap {
             if(chance == 1)
                 throwBonus(creatureRightCol - 1, creatureTopRow + 1);
         }
-        if(!(creature instanceof Viy))
+        if(!(creature instanceof Viy)) {
             cossack.coins += 5;
+            levelCoins += 5;
+        }
         creature.die();
     }
 
@@ -734,6 +741,10 @@ public class DrawMap {
                 throw new IllegalArgumentException("Неправильний формат карти (невідомий ідентифікатор ворога \""
                         +characteristics[2]+"\")");
         }
+    }
+
+    public int getLevelCoins() {
+        return levelCoins;
     }
 
     private void setCossacksParams() {

@@ -79,6 +79,6 @@ class FirstPanel extends JPanel {
     }
 
     private void startTheGame() {
-        window.drawGame();
+        window.drawGame(1);
     }
 }

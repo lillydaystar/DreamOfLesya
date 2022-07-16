@@ -17,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /*
  * This class draws the main game panel, where the map will be displayed
@@ -29,15 +27,13 @@ public class GamePanel extends JPanel {
     private DrawMap dm;
     private BufferedImage background;
     private Cossack cossack;
-    private int level;
     private List<Creature> creatures;
     public boolean game = true;
-    private Clip UPA;
-    private Clip bestiary;
+    private final Clip UPA;
+    private final Clip bestiary;
 
     GamePanel(int level) {
         this.setPreferredSize(new Dimension(GameWindow.screenWidth, GameWindow.screenHeight));
-        this.level = level;
         this.cossack = new Cossack();
         this.cossack.setHealth(level);
         this.dm = new DrawMap(level, this, cossack);
@@ -59,6 +55,10 @@ public class GamePanel extends JPanel {
         }
         if(level == 5){
             Bonus kn = new Bonus(8, this.cossack, 10, 12);
+            this.dm.getBonuses().add(kn);
+        }
+        if(level == 3 || level == 4 || level == 5){
+            Bonus kn = new Bonus(7, this.cossack, 9, 12);
             this.dm.getBonuses().add(kn);
         }
         setBackgroundImage();
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel {
     void update() {
         if(!cossack.alive || cossack.win){
             try {
-                Thread.sleep(3000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -221,8 +221,18 @@ public class GamePanel extends JPanel {
                 this.bestiary.loop(Clip.LOOP_CONTINUOUSLY);
             }
         }
-        //dm.setCossack(this.cossack);
-        //this.dm.setCossacksParams();
+    }
+
+    public void setCossack(Cossack cossack) {
+        this.cossack = cossack;
+    }
+
+    public Cossack getCossack() {
+        return cossack;
+    }
+
+    public DrawMap getDm() {
+        return dm;
     }
 
     private class KeyCommander implements KeyListener {

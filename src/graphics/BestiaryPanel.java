@@ -44,10 +44,11 @@ public class BestiaryPanel extends JPanel {
                 description[i] = s;
                 i++;
             }while (s != null && i<13);
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
     }
 
     /**
